@@ -9,8 +9,7 @@ import org.apache.logging.log4j.Level;
 @RequiredArgsConstructor
 public enum Erros {
 
-    ERRO_PARAMETROS("001", "Parametro mandatorio não foi enviado" , Level.ERROR)
-
+    ERRO_PARAMETROS("001","Parametro mandatorio não foi enviado", Level.ERROR)
     ;
 
     private final String code;

@@ -7,10 +7,10 @@ import lombok.*;
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "cliente")
 @SequenceGenerator(name = "cliente_seq" , sequenceName = "cliente_id_seq" , allocationSize = 1)
 public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "cliente_seq")
     @Column(name = "id", nullable = false)

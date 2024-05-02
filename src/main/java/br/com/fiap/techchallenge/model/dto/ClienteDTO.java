@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Data
 @Schema(description = "")
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteDTO implements Serializable {
@@ -19,11 +18,11 @@ public class ClienteDTO implements Serializable {
     @NotNull(message = "O cpf é obrigatório")
     private String cpf;
 
-    @Schema(description = "Campo identificador único de pessoas fisicas no Brasil" , example = "12345678900")
+    @Schema(description = "Campo que identifica o nome do cliente" , example = "12345678900")
     @NotNull(message = "O nome é obrigatório")
     private String nome;
 
-    @Schema(description = "Campo identificador único de pessoas fisicas no Brasil" , example = "12345678900")
+    @Schema(description = "Campo que identifica o email do cliente" , example = "email@email.com")
     @NotNull(message = "O email é obrigatório")
     private String email;
 }

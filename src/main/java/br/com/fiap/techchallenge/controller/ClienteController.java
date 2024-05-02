@@ -22,18 +22,19 @@ import javax.validation.Valid;
 public class ClienteController {
 
     private final ClienteService clienteService;
+
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content =
                     { @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad Gateway" ,  content =
+            @ApiResponse(responseCode = "400", description = "Bad Request" ,  content =
                     { @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content =
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
                     { @Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class)) }) })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE )
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public  ResponseEntity<Void> cadastrarCliente(@Valid @RequestBody ClienteDTO request) {
+    public ResponseEntity<Void> cadastrarCliente(@Valid @RequestBody ClienteDTO clienteRequest) {
         boolean registryOk = true;
         if(registryOk) {
             return ResponseEntity.status(HttpStatus.CREATED).build();

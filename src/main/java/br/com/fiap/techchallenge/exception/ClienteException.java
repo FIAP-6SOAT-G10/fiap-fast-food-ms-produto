@@ -6,11 +6,10 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class ClienteException extends RuntimeException{
+public class ClienteException extends RuntimeException {
 
     private String message;
     private Erros error;
-
     public ClienteException(Erros erro , String... violations) {
         super(String.format(erro.getMessage(),violations));
         this.error = erro;
