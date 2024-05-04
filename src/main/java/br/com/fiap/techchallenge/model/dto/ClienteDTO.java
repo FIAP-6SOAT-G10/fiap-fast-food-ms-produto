@@ -3,6 +3,7 @@ package br.com.fiap.techchallenge.model.dto;
 import br.com.fiap.techchallenge.model.entity.Cliente;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Data
 @Schema(description = "")
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteDTO implements Serializable {

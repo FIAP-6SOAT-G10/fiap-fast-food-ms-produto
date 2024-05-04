@@ -5,6 +5,8 @@ import br.com.fiap.techchallenge.model.entity.Cliente;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ClienteMapper {
 
@@ -12,5 +14,7 @@ public interface ClienteMapper {
     Cliente toEntity(ClienteDTO clienteDTO);
 
     ClienteDTO toDTO(Cliente cliente);
+
+    List<ClienteDTO> fromListEntityToListDTO(List<Cliente> clientes);
 
 }
