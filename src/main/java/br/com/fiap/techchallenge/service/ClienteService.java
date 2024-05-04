@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,16 +24,19 @@ public class ClienteService {
     private final ClienteRepository repository;
 
     public List<ClienteDTO> listarClientes(Integer page, Integer size, String email, String cpf) {
+
         List<Cliente> clientes = new ArrayList<>();
-        if (email != null && cpf != null) {
-            Optional<Cliente> cliente = repository.findByEmailAndCpf(email, cpf);
-            cliente.ifPresent(clientes::add);
-        } else if (email != null) {
-            Optional<Cliente> cliente = repository.findByEmail(email);
-            cliente.ifPresent(clientes::add);
-        } else if (cpf != null) {
-            Optional<Cliente> cliente = repository.findByCpf(cpf);
-            cliente.ifPresent(clientes::add);
+        Predicate<Cliente> predicate = cliente -> {
+            Boolean hasSameEmail = email == null || cliente.getEmail().equals(email);
+            Boolean hasSameCpf = cpf == null || cliente.getCpf().equals(cpf);
+            return hasSameEmail && hasSameCpf;
+        };
+
+        if (email != null || cpf != null) {
+            repository.findByEmailOrCpf(email, cpf).ifPresent(clienteList -> {
+                List<Cliente> filteredClientes = clienteList.stream().filter(predicate).toList();
+                clientes.addAll(filteredClientes);
+            });
         } else {
             PageRequest pageable = PageRequest.of(page, size);
             clientes.addAll(repository.findAll(pageable).toList());
