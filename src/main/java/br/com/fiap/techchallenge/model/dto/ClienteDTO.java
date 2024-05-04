@@ -29,12 +29,4 @@ public class ClienteDTO implements Serializable {
     @NotNull(message = "O email é obrigatório")
     private String email;
 
-    static public ClienteDTO toDTO(Cliente cliente) {
-        ClienteDTO clienteDTO = new ClienteDTO();
-        clienteDTO.setCpf(cliente.getCpf());
-        clienteDTO.setNome(cliente.getNome());
-        clienteDTO.setEmail(cliente.getNome());
-        return clienteDTO;
-    }
-
 }
