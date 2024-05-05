@@ -15,6 +15,6 @@ Entrar na raiz do projeto através de um prompt de comando e executar o comando 
 
 Feito a criação do container, basta executar o comando abaixo para carregar as tabelas do banco de dados com estrutura e dados iniciais:
 
-`mvn flyway:migrate -Dmigration=local`
+`mvn flyway:migrate -Plocal`
 
 Quando as migrations do Flyway forem executadas e finalizadas, basta dar um Run no projeto.

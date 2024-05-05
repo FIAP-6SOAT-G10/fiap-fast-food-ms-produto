@@ -133,13 +133,9 @@
 
 	<profiles>
 		<profile>
-			<id>migration-local</id>
+			<id>local</id>
 			<activation>
-<!--				<activeByDefault>true</activeByDefault>-->
-				<property>
-					<name>migration</name>
-					<value>local</value>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
