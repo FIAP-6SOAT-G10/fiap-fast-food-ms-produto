@@ -1,7 +1,9 @@
-package br.com.fiap.techchallenge.service;
-import br.com.fiap.techchallenge.model.dto.ClienteDTO;
-import br.com.fiap.techchallenge.model.entity.Cliente;
-import br.com.fiap.techchallenge.repository.ClienteRepository;
+package br.com.fiap.techchallenge.usecases;
+
+import br.com.fiap.techchallenge.domain.entities.Cliente;
+import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,16 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClienteServiceTests {
+class GetClienteUseCaseTest {
 
     @Mock
     private ClienteRepository repository;
 
     @InjectMocks
-    private ClienteService clienteService;
+    private GetClienteUseCase getClienteUseCase;
 
     @Test
     void ItShouldListarTodosClientes10PrimeirosClientes() {
@@ -33,7 +35,7 @@ class ClienteServiceTests {
         int size = 10;
         when(repository.findAll(PageRequest.of(page, size))).thenReturn(GetMockPageCliente());
 
-        List<ClienteDTO> result = clienteService.listarClientes(page, size, null, null);
+        List<ClienteDTO> result = getClienteUseCase.listarClientes(page, size, null, null);
 
         assertEquals(4, result.size());
         assertEquals(result.get(0).getCpf(), "12312312312");
@@ -46,7 +48,7 @@ class ClienteServiceTests {
         String cpf = "12312312312";
         when(repository.findByEmailOrCpf(email, cpf)).thenReturn(getMockClientes());
 
-        List<ClienteDTO> result = clienteService.listarClientes(null, null, email, cpf);
+        List<ClienteDTO> result = getClienteUseCase.listarClientes(null, null, email, cpf);
 
         assertEquals(1, result.size());
     }
@@ -56,7 +58,7 @@ class ClienteServiceTests {
         String email = "email@email.com";
         when(repository.findByEmailOrCpf(email, null)).thenReturn(getMockClientes());
 
-        List<ClienteDTO> result = clienteService.listarClientes(null, null, email, null);
+        List<ClienteDTO> result = getClienteUseCase.listarClientes(null, null, email, null);
 
         assertEquals(1, result.size());
     }
@@ -66,7 +68,7 @@ class ClienteServiceTests {
         String cpf = "99998889090";
         when(repository.findByEmailOrCpf(null, cpf)).thenReturn(getMockClientes());
 
-        List<ClienteDTO> result = clienteService.listarClientes(null, null, null, cpf);
+        List<ClienteDTO> result = getClienteUseCase.listarClientes(null, null, null, cpf);
 
         assertEquals(1, result.size());
     }
@@ -76,7 +78,7 @@ class ClienteServiceTests {
         String cpf = "1111111111111111111";
         when(repository.findByEmailOrCpf(null, cpf)).thenReturn(getMockClientes());
 
-        List<ClienteDTO> result = clienteService.listarClientes(null, null, null, cpf);
+        List<ClienteDTO> result = getClienteUseCase.listarClientes(null, null, null, cpf);
 
         assertEquals(0, result.size());
     }

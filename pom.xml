@@ -135,6 +135,7 @@
 		<profile>
 			<id>migration-local</id>
 			<activation>
+<!--				<activeByDefault>true</activeByDefault>-->
 				<property>
 					<name>migration</name>
 					<value>local</value>

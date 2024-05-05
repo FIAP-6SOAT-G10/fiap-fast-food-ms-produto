@@ -1,8 +1,8 @@
-package br.com.fiap.techchallenge.advice;
+package br.com.fiap.techchallenge.infra;
 
-import br.com.fiap.techchallenge.exception.ClienteException;
-import br.com.fiap.techchallenge.model.ErrorMessage;
-import br.com.fiap.techchallenge.model.ErrorsResponse;
+import br.com.fiap.techchallenge.infra.exception.ClienteException;
+import br.com.fiap.techchallenge.domain.model.ErrorMessage;
+import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static br.com.fiap.techchallenge.model.enums.Erros.ERRO_PARAMETROS;
+import static br.com.fiap.techchallenge.domain.model.enums.ErrosEnum.ERRO_PARAMETROS;
 
 @Slf4j
 @RestControllerAdvice

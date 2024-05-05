@@ -18,7 +18,7 @@ spring:
 server:
   servlet:
     context-path: /api
-  port: 9002
+  port: 8080
 
 springdoc:
   api-docs:

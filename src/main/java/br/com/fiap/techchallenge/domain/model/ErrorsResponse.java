@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.model;
+package br.com.fiap.techchallenge.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

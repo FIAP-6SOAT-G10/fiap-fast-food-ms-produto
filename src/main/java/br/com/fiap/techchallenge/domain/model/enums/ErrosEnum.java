@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.model.enums;
+package br.com.fiap.techchallenge.domain.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Level;
 
 @Getter
 @RequiredArgsConstructor
-public enum Erros {
+public enum ErrosEnum {
 
     ERRO_PARAMETROS("001","Parametro mandatorio não foi enviado", Level.ERROR)
     ;

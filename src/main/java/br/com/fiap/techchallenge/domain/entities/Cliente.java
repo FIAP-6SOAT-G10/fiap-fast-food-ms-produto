@@ -1,9 +1,9 @@
-package br.com.fiap.techchallenge.model.entity;
+package br.com.fiap.techchallenge.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+@Getter
 @Entity
 @Builder
 @AllArgsConstructor

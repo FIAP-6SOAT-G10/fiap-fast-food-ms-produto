@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.model;
+package br.com.fiap.techchallenge.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorMessage {
-
     private String code;
     private String message;
 }

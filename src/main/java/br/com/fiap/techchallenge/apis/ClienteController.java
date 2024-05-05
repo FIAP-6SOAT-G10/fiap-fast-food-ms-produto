@@ -1,9 +1,9 @@
-package br.com.fiap.techchallenge.controller;
+package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.model.ErrorsResponse;
-import br.com.fiap.techchallenge.model.dto.ClienteDTO;
-import br.com.fiap.techchallenge.model.entity.Cliente;
-import br.com.fiap.techchallenge.service.ClienteService;
+import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
+import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
+import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final ClienteService clienteService;
+    private final GetClienteAdapter adapter;
 
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
@@ -36,7 +36,7 @@ public class ClienteController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Void> cadastrarCliente(@Valid @RequestBody ClienteDTO clienteRequest) {
+    public ResponseEntity<Void> cadastrar(@Valid @RequestBody ClienteDTO clienteRequest) {
         boolean registryOk = true;
         if (registryOk) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -60,7 +60,8 @@ public class ClienteController {
                                                                 @RequestParam(required = false) String email,
                                                                 @RequestParam(required = false) String cpf
     ) {
-        List<ClienteDTO> clientes = clienteService.listarClientes(page, size, email, cpf);
+        GetClienteUseCase getClienteUseCase = new GetClienteUseCase(adapter);
+        List<ClienteDTO> clientes = getClienteUseCase.listarClientes(page, size, email, cpf);
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
