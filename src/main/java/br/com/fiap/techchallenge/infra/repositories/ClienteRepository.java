@@ -14,4 +14,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByCpf(String email);
     Optional<List<Cliente>> findByEmailOrCpf(String email, String cpf);
 
+    default Cliente updateCliente(Cliente cliente) {
+        return saveAndFlush(cliente);
+    };
+
 }
