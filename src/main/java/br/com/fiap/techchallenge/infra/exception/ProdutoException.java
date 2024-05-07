@@ -6,9 +6,9 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class ClienteException extends BaseException {
+public class ProdutoException extends BaseException {
 
-    public ClienteException(ErrosEnum erro, String... violations) {
+    public ProdutoException(ErrosEnum erro, String... violations) {
         super(erro, violations);
     }
 
