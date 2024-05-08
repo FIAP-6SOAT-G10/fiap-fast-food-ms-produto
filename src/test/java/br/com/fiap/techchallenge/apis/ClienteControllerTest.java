@@ -2,7 +2,9 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.UpdateClienteAdapter;
+import br.com.fiap.techchallenge.domain.usecases.UpdateClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,8 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.Collections;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class ClienteControllerTest {
@@ -23,6 +26,8 @@ class ClienteControllerTest {
 
     @Mock
     private UpdateClienteAdapter updateClienteAdapter;
+    @Mock
+    private UpdateClienteUseCase updateClienteUseCase;
 
     @InjectMocks
     private ClienteController clienteController;
@@ -67,8 +72,7 @@ class ClienteControllerTest {
     void shouldReturnNotFoundWhenAtualizarClientesAndClienteCpfIsEmpty() {
         ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
         when(updateClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
-        ResponseEntity<ClienteDTO> response = clienteController.atualizarClientes(clienteDTO);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertThrows(ClienteException.class, () -> clienteController.atualizarClientes(clienteDTO));
     }
 
 
