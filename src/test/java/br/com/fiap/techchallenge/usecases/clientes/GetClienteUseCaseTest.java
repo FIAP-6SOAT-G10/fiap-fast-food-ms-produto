@@ -1,7 +1,7 @@
-package br.com.fiap.techchallenge.usecases;
+package br.com.fiap.techchallenge.usecases.clientes;
 
 import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.clientes.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import org.junit.jupiter.api.Test;

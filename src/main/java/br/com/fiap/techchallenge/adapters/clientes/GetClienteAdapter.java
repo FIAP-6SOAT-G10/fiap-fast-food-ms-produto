@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.adapters;
+package br.com.fiap.techchallenge.adapters.clientes;
 
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;

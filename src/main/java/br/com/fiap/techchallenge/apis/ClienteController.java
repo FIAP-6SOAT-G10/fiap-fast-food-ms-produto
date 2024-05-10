@@ -1,8 +1,8 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
+import br.com.fiap.techchallenge.adapters.clientes.GetClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
-import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.clientes.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

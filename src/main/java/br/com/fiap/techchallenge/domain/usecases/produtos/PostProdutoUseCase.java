@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.domain.usecases;
+package br.com.fiap.techchallenge.domain.usecases.produtos;
 
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
@@ -6,8 +6,8 @@ import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
-import br.com.fiap.techchallenge.ports.PostProdutoInboundPort;
-import br.com.fiap.techchallenge.ports.PostProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.produtos.PostProdutoInboundPort;
+import br.com.fiap.techchallenge.ports.produtos.PostProdutoOutboundPort;
 
 public class PostProdutoUseCase implements PostProdutoInboundPort {
 
