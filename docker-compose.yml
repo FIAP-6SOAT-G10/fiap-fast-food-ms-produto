@@ -17,10 +17,3 @@ services:
       - "5432:5432"
     networks:
       - fiap-techchallenge
-    volumes:
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./src/main/resources/db/migrations/V0__create_schema.sql:/docker-entrypoint-initdb.d/V0__create_schema.sql
-      - ./src/main/resources/db/migrations/V1__create_table_cliente.sql:/docker-entrypoint-initdb.d/V1__create_table_cliente.sql
-      - ./src/main/resources/db/migrations/V2__create_table_produto.sql:/docker-entrypoint-initdb.d/V2__create_table_produto.sql
-      - ./src/main/resources/db/migrations/V3__create_table_categoria.sql:/docker-entrypoint-initdb.d/V3__create_table_categoria.sql
