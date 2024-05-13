@@ -2,7 +2,7 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
-import br.com.fiap.techchallenge.domain.usecases.UpdateClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ class ClienteControllerTest {
     @Mock
     private PatchClienteAdapter patchClienteAdapter;
     @Mock
-    private UpdateClienteUseCase updateClienteUseCase;
+    private PatchClienteUseCase patchClienteUseCase;
 
     @InjectMocks
     private ClienteController clienteController;

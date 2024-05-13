@@ -4,7 +4,7 @@ import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.UpdateClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -96,8 +96,8 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
     ) {
         log.info("Atualizando cliente.");
-        UpdateClienteUseCase updateClienteUseCase = new UpdateClienteUseCase(patchClienteAdapter);
-        ClienteDTO cliente = updateClienteUseCase.atualizarClientes(clienteDTO);
+        PatchClienteUseCase patchClienteUseCase = new PatchClienteUseCase(patchClienteAdapter);
+        ClienteDTO cliente = patchClienteUseCase.atualizarClientes(clienteDTO);
         if (cliente == null || cliente.getCpf().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

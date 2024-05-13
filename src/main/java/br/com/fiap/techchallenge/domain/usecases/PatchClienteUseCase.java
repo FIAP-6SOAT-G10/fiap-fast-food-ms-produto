@@ -4,14 +4,14 @@ import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
-import br.com.fiap.techchallenge.ports.UpdateUsuarioInboundPort;
-import br.com.fiap.techchallenge.ports.UpdateUsuarioOutboundPort;
+import br.com.fiap.techchallenge.ports.PatchUsuarioInboundPort;
+import br.com.fiap.techchallenge.ports.PatchUsuarioOutboundPort;
 
-public class UpdateClienteUseCase implements UpdateUsuarioInboundPort {
+public class PatchClienteUseCase implements PatchUsuarioInboundPort {
 
-    private final UpdateUsuarioOutboundPort port;
+    private final PatchUsuarioOutboundPort port;
 
-    public UpdateClienteUseCase(UpdateUsuarioOutboundPort port) {
+    public PatchClienteUseCase(PatchUsuarioOutboundPort port) {
         this.port = port;
     }
 

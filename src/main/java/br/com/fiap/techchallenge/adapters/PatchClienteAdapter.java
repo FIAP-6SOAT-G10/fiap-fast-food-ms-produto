@@ -4,13 +4,13 @@ import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import br.com.fiap.techchallenge.ports.UpdateUsuarioOutboundPort;
+import br.com.fiap.techchallenge.ports.PatchUsuarioOutboundPort;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class PatchClienteAdapter implements UpdateUsuarioOutboundPort {
+public class PatchClienteAdapter implements PatchUsuarioOutboundPort {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper mapper;
