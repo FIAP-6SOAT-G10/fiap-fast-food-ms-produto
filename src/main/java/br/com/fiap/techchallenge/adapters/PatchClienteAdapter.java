@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class UpdateClienteAdapter implements UpdateUsuarioOutboundPort {
+public class PatchClienteAdapter implements UpdateUsuarioOutboundPort {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper mapper;
 
-    public UpdateClienteAdapter(ClienteRepository clienteRepository, ClienteMapper mapper) {
+    public PatchClienteAdapter(ClienteRepository clienteRepository, ClienteMapper mapper) {
         this.clienteRepository = clienteRepository;
         this.mapper = mapper;
     }

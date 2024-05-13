@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
-import br.com.fiap.techchallenge.adapters.UpdateClienteAdapter;
+import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.usecases.UpdateClienteUseCase;
@@ -27,7 +27,7 @@ import java.util.List;
 public class ClienteController {
 
     private final GetClienteAdapter getClienteAdapter;
-    private final UpdateClienteAdapter updateClienteAdapter;
+    private final PatchClienteAdapter patchClienteAdapter;
 
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
@@ -96,7 +96,7 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
     ) {
         log.info("Atualizando cliente.");
-        UpdateClienteUseCase updateClienteUseCase = new UpdateClienteUseCase(updateClienteAdapter);
+        UpdateClienteUseCase updateClienteUseCase = new UpdateClienteUseCase(patchClienteAdapter);
         ClienteDTO cliente = updateClienteUseCase.atualizarClientes(clienteDTO);
         if (cliente == null || cliente.getCpf().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

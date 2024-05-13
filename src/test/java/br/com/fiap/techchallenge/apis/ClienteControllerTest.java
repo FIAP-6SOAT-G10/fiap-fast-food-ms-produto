@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
-import br.com.fiap.techchallenge.adapters.UpdateClienteAdapter;
+import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
 import br.com.fiap.techchallenge.domain.usecases.UpdateClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
@@ -25,7 +25,7 @@ class ClienteControllerTest {
     private GetClienteAdapter getClienteAdapter;
 
     @Mock
-    private UpdateClienteAdapter updateClienteAdapter;
+    private PatchClienteAdapter patchClienteAdapter;
     @Mock
     private UpdateClienteUseCase updateClienteUseCase;
 
@@ -55,7 +55,7 @@ class ClienteControllerTest {
     @Test
     void shouldReturnOkWhenAtualizarClientesAndClienteExists() {
         ClienteDTO clienteDTO = new ClienteDTO("42321973897", "Teste", "email@email.com");
-        when(updateClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
+        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
         ResponseEntity<ClienteDTO> response = clienteController.atualizarClientes(clienteDTO);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -63,7 +63,7 @@ class ClienteControllerTest {
     @Test
     void shouldReturnNotFoundWhenAtualizarClientesAndClienteDoesNotExist() {
         ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Teste", "email@email.com");
-        when(updateClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(null);
+        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(null);
         ResponseEntity<ClienteDTO> response = clienteController.atualizarClientes(clienteDTO);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
@@ -71,7 +71,7 @@ class ClienteControllerTest {
     @Test
     void shouldReturnNotFoundWhenAtualizarClientesAndClienteCpfIsEmpty() {
         ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
-        when(updateClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
+        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
         assertThrows(ClienteException.class, () -> clienteController.atualizarClientes(clienteDTO));
     }
 
