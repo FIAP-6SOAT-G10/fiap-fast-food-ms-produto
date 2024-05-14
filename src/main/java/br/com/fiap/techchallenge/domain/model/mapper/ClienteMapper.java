@@ -1,10 +1,9 @@
 package br.com.fiap.techchallenge.domain.model.mapper;
 
-import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
+import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package br.com.fiap.techchallenge.domain.usecases;
 
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
-import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.ports.PatchProdutoInboundPort;
 import br.com.fiap.techchallenge.ports.PatchProdutoOutboundPort;
@@ -10,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
 public class PatchProdutoUseCase implements PatchProdutoInboundPort {

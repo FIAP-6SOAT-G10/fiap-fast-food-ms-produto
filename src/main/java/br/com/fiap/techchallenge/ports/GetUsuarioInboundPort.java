@@ -1,6 +1,5 @@
 package br.com.fiap.techchallenge.ports;
 
-import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 
 import java.util.List;

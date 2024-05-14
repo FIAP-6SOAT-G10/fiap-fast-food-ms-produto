@@ -5,7 +5,6 @@ import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.PostProdutoOutboundPort;
-import org.springframework.stereotype.Component;
 
 public class PostProdutoAdapter implements PostProdutoOutboundPort {
     private final ProdutoRepository produtoRepository;
