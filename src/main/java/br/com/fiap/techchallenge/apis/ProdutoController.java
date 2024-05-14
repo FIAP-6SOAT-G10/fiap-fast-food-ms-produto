@@ -4,10 +4,13 @@ import br.com.fiap.techchallenge.adapters.produtos.GetProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.produtos.PostProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.produtos.GetProdutosUseCase;
 import br.com.fiap.techchallenge.domain.usecases.produtos.PostProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
+import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,7 +35,8 @@ import java.util.List;
 public class ProdutoController {
 
     private final PostProdutoAdapter postProdutoAdapter;
-    private final GetProdutoAdapter getProdutoAdapter;
+    private final ProdutoRepository produtoRepository;
+    private final ProdutoMapper produtoMapper;
 
     @Operation(summary = "Cadastrar Produto", description = "Esta operação deve ser utilizada para cadastrar um novo produto no sistema")
     @ApiResponses(value = {
@@ -72,7 +76,8 @@ public class ProdutoController {
                                                            @RequestParam(required = false) String descricao,
                                                            @RequestParam(required = false) BigDecimal preco
                                                            ) {
-        GetProdutosUseCase getProdutosUseCase = new GetProdutosUseCase(getProdutoAdapter);
+        GetProdutoOutboundPort getProdutoOutboundPort = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutosUseCase getProdutosUseCase = new GetProdutosUseCase(getProdutoOutboundPort);
         List<ProdutoDTO> produtos = getProdutosUseCase.listarProdutos(page, size, nome, descricao, preco);
         if (produtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

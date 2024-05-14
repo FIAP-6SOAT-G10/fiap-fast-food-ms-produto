@@ -1,16 +1,19 @@
 package br.com.fiap.techchallenge.usecases.produtos;
 
+import br.com.fiap.techchallenge.adapters.produtos.GetProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Categoria;
 import br.com.fiap.techchallenge.domain.entities.Produto;
-import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.produtos.GetProdutosUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
+import br.com.fiap.techchallenge.ports.IGetProdutosUseCase;
+import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,10 +23,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,11 +33,19 @@ public class GetProdutosUseCaseTest {
     @Mock
     private ProdutoRepository repository;
 
-    @InjectMocks
-    private GetProdutosUseCase getProdutosUseCase;
+    @Mock
+    private ProdutoMapper produtoMapper;
+
+    private IGetProdutosUseCase getProdutosUseCase;
+
+    @BeforeEach
+    public void setUp() {
+        GetProdutoOutboundPort getProdutoOutboundPort = new GetProdutoAdapter(repository, produtoMapper);
+        getProdutosUseCase = new GetProdutosUseCase(getProdutoOutboundPort);
+    }
 
     @Test
-    void ItShouldListarTodos10PrimeirosProdutos() {
+    void itShouldListarTodos10PrimeirosProdutos() {
         int page = 0;
         int size = 10;
 

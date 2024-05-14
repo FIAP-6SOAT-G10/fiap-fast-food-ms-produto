@@ -3,7 +3,7 @@ package br.com.fiap.techchallenge.usecases.produtos;
 import br.com.fiap.techchallenge.adapters.produtos.PostProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.produtos.PostProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;

@@ -30,7 +30,7 @@ class GetClienteUseCaseTest {
     private GetClienteUseCase getClienteUseCase;
 
     @Test
-    void ItShouldListarTodosClientes10PrimeirosClientes() {
+    void itShouldListarTodosClientes10PrimeirosClientes() {
         int page = 0;
         int size = 10;
         when(repository.findAll(PageRequest.of(page, size))).thenReturn(GetMockPageCliente());

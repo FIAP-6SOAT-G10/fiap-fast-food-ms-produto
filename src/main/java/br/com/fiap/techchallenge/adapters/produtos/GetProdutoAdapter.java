@@ -1,20 +1,17 @@
 package br.com.fiap.techchallenge.adapters.produtos;
 
-import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.entities.Produto;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-@Component
 public class GetProdutoAdapter implements GetProdutoOutboundPort {
 
     private final ProdutoRepository produtoRepository;
