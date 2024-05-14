@@ -2,17 +2,21 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.PostProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PostProdutoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.PatchProdutoOutboundPort;
 import br.com.fiap.techchallenge.ports.PostProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.PutProdutoInboundPort;
+import br.com.fiap.techchallenge.ports.PutProdutoOutboundPort;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,7 +62,7 @@ public class ProdutoController {
 
     private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
-    private final ProdutoMapper mapper;
+    private final ProdutoMapper produtoMapper;
 
     @Operation(summary = "Cadastrar Produto", description = "Esta operação deve ser utilizada para cadastrar um novo produto no sistema")
     @ApiResponses(value = {
@@ -74,7 +78,7 @@ public class ProdutoController {
     public ResponseEntity<Void> cadastrarProduto(@RequestBody @Valid ProdutoDTO produtoDTO) throws BaseException {
         log.info("Criando novo produto.");
 
-        PostProdutoOutboundPort postProdutoAdapter = new PostProdutoAdapter(produtoRepository, mapper);
+        PostProdutoOutboundPort postProdutoAdapter = new PostProdutoAdapter(produtoRepository, produtoMapper);
         PostProdutoUseCase postProdutoUseCase = new PostProdutoUseCase(postProdutoAdapter);
         Produto produto = postProdutoUseCase.criarProduto(produtoDTO);
 
@@ -107,6 +111,30 @@ public class ProdutoController {
         Produto produto = patchProdutoUseCase.atualizarDadosProduto(id, patch);
 
         return ResponseEntity.ok(produto);
+    }
+
+    @Operation(summary = "Atualizar Produto", description = "Esta operação deve ser utilizada para atualizar o produto.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public ResponseEntity<Void> atualizarProduto(@PathVariable("id") String id, @RequestBody ProdutoDTO produtoDTO) {
+        log.info("Atualizando um produto.");
+        PutProdutoOutboundPort putProdutoAdapter = new PutProdutoAdapter(produtoRepository, produtoMapper);
+        PutProdutoInboundPort putProdutoUseCase = new PutProdutoUseCase(putProdutoAdapter);
+        Produto produto = putProdutoUseCase.atualizarProduto(id, produtoDTO);
+        if (produto == null) {
+            ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
 }
