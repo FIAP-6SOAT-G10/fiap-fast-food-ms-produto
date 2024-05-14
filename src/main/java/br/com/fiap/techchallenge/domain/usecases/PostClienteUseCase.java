@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.domain.usecases;
 
 import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
-import br.com.fiap.techchallenge.domain.util.TechChallengeUtils;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
@@ -22,21 +21,25 @@ public class PostClienteUseCase implements PostClienteInboundPort {
     public ClienteDTO salvarCliente(ClienteDTO clienteDTO) {
         log.info("salvarCliente {} " , clienteDTO);
         validarDados(clienteDTO);
-        port.validarCpfCadastrado(clienteDTO.getCpf());
         return port.salvarCliente(clienteDTO);
     }
 
     private void validarDados(ClienteDTO clienteDTO) throws BaseException {
-        if (TechChallengeUtils.valueIsNullOrEmpty(clienteDTO.getNome())) {
+        if (valueIsNullOrEmpty(clienteDTO.getNome())) {
             throw new ClienteException(ErrosEnum.CLIENTE_NOME_OBRIGATORIO);
         }
 
-        if (TechChallengeUtils.valueIsNullOrEmpty(clienteDTO.getEmail())) {
+        if (valueIsNullOrEmpty(clienteDTO.getEmail())) {
             throw new ClienteException(ErrosEnum.CLIENTE_EMAIL_OBRIGATORIO);
         }
 
-        if (TechChallengeUtils.valueIsNullOrEmpty(clienteDTO.getCpf())) {
+        if (valueIsNullOrEmpty(clienteDTO.getCpf())) {
             throw new ClienteException(ErrosEnum.CLIENTE_CPF_OBRIGATORIO);
         }
+        port.validarCpfCadastrado(clienteDTO.getCpf());
+    }
+
+    public static boolean valueIsNullOrEmpty(String value){
+        return (value == null || value.isEmpty());
     }
 }

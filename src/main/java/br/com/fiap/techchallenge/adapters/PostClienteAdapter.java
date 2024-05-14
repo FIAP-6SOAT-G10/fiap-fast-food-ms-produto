@@ -14,7 +14,6 @@ import java.util.Optional;
 import static br.com.fiap.techchallenge.domain.model.enums.ErrosEnum.CLIENTE_JA_CADASTRADO;
 
 @Slf4j
-@Component
 public class PostClienteAdapter implements PostClienteOutboundPort {
 
     private final ClienteRepository clienteRepository;

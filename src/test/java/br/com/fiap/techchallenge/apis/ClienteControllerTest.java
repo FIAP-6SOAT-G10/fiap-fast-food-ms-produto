@@ -61,6 +61,38 @@ class ClienteControllerTest {
         assertThrows(ClienteException.class, () -> controller.cadastrar(clienteRequest));
     }
 
+    @Test
+    void mustLancarClienteExceptionAoCadastrarClienteComNomeVazio() throws BaseException {
+        ClienteDTO clienteRequest = ClienteDTO
+                .builder()
+                .email("email@email")
+                .cpf("00000000000")
+                .build();
+        assertThrows(ClienteException.class, () -> controller.cadastrar(clienteRequest));
+    }
+
+    @Test
+    void mustLancarClienteExceptionAoCadastrarClienteComEmailVazio() throws BaseException {
+        ClienteDTO clienteRequest = ClienteDTO
+                .builder()
+                .nome("John Doo")
+                .cpf("00000000000")
+                .build();
+        assertThrows(ClienteException.class, () -> controller.cadastrar(clienteRequest));
+    }
+
+    @Test
+    void mustLancarClienteExceptionAoCadastrarClienteComCPFVazio() throws BaseException {
+        ClienteDTO clienteRequest = ClienteDTO
+                .builder()
+                .nome("John Doo")
+                .email("email@email")
+                .build();
+        assertThrows(ClienteException.class, () -> controller.cadastrar(clienteRequest));
+    }
+
+
+
     private ClienteDTO criarClienteRetorno() {
         return ClienteDTO
                 .builder()
