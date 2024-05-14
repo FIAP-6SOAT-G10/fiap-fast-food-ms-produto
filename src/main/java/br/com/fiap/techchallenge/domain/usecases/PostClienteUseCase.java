@@ -19,7 +19,7 @@ public class PostClienteUseCase implements PostClienteInboundPort {
 
     @Override
     public ClienteDTO salvarCliente(ClienteDTO clienteDTO) {
-        log.info("salvarCliente {} " , clienteDTO);
+        log.info("salvarCliente");
         validarDados(clienteDTO);
         return port.salvarCliente(clienteDTO);
     }
