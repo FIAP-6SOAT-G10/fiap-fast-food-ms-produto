@@ -94,7 +94,7 @@ public class ClienteController {
                     @Schema(implementation = ErrorsResponse.class))
             })
     })
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
     ) {
