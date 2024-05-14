@@ -17,10 +17,15 @@ public enum ErrosEnum {
     CATEGORIA_INVALIDA("100", "Categoria inválida.", Level.ERROR, HttpStatus.BAD_REQUEST),
 
     /* ERROS DE PRODUTO 200 - 299 */
-    PRODUTO_NOME_OBRIGATORIO("200", "O campo nome é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PRODUTO_DESCRICAO_OBRIGATORIO("201", "O campo descricao é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PRODUTO_PRECO_OBRIGATORIO("202", "O campo preco é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PRODUTO_IMAGEM_OBRIGATORIO("203", "O campo imagem é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST)
+    PRODUTO_NOME_OBRIGATORIO("200", "O campo nome é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_DESCRICAO_OBRIGATORIO("201", "O campo descricao é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_PRECO_OBRIGATORIO("202", "O campo preco é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_IMAGEM_OBRIGATORIO("203", "O campo imagem é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO("204", "O identificador do produto é inválido", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_NAO_ENCONTRADO("205", "O identificador informado não está relacionado a nenhum produto existente.", Level.ERROR, HttpStatus.NOT_FOUND),
+    PRODUTO_FALHA_DURANTE_ATUALIZACAO("206", "Erro durante a atualização do produto no banco de dados.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR),
+    PRODUTO_FALHA_GENERICA("207", "Erro genérico ao atualizar o produto.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR),
+    PRODUTO_CATEGORIA_OBRIGATORIO("208", "O campo categoria é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST)
     ;
 
     private final String code;
