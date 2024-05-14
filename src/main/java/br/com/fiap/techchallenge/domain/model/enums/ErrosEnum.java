@@ -20,8 +20,11 @@ public enum ErrosEnum {
     PRODUTO_NOME_OBRIGATORIO("200", "O campo nome é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PRODUTO_DESCRICAO_OBRIGATORIO("201", "O campo descricao é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PRODUTO_PRECO_OBRIGATORIO("202", "O campo preco é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PRODUTO_IMAGEM_OBRIGATORIO("203", "O campo imagem é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST)
-    ;
+    PRODUTO_IMAGEM_OBRIGATORIO("203", "O campo imagem é obrigatório na criação de um produto.", Level.ERROR, HttpStatus.BAD_REQUEST),
+
+    /* ERROS DE CLIENTE  */
+    CLIENTE_CPF_OBRIGATORIO("300", "CPF inválido.", Level.ERROR, HttpStatus.NOT_FOUND),
+    CLIENTE_CPF_NAO_EXISTENTE("304", "O campo cpf é obrigatório na atualização de um cliente.", Level.ERROR, HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;
