@@ -2,15 +2,13 @@ package br.com.fiap.techchallenge.domain.valueobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
+@Setter
 @Schema(description = "")
 @Builder
 @AllArgsConstructor
