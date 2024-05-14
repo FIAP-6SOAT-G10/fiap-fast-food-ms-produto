@@ -4,6 +4,6 @@ import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 
 import java.util.List;
 
-public interface GetUsuarioInboundPort {
-    List<ClienteDTO> listarClientes(Integer page, Integer size, String email, String cpf);
+public interface PostClienteInboundPort {
+    ClienteDTO salvarCliente(ClienteDTO dto);
 }

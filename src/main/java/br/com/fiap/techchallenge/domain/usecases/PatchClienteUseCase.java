@@ -23,7 +23,7 @@ public class PatchClienteUseCase implements PatchClienteInboundPort {
 
     private void validar(ClienteDTO clienteDTO) throws BaseException {
         if (clienteDTO.getCpf() == null || clienteDTO.getCpf().isEmpty()) {
-            throw new ClienteException(ErrosEnum.CLIENTE_CPF_OBRIGATORIO, "O cpf do cliente é obrigatório");
+            throw new ClienteException(ErrosEnum.CLIENTE_CPF_INVALIDO, "O cpf do cliente é obrigatório");
         }
     }
 }
