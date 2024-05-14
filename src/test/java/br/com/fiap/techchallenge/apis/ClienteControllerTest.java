@@ -91,8 +91,6 @@ class ClienteControllerTest {
         assertThrows(ClienteException.class, () -> controller.cadastrar(clienteRequest));
     }
 
-
-
     private ClienteDTO criarClienteRetorno() {
         return ClienteDTO
                 .builder()
@@ -110,5 +108,4 @@ class ClienteControllerTest {
                 .cpf("00000000000")
                 .build());
     }
-
 }
