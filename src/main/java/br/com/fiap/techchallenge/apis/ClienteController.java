@@ -9,6 +9,8 @@ import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
+import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
+import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +35,10 @@ public class ClienteController {
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
 
+    private final ClienteRepository repository;
+
+    private final ClienteMapper mapper;
+
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content =
@@ -45,11 +51,13 @@ public class ClienteController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> cadastrar(@Valid @RequestBody ClienteDTO clienteRequest) {
-        boolean registryOk = true;
-        if (registryOk) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+        log.info("cadastrar um cliente");
+        PostClienteUseCase useCase = new PostClienteUseCase(new PostClienteAdapter(repository,mapper));
+        ClienteDTO clienteDTO = useCase.salvarCliente(clienteRequest);
+        if (clienteDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Listar Clientes", description = "Está operação consiste em retornar todos os clientes cadastrados paginados por página e tamanho")
@@ -69,6 +77,7 @@ public class ClienteController {
                                                                 @RequestParam(required = false) String cpf
     ) {
         GetClienteUseCase getClienteUseCase = new GetClienteUseCase(getClienteAdapter);
+
         List<ClienteDTO> clientes = getClienteUseCase.listarClientes(page, size, email, cpf);
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -94,7 +103,7 @@ public class ClienteController {
                     @Schema(implementation = ErrorsResponse.class))
             })
     })
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
     ) {
