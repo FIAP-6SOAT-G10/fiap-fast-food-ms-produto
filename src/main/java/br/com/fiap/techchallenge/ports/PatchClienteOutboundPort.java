@@ -2,7 +2,6 @@ package br.com.fiap.techchallenge.ports;
 
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 
-public interface PatchUsuarioInboundPort {
-
+public interface PatchClienteOutboundPort {
     ClienteDTO atualizarClientes(ClienteDTO clienteDTO);
 }

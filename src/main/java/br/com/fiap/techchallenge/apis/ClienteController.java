@@ -3,9 +3,12 @@ package br.com.fiap.techchallenge.apis;
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
+import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
+import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +30,8 @@ import java.util.List;
 public class ClienteController {
 
     private final GetClienteAdapter getClienteAdapter;
-    private final PatchClienteAdapter patchClienteAdapter;
+    private final ClienteRepository clienteRepository;
+    private final ClienteMapper clienteMapper;
 
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
@@ -92,10 +96,10 @@ public class ClienteController {
     })
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-
     public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
     ) {
         log.info("Atualizando cliente.");
+        PatchClienteOutboundPort patchClienteAdapter = new PatchClienteAdapter(clienteRepository, clienteMapper);
         PatchClienteUseCase patchClienteUseCase = new PatchClienteUseCase(patchClienteAdapter);
         ClienteDTO cliente = patchClienteUseCase.atualizarClientes(clienteDTO);
         if (cliente == null || cliente.getCpf().isEmpty()) {

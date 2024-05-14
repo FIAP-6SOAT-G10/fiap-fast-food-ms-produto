@@ -24,7 +24,7 @@ public enum ErrosEnum {
 
     /* ERROS DE CLIENTE  */
     CLIENTE_CPF_OBRIGATORIO("300", "CPF inválido.", Level.ERROR, HttpStatus.NOT_FOUND),
-    CLIENTE_CPF_EXISTENTE("304", "O campo cpf é obrigatório na atualização de um cliente.", Level.ERROR, HttpStatus.BAD_REQUEST);
+    CLIENTE_CPF_NAO_EXISTENTE("304", "O campo cpf é obrigatório na atualização de um cliente.", Level.ERROR, HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;

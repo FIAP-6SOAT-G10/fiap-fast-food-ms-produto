@@ -1,16 +1,15 @@
 package br.com.fiap.techchallenge.adapters;
 
 import br.com.fiap.techchallenge.domain.entities.Cliente;
+import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
 import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import br.com.fiap.techchallenge.ports.PatchUsuarioOutboundPort;
-import org.springframework.stereotype.Component;
-
+import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
 import java.util.Optional;
 
-@Component
-public class PatchClienteAdapter implements PatchUsuarioOutboundPort {
+public class PatchClienteAdapter implements PatchClienteOutboundPort {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper mapper;
@@ -24,8 +23,8 @@ public class PatchClienteAdapter implements PatchUsuarioOutboundPort {
     public ClienteDTO atualizarClientes(ClienteDTO clienteDTO) {
         Optional<Cliente> existingClienteOpt = clienteRepository.findByCpf(clienteDTO.getCpf());
 
-        if (!existingClienteOpt.isPresent()) {
-            throw new IllegalArgumentException("Cliente não encontrado");
+        if (existingClienteOpt == null || !existingClienteOpt.isPresent()) {
+            throw new ClienteException(ErrosEnum.CLIENTE_CPF_NAO_EXISTENTE);
         }
 
         Cliente existingCliente = existingClienteOpt.get();
