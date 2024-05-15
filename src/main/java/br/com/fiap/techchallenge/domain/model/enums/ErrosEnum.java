@@ -26,6 +26,7 @@ public enum ErrosEnum {
     PRODUTO_FALHA_DURANTE_ATUALIZACAO("206", "Erro durante a atualização do produto no banco de dados.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR),
     PRODUTO_FALHA_GENERICA("207", "Erro genérico ao atualizar o produto.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR),
     PRODUTO_CATEGORIA_OBRIGATORIO("208", "O campo categoria é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PRODUTO_CATEGORIA_NAO_ENCONTRADO("209", "Não existem produtos cadastrados para a categoria informada.", Level.ERROR, HttpStatus.NO_CONTENT),
       
     /* ERROS DE CLIENTE 300 - 399 */
     CLIENTE_CPF_INVALIDO("300", "CPF inválido.", Level.ERROR, HttpStatus.NOT_FOUND),

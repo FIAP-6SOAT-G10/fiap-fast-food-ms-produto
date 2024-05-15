@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.DeleteProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.GetProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.PostProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
@@ -8,6 +9,7 @@ import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.DeleteProdutoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.GetProdutoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PostProdutoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -140,6 +143,8 @@ public class ProdutoController {
 
     @Operation(summary = "Deletar Produto", description = "Esta operação deve ser utilizada para deletar o produto.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "204", description = "Ok", content =
                     {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content =
@@ -161,6 +166,32 @@ public class ProdutoController {
         }
         log.info("Produto deletado com sucesso.");
         return ResponseEntity.status(HttpStatus.OK).body(produto);
+    }
+
+    @Operation(summary = "Listar Produtos por Categoria", description = "Esta operação deve ser utilizada para a consulta de produtos por categoria")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @GetMapping(path = "/categoria/{categoria}", produces = "application/json")
+    public ResponseEntity<List<ProdutoDTO>> buscarProdutosPorCategoria(@PathVariable("categoria") String categoria) {
+        log.info("Listando produtos por categoria");
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoInboundPort getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
+        List<ProdutoDTO> produtos = getProdutoUseCase.pegaProdutosPorCategoria(categoria);
+        if (produtos == null || produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos);
     }
 
 }
