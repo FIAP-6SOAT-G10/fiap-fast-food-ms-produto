@@ -2,15 +2,18 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
+import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PutClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
+import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
+import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +26,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -88,7 +90,7 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(clientes);
     }
 
-    @Operation(summary = "Atualizar Clientes", description = "Está operação consiste em atualizar os clientes cadastrados")
+    @Operation(summary = "Atualizar Dados do Cliente", description = "Está operação consiste em atualizar os dados do cliente cadastrado")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Updated", content = {
                     @Content(mediaType = "application/json")
@@ -108,16 +110,51 @@ public class ClienteController {
     })
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<ClienteDTO> atualizarClientes(@RequestBody ClienteDTO clienteDTO
+    public ResponseEntity<ClienteDTO> atualizarDadosCliente(@RequestBody ClienteDTO clienteDTO
     ) {
         log.info("Atualizando cliente.");
         PatchClienteOutboundPort patchClienteAdapter = new PatchClienteAdapter(clienteRepository, clienteMapper);
         PatchClienteUseCase patchClienteUseCase = new PatchClienteUseCase(patchClienteAdapter);
         ClienteDTO cliente = patchClienteUseCase.atualizarClientes(clienteDTO);
         if (cliente == null || cliente.getCpf().isEmpty()) {
+            log.error("Cliente não encontrado.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        log.info("Cliente atualizado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body(cliente);
+    }
 
+    @Operation(summary = "Atualizar Cliente", description = "Está operação consiste em atualizar o cliente cadastrado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Updated", content = {
+                    @Content(mediaType = "application/json")
+            }),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                    @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                    @Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))
+            })
+    })
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<ClienteDTO> atualizarCliente(@RequestBody ClienteDTO clienteDTO
+    ) {
+        log.info("Atualizando cliente.");
+        PutClienteOutboundPort putClienteAdapter = new PutClienteAdapter(clienteRepository, clienteMapper);
+        PutClienteUseCase putClienteUseCase = new PutClienteUseCase(putClienteAdapter);
+        ClienteDTO cliente = putClienteUseCase.atualizarClientes(clienteDTO);
+        if (cliente == null || cliente.getCpf().isEmpty()) {
+            log.error("Cliente não encontrado.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        log.info("Cliente atualizado com sucesso.");
         return ResponseEntity.status(HttpStatus.OK).body(cliente);
     }
 

@@ -7,15 +7,16 @@ import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
+import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 
 import java.util.Optional;
 
-public class PatchClienteAdapter implements PatchClienteOutboundPort {
+public class PutClienteAdapter implements PutClienteOutboundPort {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper mapper;
 
-    public PatchClienteAdapter(ClienteRepository clienteRepository, ClienteMapper mapper) {
+    public PutClienteAdapter(ClienteRepository clienteRepository, ClienteMapper mapper) {
         this.clienteRepository = clienteRepository;
         this.mapper = mapper;
     }
@@ -32,9 +33,9 @@ public class PatchClienteAdapter implements PatchClienteOutboundPort {
         Cliente updatedCliente = new Cliente(
                 existingCliente.getId(),
                 existingCliente.getCpf(),
-                clienteDTO.getNome() == null || clienteDTO.getNome().isEmpty() ? existingCliente.getNome() : clienteDTO.getNome(),
-                clienteDTO.getEmail() == null || clienteDTO.getEmail().isEmpty() ? existingCliente.getEmail() : clienteDTO.getEmail()
-        );
+                clienteDTO.getNome().isEmpty() ? existingCliente.getNome() : clienteDTO.getNome(),
+                clienteDTO.getEmail().isEmpty() ? existingCliente.getEmail() : clienteDTO.getEmail()
+                );
 
         updatedCliente = clienteRepository.saveAndFlush(updatedCliente);
         return mapper.toDTO(updatedCliente);

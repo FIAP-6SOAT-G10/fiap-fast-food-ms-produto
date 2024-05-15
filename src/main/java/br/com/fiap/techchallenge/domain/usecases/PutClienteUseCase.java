@@ -6,12 +6,14 @@ import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.ports.PatchClienteInboundPort;
 import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
+import br.com.fiap.techchallenge.ports.PutClienteInboundPort;
+import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 
-public class PatchClienteUseCase implements PatchClienteInboundPort {
+public class PutClienteUseCase implements PutClienteInboundPort {
 
-    private final PatchClienteOutboundPort port;
+    private final PutClienteOutboundPort port;
 
-    public PatchClienteUseCase(PatchClienteOutboundPort port) {
+    public PutClienteUseCase(PutClienteOutboundPort port) {
         this.port = port;
     }
 
@@ -24,9 +26,9 @@ public class PatchClienteUseCase implements PatchClienteInboundPort {
     private void validar(ClienteDTO clienteDTO) throws BaseException {
         if (clienteDTO.getCpf() == null || clienteDTO.getCpf().isEmpty()) {
             throw new ClienteException(ErrosEnum.CLIENTE_CPF_INVALIDO, "O cpf do cliente é obrigatório");
-        } else if (clienteDTO.getNome() == null) {
+        } else if (clienteDTO.getNome() == null || clienteDTO.getNome().isEmpty()) {
             throw new ClienteException(ErrosEnum.CLIENTE_NOME_OBRIGATORIO);
-        } else if (clienteDTO.getEmail() == null) {
+        } else if (clienteDTO.getEmail() == null || clienteDTO.getEmail().isEmpty()) {
             throw new ClienteException(ErrosEnum.CLIENTE_EMAIL_OBRIGATORIO);
 
         }
