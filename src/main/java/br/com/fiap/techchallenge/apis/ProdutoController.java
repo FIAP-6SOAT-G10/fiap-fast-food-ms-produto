@@ -81,6 +81,7 @@ public class ProdutoController {
         PostProdutoOutboundPort postProdutoAdapter = new PostProdutoAdapter(produtoRepository, produtoMapper);
         PostProdutoUseCase postProdutoUseCase = new PostProdutoUseCase(postProdutoAdapter);
         Produto produto = postProdutoUseCase.criarProduto(produtoDTO);
+        log.info("Produto novo criado.");
 
         return ResponseEntity.created(UriComponentsBuilder.fromPath("/produtos/{id}").buildAndExpand(produto.getId()).toUri()).build();
     }
