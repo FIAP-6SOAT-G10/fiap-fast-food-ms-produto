@@ -1,6 +1,6 @@
 # Documentação - Tech Challenge - Grupo 10 6SOAT
 
-<img height="500" src="src/main/resources/fiap.png" title="Fiap Logo" width="1000"/>
+<img height="250" src="src/main/resources/fiap2.jpg" title="fiap pos tech logo" width="1000"/>
 
 # PosTech - Arquitetura de Software - FIAP
 Repositório para o desafio do Tech Challenge da Pós-gradução em Software Architecture pela FIAP.
