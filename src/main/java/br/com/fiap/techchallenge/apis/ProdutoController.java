@@ -1,31 +1,25 @@
 package br.com.fiap.techchallenge.apis;
 
+import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.produtos.GetProdutoAdapter;
 import br.com.fiap.techchallenge.adapters.produtos.PostProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PostProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.produtos.GetProdutosUseCase;
 import br.com.fiap.techchallenge.domain.usecases.produtos.PostProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
-import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PostProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
-import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
-import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.PatchProdutoOutboundPort;
-import br.com.fiap.techchallenge.ports.PostProdutoOutboundPort;
 import br.com.fiap.techchallenge.ports.PutProdutoInboundPort;
 import br.com.fiap.techchallenge.ports.PutProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.produtos.PostProdutoOutboundPort;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,8 +47,7 @@ import java.util.List;
 @RequestMapping("/produtos")
 @RequiredArgsConstructor
 public class ProdutoController {
-
-    private final PostProdutoAdapter postProdutoAdapter;
+    private final CategoriaRepository categoriaRepository;
     private final ProdutoRepository produtoRepository;
     private final ProdutoMapper produtoMapper;
     private static final String VALID_REQUEST = """
@@ -75,9 +68,7 @@ public class ProdutoController {
             }
     """;
 
-    private final ProdutoRepository produtoRepository;
-    private final CategoriaRepository categoriaRepository;
-    private final ProdutoMapper produtoMapper;
+
 
     @Operation(summary = "Cadastrar Produto", description = "Esta operação deve ser utilizada para cadastrar um novo produto no sistema")
     @ApiResponses(value = {
