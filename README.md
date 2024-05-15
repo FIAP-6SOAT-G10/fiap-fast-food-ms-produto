@@ -1,8 +1,12 @@
-# Documentação - Tech Challenge - Grupo 10 6SOAT - PosTech - Arquitetura de Software - FIAP
+# Documentação - Tech Challenge - Grupo 10 6SOAT
+
+<img height="500" src="src/main/resources/fiap.png" title="Fiap Logo" width="1000"/>
+
+# PosTech - Arquitetura de Software - FIAP
 Repositório para o desafio do Tech Challenge da Pós-gradução em Software Architecture pela FIAP.
 
 ## Introdução
-Uma lanchonete de barrio que está expandido sua operação devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso.
+Uma lanchonete de bairro que está expandido sua operação devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso.
 Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.
 
 ## Membros do Grupo nota 10
