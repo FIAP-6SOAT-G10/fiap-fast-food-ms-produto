@@ -38,7 +38,7 @@ public class ProdutoDeleteControllerTest {
         when(produtoRepository.findById(Long.valueOf("1"))).thenReturn(Optional.of(produto));
         when(produtoRepository.save(any(Produto.class))).thenReturn(produto);
 
-        ResponseEntity<Produto> result = produtoController.deletarProduto("1", produtoDTO);
+        ResponseEntity<Produto> result = produtoController.deletarProduto("1");
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(produtoRepository, times(1)).deleteById(anyLong());
@@ -50,6 +50,6 @@ public class ProdutoDeleteControllerTest {
 
         when(produtoRepository.findById(Long.valueOf("1"))).thenReturn(Optional.empty());
 
-        assertThrows(ProdutoException.class, () -> produtoController.deletarProduto("1", produtoDTO));
+        assertThrows(ProdutoException.class, () -> produtoController.deletarProduto("1"));
     }
 }

@@ -4,8 +4,6 @@ import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
-import br.com.fiap.techchallenge.ports.PatchClienteInboundPort;
-import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
 import br.com.fiap.techchallenge.ports.PutClienteInboundPort;
 import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 

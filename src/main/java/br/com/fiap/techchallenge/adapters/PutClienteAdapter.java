@@ -6,7 +6,6 @@ import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
 import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 
 import java.util.Optional;

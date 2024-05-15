@@ -151,7 +151,7 @@ public class ProdutoController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @DeleteMapping(path = "/{id}", consumes = "application/json")
-    public ResponseEntity<Produto> deletarProduto(@PathVariable("id") String id, @RequestBody ProdutoDTO produtoDTO) {
+    public ResponseEntity<Produto> deletarProduto(@PathVariable("id") String id) {
         log.info("Deletando o produto.");
         DeleteProdutoOutboundPort deleteProdutoAdapter = new DeleteProdutoAdapter(produtoRepository);
         DeleteProdutoInboundPort deleteProdutoUseCase = new DeleteProdutoUseCase(deleteProdutoAdapter);
