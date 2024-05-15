@@ -2,9 +2,11 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
+import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PutClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
@@ -32,10 +34,6 @@ class ClienteControllerTest {
     @Mock
     private ClienteRepository clienteRepository;
     @Mock
-    private PatchClienteAdapter patchClienteAdapter;
-    @Mock
-    private PatchClienteUseCase patchClienteUseCase;
-    @Mock
     private ClienteMapper clienteMapper;
 
     @InjectMocks
@@ -44,16 +42,12 @@ class ClienteControllerTest {
     @InjectMocks
     PostClienteAdapter postClienteAdapter;
 
-    @Mock
-    ClienteMapper mapper;
-
     @InjectMocks
     ClienteController controller;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        patchClienteAdapter = new PatchClienteAdapter(clienteRepository, clienteMapper);
     }
 
     @Test
@@ -144,33 +138,6 @@ class ClienteControllerTest {
         when(getClienteAdapter.listarClientes(0, 10, null, null)).thenReturn(clientes);
         ResponseEntity<List<ClienteDTO>> response = clienteController.listarTodosClientes(0, 10, null, null);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    void shouldReturnOkWhenUpdatingExistingClient() {
-        ClienteDTO clienteDTO = new ClienteDTO("23456789012", "Test Client 2", "test2@email.com");
-        Cliente existingCliente = Cliente.builder().cpf("23456789012").email("Test Client 2").nome("test2@email.com").id(12L).build();
-        when(clienteRepository.findByCpf(any())).thenReturn(Optional.of(existingCliente));
-        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
-        ResponseEntity<ClienteDTO> response = clienteController.atualizarClientes(clienteDTO);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(clienteDTO, response.getBody());
-    }
-
-    @Test
-    void shouldReturnNotFoundWhenUpdatingNonExistingClient() {
-        ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Teste", "email@email.com");
-        when(clienteRepository.findByCpf(any())).thenReturn(null);
-
-        assertThrows(ClienteException.class, () -> clienteController.atualizarClientes(clienteDTO));
-    }
-
-    @Test
-    void shouldReturnNotFoundWhenUpdatingClientWithEmptyCpf() {
-        ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
-
-        assertThrows(ClienteException.class, () -> clienteController.atualizarClientes(clienteDTO));
     }
 
 
