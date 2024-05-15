@@ -2,15 +2,13 @@ package br.com.fiap.techchallenge.domain.valueobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Getter
+@Setter
 @Schema(description = "")
 @Builder
 @AllArgsConstructor
@@ -22,7 +20,7 @@ public class ClienteDTO implements Serializable {
     @NotNull(message = "O cpf é obrigatório")
     private String cpf;
 
-    @Schema(description = "Campo que identifica o nome do cliente", example = "12345678900")
+    @Schema(description = "Campo que identifica o nome do cliente", example = "John Doo")
     @NotNull(message = "O nome é obrigatório")
     private String nome;
 
