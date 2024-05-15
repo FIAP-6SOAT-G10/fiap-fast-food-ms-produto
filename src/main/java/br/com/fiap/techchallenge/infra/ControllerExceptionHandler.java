@@ -1,9 +1,9 @@
 package br.com.fiap.techchallenge.infra;
 
-import br.com.fiap.techchallenge.infra.exception.CategoriaException;
-import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.domain.model.ErrorMessage;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
+import br.com.fiap.techchallenge.infra.exception.CategoriaException;
+import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

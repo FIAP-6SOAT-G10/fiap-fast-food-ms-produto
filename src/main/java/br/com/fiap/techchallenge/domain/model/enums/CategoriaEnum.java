@@ -4,7 +4,6 @@ import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
