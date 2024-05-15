@@ -22,12 +22,12 @@ public class DeleteProdutoUseCase implements DeleteProdutoInboundPort {
     }
 
     @Override
-    public Produto deletarProduto(String id, ProdutoDTO produtoDTO) {
-        validar(id, produtoDTO);
-        return this.port.deletarProduto(Long.valueOf(id), produtoDTO);
+    public Produto deletarProduto(String id) {
+        validar(id);
+        return this.port.deletarProduto(Long.valueOf(id));
     }
 
-    private void validar(String id, ProdutoDTO produtoDTO) {
+    private void validar(String id) {
         Pattern pattern = Pattern.compile("[^\\d+]");
         if (pattern.matcher(id).find()) {
             throw new ProdutoException(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO);

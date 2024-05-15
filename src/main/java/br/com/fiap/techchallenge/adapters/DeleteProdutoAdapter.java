@@ -19,16 +19,16 @@ public class DeleteProdutoAdapter implements DeleteProdutoOutboundPort {
     }
 
     @Override
-    public Produto deletarProduto(Long id, ProdutoDTO produtoDTO) {
+    public Produto deletarProduto(Long id) {
         log.info("Deletando produto");
 
         Optional<Produto> produtoOptional = produtoRepository.findById(id);
-        if (produtoOptional.isPresent()) {
-            produtoRepository.deleteById(id);
-            return produtoOptional.get();
-        } else {
+        if (produtoOptional.isEmpty()) {
             log.error("O identificador informado não existe no banco de dados.");
             throw new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO);
+        } else {
+            produtoRepository.deleteById(id);
+            return produtoOptional.get();
         }
     }
 }

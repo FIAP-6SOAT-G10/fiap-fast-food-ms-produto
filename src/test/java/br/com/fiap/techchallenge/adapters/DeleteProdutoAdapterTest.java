@@ -33,7 +33,7 @@ public class DeleteProdutoAdapterTest {
 
         when(produtoRepository.findById(1L)).thenReturn(Optional.of(produto));
 
-        Produto result = deleteProdutoAdapter.deletarProduto(1L, produtoDTO);
+        Produto result = deleteProdutoAdapter.deletarProduto(1L);
 
         assertEquals(produto, result);
         verify(produtoRepository, times(1)).deleteById(1L);
@@ -45,6 +45,6 @@ public class DeleteProdutoAdapterTest {
 
         when(produtoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(ProdutoException.class, () -> deleteProdutoAdapter.deletarProduto(1L, produtoDTO));
+        assertThrows(ProdutoException.class, () -> deleteProdutoAdapter.deletarProduto(1L));
     }
 }

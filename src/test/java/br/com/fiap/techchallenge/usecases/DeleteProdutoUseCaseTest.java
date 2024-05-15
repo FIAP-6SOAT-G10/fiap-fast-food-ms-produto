@@ -31,9 +31,9 @@ public class DeleteProdutoUseCaseTest {
         ProdutoDTO produtoDTO = new ProdutoDTO();
         Produto produto = new Produto();
 
-        when(port.deletarProduto(1L, produtoDTO)).thenReturn(produto);
+        when(port.deletarProduto(1L)).thenReturn(produto);
 
-        Produto result = deleteProdutoUseCase.deletarProduto("1", produtoDTO);
+        Produto result = deleteProdutoUseCase.deletarProduto("1");
 
         assertEquals(produto, result);
     }
@@ -42,6 +42,6 @@ public class DeleteProdutoUseCaseTest {
     public void shouldThrowExceptionWhenInvalidIdProvided() {
         ProdutoDTO produtoDTO = new ProdutoDTO();
 
-        assertThrows(ProdutoException.class, () -> deleteProdutoUseCase.deletarProduto("invalid", produtoDTO));
+        assertThrows(ProdutoException.class, () -> deleteProdutoUseCase.deletarProduto("invalid"));
     }
 }

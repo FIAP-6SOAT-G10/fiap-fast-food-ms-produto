@@ -155,7 +155,7 @@ public class ProdutoController {
         log.info("Deletando o produto.");
         DeleteProdutoOutboundPort deleteProdutoAdapter = new DeleteProdutoAdapter(produtoRepository);
         DeleteProdutoInboundPort deleteProdutoUseCase = new DeleteProdutoUseCase(deleteProdutoAdapter);
-        Produto produto = deleteProdutoUseCase.deletarProduto(id, produtoDTO);
+        Produto produto = deleteProdutoUseCase.deletarProduto(id);
         if (produto == null) {
             ResponseEntity.notFound().build();
         }
