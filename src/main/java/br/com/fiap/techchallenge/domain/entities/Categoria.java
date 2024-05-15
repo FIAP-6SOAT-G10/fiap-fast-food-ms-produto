@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,12 @@ public class Categoria {
     @Column(name = "descricao", nullable = false, length = 150)
     private String descricao;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "categoria")
     private Set<Produto> produtos;
+
+    public Categoria(Long id) {
+        this.id = id;
+    }
+
 }

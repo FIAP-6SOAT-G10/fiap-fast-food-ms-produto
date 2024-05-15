@@ -3,7 +3,7 @@ package br.com.fiap.techchallenge.usecases;
 import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
-import br.com.fiap.techchallenge.ports.PatchUsuarioOutboundPort;
+import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 class PatchClienteUseCaseTest {
 
     @Mock
-    private PatchUsuarioOutboundPort port;
+    private PatchClienteOutboundPort port;
 
     private PatchClienteUseCase useCase;
 

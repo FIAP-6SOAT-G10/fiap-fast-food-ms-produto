@@ -8,3 +8,4 @@ CREATE TABLE IF NOT EXISTS "tech-challenge"."produto"
   imagem varchar(500) NOT NULL,
   CONSTRAINT produto_pkey PRIMARY KEY (id)
 );
+
