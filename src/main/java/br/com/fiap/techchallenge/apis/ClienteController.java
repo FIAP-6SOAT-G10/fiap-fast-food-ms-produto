@@ -2,17 +2,17 @@ package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
 import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
+import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
 import br.com.fiap.techchallenge.domain.usecases.GetClienteUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
 import br.com.fiap.techchallenge.domain.usecases.PutClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
-import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
 import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 

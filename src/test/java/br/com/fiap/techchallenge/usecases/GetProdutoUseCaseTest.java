@@ -36,16 +36,16 @@ class GetProdutoUseCaseTest {
         Optional<List<Produto>> optionalProdutos = Optional.of(criarListaDeProdutos());
         when(produtoRepository.findAllByCategoriaId(anyInt())).thenReturn(optionalProdutos);
 
-        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository);
         GetProdutoUseCase getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
-        List<ProdutoDTO> lanches = getProdutoUseCase.pegaProdutosPorCategoria("lanche");
+        List<Produto> lanches = getProdutoUseCase.pegaProdutosPorCategoria("lanche");
 
         assertEquals(2, lanches.size());
     }
 
     @Test
     void mustLancarCategoriaExceptionQuandoACategoriaNaoForValida() {
-        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository);
         GetProdutoUseCase getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
 
         assertThrows(CategoriaException.class, () -> getProdutoUseCase.pegaProdutosPorCategoria("inexistente"));

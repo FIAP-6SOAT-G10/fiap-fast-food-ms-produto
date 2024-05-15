@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.domain.usecases;
 
+import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
-import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.ports.GetProdutoInboundPort;
 import br.com.fiap.techchallenge.ports.GetProdutoOutboundPort;
 
@@ -16,7 +16,7 @@ public class GetProdutoUseCase implements GetProdutoInboundPort {
     }
 
     @Override
-    public List<ProdutoDTO> pegaProdutosPorCategoria(String categoria) {
+    public List<Produto> pegaProdutosPorCategoria(String categoria) {
         CategoriaEnum categoriaEnum = CategoriaEnum.fromName(categoria);
         return this.port.pegaProdutosPorCategoria(categoriaEnum);
     }

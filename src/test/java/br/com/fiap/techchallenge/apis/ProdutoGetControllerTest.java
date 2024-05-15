@@ -41,7 +41,7 @@ class ProdutoGetControllerTest {
         when(produtoRepository.findAllByCategoriaId(anyInt())).thenReturn(optionalProdutos);
 
         ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
-        ResponseEntity<List<ProdutoDTO>> response = produtoController.buscarProdutosPorCategoria("lanche");
+        ResponseEntity<List<Produto>> response = produtoController.buscarProdutosPorCategoria("lanche");
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals(2, response.getBody().size());

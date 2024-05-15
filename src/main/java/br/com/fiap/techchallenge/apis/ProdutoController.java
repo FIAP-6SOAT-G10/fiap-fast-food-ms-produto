@@ -1,18 +1,10 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.DeleteProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.GetProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PostProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.*;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
-import br.com.fiap.techchallenge.domain.usecases.DeleteProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.GetProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PostProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.*;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
@@ -21,6 +13,7 @@ import br.com.fiap.techchallenge.ports.*;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -168,7 +161,14 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produto);
     }
 
-    @Operation(summary = "Listar Produtos por Categoria", description = "Esta operação deve ser utilizada para a consulta de produtos por categoria")
+    @Operation(summary = "Listar Produtos por Categoria", description = "Esta operação deve ser utilizada para a consulta de produtos por categoria", parameters = {
+            @Parameter(name = "categoria", examples = {
+                    @ExampleObject(name = "LANCHE", value = "lanche", description = "Opções de lanches disponíveis para pedido"),
+                    @ExampleObject(name = "ACOMPANHAMENTO", value = "acompanhamento", description = "Opções de acompanhamento disponíveis para pedido"),
+                    @ExampleObject(name = "BEBIDA", value = "bebida", description = "Opções de bebida disponíveis para pedido"),
+                    @ExampleObject(name = "SOBREMESA", value = "sobremesa", description = "Opções de sobremesa disponíveis para pedido"),
+            })
+    })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok", content =
                     {@Content(mediaType = "application/json")}),
@@ -183,11 +183,11 @@ public class ProdutoController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @GetMapping(path = "/categoria/{categoria}", produces = "application/json")
-    public ResponseEntity<List<ProdutoDTO>> buscarProdutosPorCategoria(@PathVariable("categoria") String categoria) {
+    public ResponseEntity<List<Produto>> buscarProdutosPorCategoria(@PathVariable("categoria") String categoria) {
         log.info("Listando produtos por categoria");
-        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository);
         GetProdutoInboundPort getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
-        List<ProdutoDTO> produtos = getProdutoUseCase.pegaProdutosPorCategoria(categoria);
+        List<Produto> produtos = getProdutoUseCase.pegaProdutosPorCategoria(categoria);
         if (produtos == null || produtos.isEmpty()) {
             ResponseEntity.noContent().build();
         }
