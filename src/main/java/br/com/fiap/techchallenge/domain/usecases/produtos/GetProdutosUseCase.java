@@ -1,13 +1,13 @@
 package br.com.fiap.techchallenge.domain.usecases.produtos;
 
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
-import br.com.fiap.techchallenge.ports.IGetProdutosUseCase;
+import br.com.fiap.techchallenge.ports.GetProdutosInboundPort;
 import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class GetProdutosUseCase implements IGetProdutosUseCase {
+public class GetProdutosUseCase implements GetProdutosInboundPort {
 
     private final GetProdutoOutboundPort port;
 

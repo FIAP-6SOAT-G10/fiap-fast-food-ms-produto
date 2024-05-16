@@ -25,7 +25,7 @@ public class GetProdutoAdapter implements GetProdutoOutboundPort {
     @Override
     public List<ProdutoDTO> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco) {
         List<Produto> listaProduto = new ArrayList<>();
-        Predicate<Produto> predicate = produto -> {
+        Predicate<Produto> byNomeOrDescricaoOrPreco = produto -> {
             Boolean hasSameNome = nome == null || produto.getNome().equals(nome);
             Boolean hasSameDescricao = descricao == null || produto.getDescricao().equals(descricao);
             Boolean hasSamePreco = preco == null || produto.getPreco().equals(preco);
@@ -35,7 +35,7 @@ public class GetProdutoAdapter implements GetProdutoOutboundPort {
 
         if (nome != null || descricao != null || preco != null) {
             produtoRepository.findByNomeOrDescricaoOrPreco(nome, descricao, preco).ifPresent(produtoList -> {
-                List<Produto> filteredProduto = produtoList.stream().filter(predicate).toList();
+                List<Produto> filteredProduto = produtoList.stream().filter(byNomeOrDescricaoOrPreco).toList();
                 listaProduto.addAll(filteredProduto);
             });
         } else {

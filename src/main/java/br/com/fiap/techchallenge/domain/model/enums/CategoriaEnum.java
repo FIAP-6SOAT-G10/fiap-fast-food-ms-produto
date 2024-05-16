@@ -26,12 +26,8 @@ public enum CategoriaEnum {
     }
 
     public static CategoriaEnum fromIdCategoria(Long id) {
-        for (CategoriaEnum categoria : CategoriaEnum.values()) {
-            if (categoria.idCategoria.equals(id.intValue())) {
-                return categoria;
-            }
-        }
-        throw new IllegalArgumentException("Invalid codigo: " + id);
+        Predicate<CategoriaEnum> byId = e -> e.getIdCategoria().equals(id);
+        return Arrays.stream(CategoriaEnum.values()).filter(byId).findAny().orElseThrow(() -> new IllegalArgumentException("Invalid codigo: " + id));
     }
 
 }

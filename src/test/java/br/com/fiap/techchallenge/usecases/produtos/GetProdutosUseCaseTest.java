@@ -8,7 +8,7 @@ import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.produtos.GetProdutosUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import br.com.fiap.techchallenge.ports.IGetProdutosUseCase;
+import br.com.fiap.techchallenge.ports.GetProdutosInboundPort;
 import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class GetProdutosUseCaseTest {
 
     private ProdutoController produtoController;
 
-    private IGetProdutosUseCase getProdutosUseCase;
+    private GetProdutosInboundPort getProdutosUseCase;
 
     @BeforeEach
     public void setUp() {
