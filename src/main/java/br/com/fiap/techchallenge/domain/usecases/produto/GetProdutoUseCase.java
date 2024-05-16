@@ -5,7 +5,6 @@ import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.ports.produto.GetProdutoInboundPort;
 import br.com.fiap.techchallenge.ports.produto.GetProdutoOutboundPort;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class GetProdutoUseCase implements GetProdutoInboundPort {
     }
 
     @Override
-    public List<Produto> pegaProdutosPorCategoria(String categoria) {
+    public List<Produto> listarProdutosPorCategoria(String categoria) {
         CategoriaEnum categoriaEnum = CategoriaEnum.fromName(categoria);
-        return this.port.pegaProdutosPorCategoria(categoriaEnum);
+        return this.port.listarProdutosPorCategoria(categoriaEnum);
     }
 }

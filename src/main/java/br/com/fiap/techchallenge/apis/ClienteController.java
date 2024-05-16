@@ -28,7 +28,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class ClienteController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
             })
     })
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<ClienteDTO>> listarTodosClientes(@RequestParam Integer page,
                                                                 @RequestParam Integer size,

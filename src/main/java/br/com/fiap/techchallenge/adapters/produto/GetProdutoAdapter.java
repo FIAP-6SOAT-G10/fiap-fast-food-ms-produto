@@ -52,7 +52,7 @@ public class GetProdutoAdapter implements GetProdutoOutboundPort {
     }
 
     @Override
-    public List<Produto> pegaProdutosPorCategoria(CategoriaEnum categoriaEnum) {
+    public List<Produto> listarProdutosPorCategoria(CategoriaEnum categoriaEnum) {
         log.info("Consultando banco de dados para buscar os produtos da categoria.");
         Optional<List<Produto>> optionalProdutos = produtoRepository.findAllByCategoriaId(categoriaEnum.getIdCategoria());
         if (optionalProdutos.isEmpty()) {

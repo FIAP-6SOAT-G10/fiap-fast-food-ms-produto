@@ -10,5 +10,5 @@ import java.util.List;
 public interface GetProdutoOutboundPort {
     List<ProdutoDTO> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco);
 
-    List<Produto> pegaProdutosPorCategoria(CategoriaEnum categoriaEnum);
+    List<Produto> listarProdutosPorCategoria(CategoriaEnum categoriaEnum);
 }

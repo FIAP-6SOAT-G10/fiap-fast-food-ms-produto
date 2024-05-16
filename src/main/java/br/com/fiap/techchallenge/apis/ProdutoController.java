@@ -214,7 +214,7 @@ public class ProdutoController {
         log.info("Listando produtos por categoria");
         GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
         GetProdutoInboundPort getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
-        List<Produto> produtos = getProdutoUseCase.pegaProdutosPorCategoria(categoria);
+        List<Produto> produtos = getProdutoUseCase.listarProdutosPorCategoria(categoria);
         if (produtos == null || produtos.isEmpty()) {
             ResponseEntity.noContent().build();
         }

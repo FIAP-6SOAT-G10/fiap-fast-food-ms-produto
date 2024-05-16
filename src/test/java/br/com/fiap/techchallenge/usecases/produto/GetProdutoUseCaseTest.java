@@ -37,7 +37,7 @@ class GetProdutoUseCaseTest {
 
         GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
         GetProdutoUseCase getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
-        List<Produto> lanches = getProdutoUseCase.pegaProdutosPorCategoria("lanche");
+        List<Produto> lanches = getProdutoUseCase.listarProdutosPorCategoria("lanche");
 
         assertEquals(2, lanches.size());
     }
@@ -47,7 +47,7 @@ class GetProdutoUseCaseTest {
         GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
         GetProdutoUseCase getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
 
-        assertThrows(CategoriaException.class, () -> getProdutoUseCase.pegaProdutosPorCategoria("inexistente"));
+        assertThrows(CategoriaException.class, () -> getProdutoUseCase.listarProdutosPorCategoria("inexistente"));
     }
 
     private List<Produto> criarListaDeProdutos() {
