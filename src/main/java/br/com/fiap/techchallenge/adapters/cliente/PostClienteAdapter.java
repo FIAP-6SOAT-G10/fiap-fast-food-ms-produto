@@ -26,7 +26,7 @@ public class PostClienteAdapter implements PostClienteOutboundPort {
     @Override
     public ClienteDTO salvarCliente(ClienteDTO clienteDTO) {
         log.info("salvarCliente");
-        return mapper.toDTO(clienteRepository.save(mapper.toEntity(clienteDTO)));
+        return mapper.toDTO(clienteRepository.saveAndFlush(mapper.toEntity(clienteDTO)));
     }
 
     @Override

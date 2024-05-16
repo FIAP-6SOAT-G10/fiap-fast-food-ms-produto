@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-@Component
 public class GetClienteAdapter implements GetClienteOutboundPort {
 
     private final ClienteRepository clienteRepository;
