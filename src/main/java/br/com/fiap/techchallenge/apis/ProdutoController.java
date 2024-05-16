@@ -1,28 +1,19 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.DeleteProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PatchProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.PutProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.produtos.GetProdutoAdapter;
-import br.com.fiap.techchallenge.adapters.produtos.PostProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.produto.*;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
-import br.com.fiap.techchallenge.domain.usecases.DeleteProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PatchProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PutProdutoUseCase;
-import br.com.fiap.techchallenge.domain.usecases.produtos.GetProdutosUseCase;
-import br.com.fiap.techchallenge.domain.usecases.produtos.PostProdutoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.produto.*;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import br.com.fiap.techchallenge.ports.*;
-import br.com.fiap.techchallenge.ports.produtos.GetProdutoOutboundPort;
-import br.com.fiap.techchallenge.ports.produtos.PostProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.produto.*;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -47,9 +38,6 @@ import java.util.List;
 @RequestMapping("/produtos")
 @RequiredArgsConstructor
 public class ProdutoController {
-    private final CategoriaRepository categoriaRepository;
-    private final ProdutoRepository produtoRepository;
-    private final ProdutoMapper produtoMapper;
     private static final String VALID_REQUEST = """
             [
                 {
@@ -68,7 +56,9 @@ public class ProdutoController {
             }
     """;
 
-
+    private final CategoriaRepository categoriaRepository;
+    private final ProdutoRepository produtoRepository;
+    private final ProdutoMapper produtoMapper;
 
     @Operation(summary = "Cadastrar Produto", description = "Esta operação deve ser utilizada para cadastrar um novo produto no sistema")
     @ApiResponses(value = {
@@ -103,7 +93,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProdutoDTO>> listarProdutos(@RequestParam Integer page,
                                                            @RequestParam Integer size,
                                                            @RequestParam(required = false) String nome,
@@ -111,16 +101,13 @@ public class ProdutoController {
                                                            @RequestParam(required = false) BigDecimal preco
                                                            ) {
         GetProdutoOutboundPort getProdutoOutboundPort = new GetProdutoAdapter(produtoRepository, produtoMapper);
-        GetProdutosUseCase getProdutosUseCase = new GetProdutosUseCase(getProdutoOutboundPort);
+        GetProdutoUseCase getProdutosUseCase = new GetProdutoUseCase(getProdutoOutboundPort);
         List<ProdutoDTO> produtos = getProdutosUseCase.listarProdutos(page, size, nome, descricao, preco);
         if (produtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(produtos);
     }
-
-
-
 
     @Operation(summary = "Atualizar Dados do Produto", description = "Esta operação deve ser utilizada para atualizar dados de um produto individualmente", requestBody =
             @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
@@ -140,7 +127,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Produto> atualizarDadosProduto(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
         log.info("Atualizando dados de um produto.");
         PatchProdutoOutboundPort patchProdutoAdapter = new PatchProdutoAdapter(produtoRepository, categoriaRepository);
@@ -176,6 +163,8 @@ public class ProdutoController {
 
     @Operation(summary = "Deletar Produto", description = "Esta operação deve ser utilizada para deletar o produto.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "204", description = "Ok", content =
                     {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content =
@@ -186,7 +175,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @DeleteMapping(path = "/{id}", consumes = "application/json")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Produto> deletarProduto(@PathVariable("id") String id) {
         log.info("Deletando o produto.");
         DeleteProdutoOutboundPort deleteProdutoAdapter = new DeleteProdutoAdapter(produtoRepository);
@@ -199,5 +188,37 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.OK).body(produto);
     }
 
+    @Operation(summary = "Listar Produtos por Categoria", description = "Esta operação deve ser utilizada para a consulta de produtos por categoria", parameters = {
+            @Parameter(name = "categoria", examples = {
+                    @ExampleObject(name = "LANCHE", value = "lanche", description = "Opções de lanches disponíveis para pedido"),
+                    @ExampleObject(name = "ACOMPANHAMENTO", value = "acompanhamento", description = "Opções de acompanhamento disponíveis para pedido"),
+                    @ExampleObject(name = "BEBIDA", value = "bebida", description = "Opções de bebida disponíveis para pedido"),
+                    @ExampleObject(name = "SOBREMESA", value = "sobremesa", description = "Opções de sobremesa disponíveis para pedido"),
+            })
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "404", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @GetMapping(path = "/categoria/{categoria}", produces = "application/json")
+    public ResponseEntity<List<Produto>> buscarProdutosPorCategoria(@PathVariable("categoria") String categoria) {
+        log.info("Listando produtos por categoria");
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoInboundPort getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
+        List<Produto> produtos = getProdutoUseCase.listarProdutosPorCategoria(categoria);
+        if (produtos == null || produtos.isEmpty()) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(produtos);
+    }
 
 }

@@ -1,62 +1,51 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.GetCategoriaAdapter;
-import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
-import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.model.mapper.CategoriaMapper;
-import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
-import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
+import br.com.fiap.techchallenge.adapters.categoria.GetCategoriaAdapter;
+import br.com.fiap.techchallenge.domain.entities.Categoria;
+import br.com.fiap.techchallenge.domain.model.mapper.categoria.CategoriaMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.CategoriaDTO;
-import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
-import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
-import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
+import br.com.fiap.techchallenge.ports.categoria.GetCategoriaOutboundPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class CategoriaControllerTest {
 
     @Mock
-    private GetCategoriaAdapter getCategoriaAdapter;
-    @Mock
     private CategoriaRepository categoriaRepository;
-    @Mock
+
+    @Autowired
     private CategoriaMapper categoriaMapper;
-
-    @InjectMocks
-    private CategoriaController categoriaController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void shouldReturnNoContentWhenListarTodasCategoriasAndNoClientesExist() {
-        when(getCategoriaAdapter.listarCategorias()).thenReturn(Collections.emptyList());
+        when(categoriaRepository.findAll()).thenReturn(Collections.emptyList());
+
+        CategoriaController categoriaController = new CategoriaController(categoriaRepository, categoriaMapper);
         ResponseEntity<List<CategoriaDTO>> response = categoriaController.listarTodasCategorias();
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
     void shouldReturnOkWhenListarTodasCategoriasAndCategoriasExist() {
-        List<CategoriaDTO> categorias = Collections.singletonList(new CategoriaDTO());
-        when(getCategoriaAdapter.listarCategorias()).thenReturn(categorias);
+        List<Categoria> categorias = Collections.singletonList(new Categoria());
+        when(categoriaRepository.findAll()).thenReturn(categorias);
+
+        CategoriaController categoriaController = new CategoriaController(categoriaRepository, categoriaMapper);
         ResponseEntity<List<CategoriaDTO>> response = categoriaController.listarTodasCategorias();
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

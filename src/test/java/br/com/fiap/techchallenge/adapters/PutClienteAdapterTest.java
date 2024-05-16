@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.adapters;
 
+import br.com.fiap.techchallenge.adapters.cliente.PutClienteAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;

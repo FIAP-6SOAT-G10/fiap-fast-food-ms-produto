@@ -11,7 +11,8 @@ import java.util.Optional;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-    Optional<List<Produto>> findByNomeOrDescricaoOrPreco(String nome, String descricao, BigDecimal preco);
+    Optional<List<Produto>> findAllByCategoriaId(Integer idCategoria);
 
+    Optional<List<Produto>> findByNomeOrDescricaoOrPreco(String nome, String descricao, BigDecimal preco);
 
 }

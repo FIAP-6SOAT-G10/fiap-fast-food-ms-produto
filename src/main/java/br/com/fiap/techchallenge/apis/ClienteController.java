@@ -1,19 +1,21 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
-import br.com.fiap.techchallenge.adapters.clientes.GetClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.GetClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PatchClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PostClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PutClienteAdapter;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
-import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PutClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.clientes.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.cliente.GetClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.cliente.PatchClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.cliente.PostClienteUseCase;
+import br.com.fiap.techchallenge.domain.usecases.cliente.PutClienteUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import br.com.fiap.techchallenge.ports.PatchClienteOutboundPort;
-import br.com.fiap.techchallenge.ports.PutClienteOutboundPort;
+import br.com.fiap.techchallenge.ports.cliente.GetClienteOutboundPort;
+import br.com.fiap.techchallenge.ports.cliente.PatchClienteOutboundPort;
+import br.com.fiap.techchallenge.ports.cliente.PostClienteInboundPort;
+import br.com.fiap.techchallenge.ports.cliente.PutClienteOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,10 +38,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClienteController {
 
-    private final GetClienteAdapter getClienteAdapter;
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
-    private final ClienteRepository repository;
 
     @Operation(summary = "Cadastrar Cliente", description = "Esta operação consiste em criar um novo cliente")
     @ApiResponses(value = {
@@ -54,7 +54,7 @@ public class ClienteController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> cadastrar(@Valid @RequestBody ClienteDTO clienteRequest) {
         log.info("cadastrar um cliente");
-        PostClienteUseCase useCase = new PostClienteUseCase(new PostClienteAdapter(repository,clienteMapper));
+        PostClienteInboundPort useCase = new PostClienteUseCase(new PostClienteAdapter(clienteRepository, clienteMapper));
         ClienteDTO clienteDTO = useCase.salvarCliente(clienteRequest);
         if (clienteDTO == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -71,15 +71,15 @@ public class ClienteController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
             })
     })
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<ClienteDTO>> listarTodosClientes(@RequestParam Integer page,
                                                                 @RequestParam Integer size,
                                                                 @RequestParam(required = false) String email,
                                                                 @RequestParam(required = false) String cpf
     ) {
+        GetClienteOutboundPort getClienteAdapter = new GetClienteAdapter(clienteRepository, clienteMapper);
         GetClienteUseCase getClienteUseCase = new GetClienteUseCase(getClienteAdapter);
-
         List<ClienteDTO> clientes = getClienteUseCase.listarClientes(page, size, email, cpf);
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

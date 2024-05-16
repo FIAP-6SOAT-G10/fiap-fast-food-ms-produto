@@ -1,8 +1,8 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.GetCategoriaAdapter;
-import br.com.fiap.techchallenge.domain.model.mapper.CategoriaMapper;
-import br.com.fiap.techchallenge.domain.usecases.GetCategoriaUseCase;
+import br.com.fiap.techchallenge.adapters.categoria.GetCategoriaAdapter;
+import br.com.fiap.techchallenge.domain.model.mapper.categoria.CategoriaMapper;
+import br.com.fiap.techchallenge.domain.usecases.categoria.GetCategoriaUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class CategoriaController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
             })
     })
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<CategoriaDTO>> listarTodasCategorias() {
         GetCategoriaUseCase getCategoriaUseCase = new GetCategoriaUseCase(new GetCategoriaAdapter(repository, mapper));

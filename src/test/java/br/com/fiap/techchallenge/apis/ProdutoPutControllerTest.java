@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.produtos.PostProdutoAdapter;
+import br.com.fiap.techchallenge.adapters.produto.PostProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
