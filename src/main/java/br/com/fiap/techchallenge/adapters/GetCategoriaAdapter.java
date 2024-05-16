@@ -5,11 +5,9 @@ import br.com.fiap.techchallenge.domain.model.mapper.CategoriaMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.ports.GetCategoriaOutboundPort;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class GetCategoriaAdapter implements GetCategoriaOutboundPort {
 
     private final CategoriaRepository categoriaRepository;
