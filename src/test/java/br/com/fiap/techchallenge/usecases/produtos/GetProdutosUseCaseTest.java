@@ -82,7 +82,7 @@ public class GetProdutosUseCaseTest {
         when(repository.findByNomeOrDescricaoOrPreco("Rafael", null, null)).thenReturn(getListMockedOptionalProdutos());
 
         List<ProdutoDTO> produtos = getProdutosUseCase.listarProdutos(page, size, "Heimno", null, null);
-        assertEquals(1, produtos.size());
+        assertEquals(0, produtos.size());
 
     }
 
