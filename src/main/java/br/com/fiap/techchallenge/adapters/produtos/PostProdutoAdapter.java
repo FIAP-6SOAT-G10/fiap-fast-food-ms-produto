@@ -1,10 +1,10 @@
-package br.com.fiap.techchallenge.adapters;
+package br.com.fiap.techchallenge.adapters.produtos;
 
 import br.com.fiap.techchallenge.domain.entities.Produto;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import br.com.fiap.techchallenge.ports.PostProdutoOutboundPort;
+import br.com.fiap.techchallenge.ports.produtos.PostProdutoOutboundPort;
 
 public class PostProdutoAdapter implements PostProdutoOutboundPort {
     private final ProdutoRepository produtoRepository;

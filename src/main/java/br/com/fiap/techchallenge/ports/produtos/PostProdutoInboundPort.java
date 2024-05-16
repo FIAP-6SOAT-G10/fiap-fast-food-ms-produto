@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.ports;
+package br.com.fiap.techchallenge.ports.produtos;
 
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;

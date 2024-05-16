@@ -1,28 +1,18 @@
 package br.com.fiap.techchallenge.usecases;
 
 import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PostProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.entities.Produto;
-import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
-import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.usecases.PostClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PostProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
-import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
-import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
-import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

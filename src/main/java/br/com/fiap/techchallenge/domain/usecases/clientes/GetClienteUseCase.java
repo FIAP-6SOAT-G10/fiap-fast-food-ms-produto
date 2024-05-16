@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.domain.usecases;
+package br.com.fiap.techchallenge.domain.usecases.clientes;
 
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.ports.GetUsuarioInboundPort;
