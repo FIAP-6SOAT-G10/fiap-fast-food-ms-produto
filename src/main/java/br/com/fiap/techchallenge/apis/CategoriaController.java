@@ -40,7 +40,7 @@ public class CategoriaController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
             })
     })
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<CategoriaDTO>> listarTodasCategorias() {
         GetCategoriaUseCase getCategoriaUseCase = new GetCategoriaUseCase(new GetCategoriaAdapter(repository, mapper));

@@ -93,7 +93,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ProdutoDTO>> listarProdutos(@RequestParam Integer page,
                                                            @RequestParam Integer size,
                                                            @RequestParam(required = false) String nome,
@@ -108,9 +108,6 @@ public class ProdutoController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(produtos);
     }
-
-
-
 
     @Operation(summary = "Atualizar Dados do Produto", description = "Esta operação deve ser utilizada para atualizar dados de um produto individualmente", requestBody =
             @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
@@ -130,7 +127,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Produto> atualizarDadosProduto(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
         log.info("Atualizando dados de um produto.");
         PatchProdutoOutboundPort patchProdutoAdapter = new PatchProdutoAdapter(produtoRepository, categoriaRepository);
@@ -178,7 +175,7 @@ public class ProdutoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @DeleteMapping(path = "/{id}", consumes = "application/json")
+    @DeleteMapping(path = "/{id}")
     public ResponseEntity<Produto> deletarProduto(@PathVariable("id") String id) {
         log.info("Deletando o produto.");
         DeleteProdutoOutboundPort deleteProdutoAdapter = new DeleteProdutoAdapter(produtoRepository);
