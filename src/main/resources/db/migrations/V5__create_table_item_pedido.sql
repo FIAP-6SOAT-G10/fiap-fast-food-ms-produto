@@ -1,5 +1,5 @@
 -- Script para criar a tabela item_pedido
-CREATE TABLE IF NOT EXISTS "tech-challenge"."item_pedido"
+CREATE TABLE IF NOT EXISTS "tech-challenge"."produto_pedido"
 (
     id bigserial NOT NULL,
     id_pedido bigint NOT NULL,
