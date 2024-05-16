@@ -9,10 +9,10 @@ Uma lanchonete de bairro que está expandido sua operação devido seu grande su
 Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.
 
 ## Membros do Grupo nota 10
+- [Anderson Oliveira](https://github.com/anderson-solucoes)
 - [Gabriel Fonte](https://github.com/sourceGabriel)
 - [Gabriel Marcelino](https://github.com/GabsMarcelino)
 - [Rafael Moura](https://github.com/magneon)
-- [Anderson Oliveira](https://github.com/anderson-solucoes)
 - [Thiago Getnerski coloca teu git aqui](https://github.com/GITHUBDOTHIAGOGETNERSKIAQUI)
 
 ### Requisitos

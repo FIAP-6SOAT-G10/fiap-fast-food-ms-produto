@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS "tech-challenge"."produto"
   id_categoria integer NOT NULL,
   preco decimal(5,2) NOT NULL,
   imagem varchar(500) NOT NULL,
-  CONSTRAINT produto_pkey PRIMARY KEY (id)
+  CONSTRAINT produto_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_categoria FOREIGN KEY (id_categoria) REFERENCES "tech-challenge"."categoria" (id)
 );
 
