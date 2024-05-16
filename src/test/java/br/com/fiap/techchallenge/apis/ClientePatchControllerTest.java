@@ -1,8 +1,8 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PatchClienteAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
@@ -13,7 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

@@ -1,15 +1,15 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.*;
+import br.com.fiap.techchallenge.adapters.produto.*;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
-import br.com.fiap.techchallenge.domain.usecases.*;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.usecases.produto.*;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import br.com.fiap.techchallenge.ports.*;
+import br.com.fiap.techchallenge.ports.produto.*;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +38,6 @@ import java.util.List;
 @RequestMapping("/produtos")
 @RequiredArgsConstructor
 public class ProdutoController {
-
     private static final String VALID_REQUEST = """
             [
                 {
@@ -56,8 +56,8 @@ public class ProdutoController {
             }
     """;
 
-    private final ProdutoRepository produtoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final ProdutoRepository produtoRepository;
     private final ProdutoMapper produtoMapper;
 
     @Operation(summary = "Cadastrar Produto", description = "Esta operação deve ser utilizada para cadastrar um novo produto no sistema")
@@ -77,10 +77,40 @@ public class ProdutoController {
         PostProdutoOutboundPort postProdutoAdapter = new PostProdutoAdapter(produtoRepository, produtoMapper);
         PostProdutoUseCase postProdutoUseCase = new PostProdutoUseCase(postProdutoAdapter);
         Produto produto = postProdutoUseCase.criarProduto(produtoDTO);
-        log.info("Produto novo criado.");
 
         return ResponseEntity.created(UriComponentsBuilder.fromPath("/produtos/{id}").buildAndExpand(produto.getId()).toUri()).build();
     }
+
+    @Operation(summary = "Buscar Produtos", description = "Esta operação deve ser usada para buscar todos os itens cadastrados no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Not Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ProdutoDTO>> listarProdutos(@RequestParam Integer page,
+                                                           @RequestParam Integer size,
+                                                           @RequestParam(required = false) String nome,
+                                                           @RequestParam(required = false) String descricao,
+                                                           @RequestParam(required = false) BigDecimal preco
+                                                           ) {
+        GetProdutoOutboundPort getProdutoOutboundPort = new GetProdutoAdapter(produtoRepository, produtoMapper);
+        GetProdutoUseCase getProdutosUseCase = new GetProdutoUseCase(getProdutoOutboundPort);
+        List<ProdutoDTO> produtos = getProdutosUseCase.listarProdutos(page, size, nome, descricao, preco);
+        if (produtos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(produtos);
+    }
+
+
+
 
     @Operation(summary = "Atualizar Dados do Produto", description = "Esta operação deve ser utilizada para atualizar dados de um produto individualmente", requestBody =
             @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
@@ -185,7 +215,7 @@ public class ProdutoController {
     @GetMapping(path = "/categoria/{categoria}", produces = "application/json")
     public ResponseEntity<List<Produto>> buscarProdutosPorCategoria(@PathVariable("categoria") String categoria) {
         log.info("Listando produtos por categoria");
-        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository);
+        GetProdutoOutboundPort getProdutoAdapter = new GetProdutoAdapter(produtoRepository, produtoMapper);
         GetProdutoInboundPort getProdutoUseCase = new GetProdutoUseCase(getProdutoAdapter);
         List<Produto> produtos = getProdutoUseCase.pegaProdutosPorCategoria(categoria);
         if (produtos == null || produtos.isEmpty()) {

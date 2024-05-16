@@ -1,13 +1,11 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.GetClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PatchClienteAdapter;
-import br.com.fiap.techchallenge.adapters.PutClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.GetClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PostClienteAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.model.mapper.ClienteMapper;
-import br.com.fiap.techchallenge.domain.usecases.PatchClienteUseCase;
-import br.com.fiap.techchallenge.domain.usecases.PutClienteUseCase;
+import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,15 +15,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import java.util.Collections;
 import java.util.List;
-import br.com.fiap.techchallenge.adapters.PostClienteAdapter;
-import br.com.fiap.techchallenge.infra.exception.BaseException;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 class ClienteControllerTest {
 

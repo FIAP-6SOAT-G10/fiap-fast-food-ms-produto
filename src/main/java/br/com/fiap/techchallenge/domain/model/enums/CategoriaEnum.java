@@ -24,4 +24,11 @@ public enum CategoriaEnum {
         Predicate<CategoriaEnum> byName = v -> v.getNome().equalsIgnoreCase(name);
         return Arrays.stream(values()).filter(byName).findAny().orElseThrow(() -> new CategoriaException(ErrosEnum.CATEGORIA_INVALIDA, "Categoria não encontrada."));
     }
+
+    public static CategoriaEnum fromIdCategoria(Long id) {
+        Predicate<CategoriaEnum> byId = e -> e.idCategoria.equals(id.intValue());
+        CategoriaEnum categoria = Arrays.stream(CategoriaEnum.values()).filter(byId).findAny().orElseThrow(() -> new IllegalArgumentException("Invalid codigo: " + id));
+        return categoria;
+    }
+
 }

@@ -1,23 +1,23 @@
 package br.com.fiap.techchallenge.apis;
 
+import br.com.fiap.techchallenge.adapters.produto.PostProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
-import br.com.fiap.techchallenge.domain.model.mapper.ProdutoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ProdutoDTO;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.infra.repositories.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -25,6 +25,9 @@ class ProdutoPutControllerTest {
 
     @Mock
     ProdutoRepository produtoRepository;
+
+    @Mock
+    PostProdutoAdapter postProdutoAdapter;
 
     @Mock
     CategoriaRepository categoriaRepository;
@@ -47,7 +50,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         ResponseEntity<Void> response = produtoController.atualizarProduto("1", produtoDTO);
 
         assertEquals(204, response.getStatusCode().value());
@@ -63,7 +66,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("1A", produtoDTO));
     }
 
@@ -82,7 +85,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(mockProdutoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, mockProdutoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
@@ -95,7 +98,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
@@ -108,7 +111,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
@@ -120,7 +123,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
@@ -134,7 +137,7 @@ class ProdutoPutControllerTest {
                 .imagem("Nova Imagem")
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
@@ -147,7 +150,7 @@ class ProdutoPutControllerTest {
                 .preco(BigDecimal.ONE)
                 .build();
 
-        ProdutoController produtoController = new ProdutoController(produtoRepository, categoriaRepository, produtoMapper);
+        ProdutoController produtoController = new ProdutoController(categoriaRepository, produtoRepository, produtoMapper);
         assertThrows(ProdutoException.class, () -> produtoController.atualizarProduto("99", produtoDTO));
     }
 
