@@ -1,12 +1,11 @@
 package br.com.fiap.techchallenge.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
+import java.util.List;
+
+@Data
 @Entity
 @Builder
 @AllArgsConstructor
@@ -29,4 +28,13 @@ public class Cliente {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
+
+    public Cliente(Long id, String cpf, String nome, String email) {
+        this.id = id;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.email = email;
+    }
 }
