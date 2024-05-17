@@ -47,6 +47,7 @@ public class PedidoController {
         GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
         PedidoDTO pedido = getPedidoUseCase.buscarPedidoPorId(id);
         if (pedido == null) {
+            log.error("Pedido não encontrado.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(pedido);
@@ -70,6 +71,7 @@ public class PedidoController {
         GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
         List<PedidoDTO> listaPedidos = getPedidoUseCase.listarPedidos(page, size);
         if (listaPedidos == null || listaPedidos.isEmpty()) {
+            log.error("Pedidos não encontrados.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(listaPedidos);
