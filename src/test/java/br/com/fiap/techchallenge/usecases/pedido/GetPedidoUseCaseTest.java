@@ -17,14 +17,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 public class GetPedidoUseCaseTest {
@@ -41,7 +42,6 @@ public class GetPedidoUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         port = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
         getPedidoUseCase = new GetPedidoUseCase(port);
     }
@@ -74,6 +74,15 @@ public class GetPedidoUseCaseTest {
         PedidoDTO pedidoDTO = getPedidoUseCase.buscarPedidoPorId(id);
         assertEquals(pedidoMock.getId(), pedidoDTO.getId());
         assertEquals(pedidoMock.getCliente().getId(), pedidoDTO.getCliente().getId());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoPedidosExist() {
+        when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(Page.empty());
+
+        List<PedidoDTO> result = getPedidoUseCase.listarPedidos(0, 2);
+
+        assertTrue(result.isEmpty());
     }
 
 }

@@ -1,5 +1,7 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +14,9 @@ import java.math.BigInteger;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "produto_pedido")
 @SequenceGenerator(name = "produto_pedido_seq" , sequenceName = "produto_pedido_id_seq" , allocationSize = 1)
 public class ProdutoPedido {
