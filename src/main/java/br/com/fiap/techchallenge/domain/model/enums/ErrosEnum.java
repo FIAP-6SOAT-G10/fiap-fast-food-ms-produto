@@ -34,7 +34,10 @@ public enum ErrosEnum {
     CLIENTE_EMAIL_OBRIGATORIO("302", "O email do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
     CLIENTE_CPF_OBRIGATORIO("303", "O CPF do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
     CLIENTE_CPF_NAO_EXISTENTE("304", "O campo cpf é obrigatório na atualização de um cliente.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    CLIENTE_NOME_OBRIGATORIO("305", "O nome do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST);
+    CLIENTE_NOME_OBRIGATORIO("305", "O nome do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
+
+    /* ERROS DE PEDIDO 400 - 499 */
+    PEDIDO_INVALIDO("400", "Pedido inválido.", Level.ERROR, HttpStatus.BAD_REQUEST);
 
     private final String code;
     private final String message;
