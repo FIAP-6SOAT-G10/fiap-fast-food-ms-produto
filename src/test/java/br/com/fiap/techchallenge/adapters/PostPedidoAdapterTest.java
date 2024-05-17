@@ -2,17 +2,14 @@ package br.com.fiap.techchallenge.adapters;
 
 import br.com.fiap.techchallenge.adapters.pedido.PostPedidoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
-import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
+import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class PostPedidoAdapterTest {
 
     @InjectMocks
@@ -31,13 +29,8 @@ public class PostPedidoAdapterTest {
     @Mock
     private PedidoMapper pedidoMapper;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-
     @Test
-    public void shouldReturnPedidoDtoWhenCheckoutIsSuccessful() throws InterruptedException {
+    public void shouldRetornarPedidoDtoWhenCheckoutIsOk() throws InterruptedException {
         Pedido pedido = new Pedido();
         PedidoDTO pedidoDTO = new PedidoDTO();
         when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
@@ -53,7 +46,7 @@ public class PostPedidoAdapterTest {
     }
 
     @Test
-    public void shouldThrowPedidoExceptionWhenPedidoDoesNotExist() {
+    public void mustThrowPedidoExceptionWhenPedidoNaoExiste() {
         when(pedidoRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(PedidoException.class, () -> postPedidoAdapter.realizarCheckout(1L));

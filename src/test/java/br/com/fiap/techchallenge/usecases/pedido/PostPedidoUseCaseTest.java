@@ -3,11 +3,9 @@ package br.com.fiap.techchallenge.usecases.pedido;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,12 +20,8 @@ public class PostPedidoUseCaseTest {
     @Mock
     private PostPedidoOutboundPort postPedidoOutboundPort;
 
-    @BeforeEach
-    public void setup() {
-    }
-
     @Test
-    public void shouldReturnPedidoDtoWhenCheckoutIsSuccessful() throws InterruptedException {
+    public void shouldReturnPedidoDtoWhenCheckoutIsOk() throws InterruptedException {
         PedidoDTO pedidoDTO = new PedidoDTO();
         when(postPedidoOutboundPort.realizarCheckout(1L)).thenReturn(pedidoDTO);
 
@@ -37,7 +31,7 @@ public class PostPedidoUseCaseTest {
     }
 
     @Test
-    public void shouldReturnNullWhenCheckoutFails() throws InterruptedException {
+    public void shouldRetornarNullWhenCheckoutFalhar() throws InterruptedException {
         when(postPedidoOutboundPort.realizarCheckout(1L)).thenReturn(null);
 
         PedidoDTO result = postPedidoUseCase.realizarCheckout(1L);
