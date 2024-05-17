@@ -45,7 +45,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         Optional<Pedido> existingPedidoOpt = pedidoRepository.findById(id);
 
         if (existingPedidoOpt == null || !existingPedidoOpt.isPresent()) {
-            throw new PedidoException(ErrosEnum.PEDIDO_INVALIDO);
+            throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
 
         StatusPagamentoDTO statusPagamento = new StatusPagamentoDTO();
