@@ -87,42 +87,48 @@ Para executar os testes unitários, basta executar o comando abaixo:
 ## Rotas da API
 A aplicação fornece as seguintes rotas:
 
-## Rotas de Cliente
+### Rotas de Clientes
+- `POST /clientes`: Cria um novo cliente. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
+- `GET /clientes`: Retorna uma lista de todos os clientes. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `PATCH /clientes`: Atualiza os dados do cliente. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `PUT /clientes`: Atualiza um cliente. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
-- `POST /clientes`: Cria um novo cliente.
-- `GET /clientes`: Retorna todos os clientes.
-- `PATCH /clientes`: Atualiza um cliente.
-- `PUT /clientes`: Atualiza um cliente parcialmente.
+### Rotas de Produtos
+- `POST /produtos`: Cria um novo produto. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
+- `GET /produtos`: Retorna uma lista de todos os produtos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `PATCH /produtos/{id}`: Atualiza os dados do produto. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `PUT /produtos/{id}`: Atualiza um produto. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `DELETE /produtos/{id}`: Exclui um produto. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `GET /produtos/categoria/{categoria}`: Retorna uma lista de produtos por categoria. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
-## Rotas de Produto
+### Rotas de Pedidos
+- `GET /pedidos/{id}`: Retorna um pedido específico. Retorna 200 se for bem-sucedido, 404 se não for encontrado e 500 para erros internos do servidor.
+- `GET /pedidos`: Retorna uma lista de todos os pedidos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `POST /pedidos/{id}/checkout`: Realiza o checkout de um pedido. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
 
-- `POST /produtos`: Cria um novo produto.
-- `PATCH /produtos/{id}`: Atualiza dados de um produto.
-- `PUT /produtos/{id}`: Atualiza um produto.
-- `DELETE /produtos/{id}`: Deleta um produto.
+## Códigos de Erro
 
-# Retornos de Erro
-Este documento descreve os códigos de erro que a aplicação pode retornar, juntamente com suas respectivas mensagens.
-
-## Erros Genéricos
-- `001`: Parametro mandatorio não foi enviado
-## Erros de Categoria
+### Erros genéricos:
+- `001`: Parâmetro obrigatório não foi enviado.
+Erros de categoria:
 - `100`: Categoria inválida.
-## Erros de Produto
-- `200`: O campo nome é obrigatório.
-- `201`: O campo descricao é obrigatório.
-- `202`: O campo preco é obrigatório.
-- `203`: O campo imagem é obrigatório.
-- `204`: O identificador do produto é inválido.
-- `205`: O identificador informado não está relacionado a nenhum produto existente.
+### Erros de produtos:
+- `200`: O nome do produto é obrigatório.
+- `201`: A descrição do produto é obrigatória.
+- `202`: O preço do produto é obrigatório.
+- `203`: A imagem do produto é obrigatória.
+- `204`: Identificador de produto inválido.
+- `205`: O identificador fornecido não está relacionado a nenhum produto existente.
 - `206`: Erro durante a atualização do produto no banco de dados.
 - `207`: Erro genérico ao atualizar o produto.
-- `208`: O campo categoria é obrigatório.
-
-## Erros de Cliente
+- `208`: A categoria do produto é obrigatória.
+- `209`: Não existem produtos registrados para a categoria informada.
+### Erros de clientes:
 - `300`: CPF inválido.
 - `301`: O cliente com o CPF informado já existe.
 - `302`: O email do cliente é obrigatório.
 - `303`: O CPF do cliente é obrigatório.
-- `304`: O campo cpf é obrigatório na atualização de um cliente.
+- `304`: O campo CPF é obrigatório ao atualizar um cliente.
 - `305`: O nome do cliente é obrigatório.
+### Erros de pedidos:
+- `400`: Pedido inválido.
