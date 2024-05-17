@@ -14,7 +14,7 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 - [Gabriel Fonte](https://github.com/sourceGabriel)
 - [Gabriel Marcelino](https://github.com/GabsMarcelino)
 - [Rafael Moura](https://github.com/magneon)
-- [Thiago Getnerski coloca teu git aqui](https://github.com/GITHUBDOTHIAGOGETNERSKIAQUI)
+- [Thiago Getnerski](https://github.com/Getnerski)
 
 ### Requisitos
 1. Docker
