@@ -55,9 +55,4 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido")
     private List<ProdutoPedido> produtos;
 
-    public interface PedidoResumo {
-        Long getIdCliente();
-        String getStatus();
-        String getStatusPagamento();
-    }
 }

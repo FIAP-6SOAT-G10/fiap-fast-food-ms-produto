@@ -42,7 +42,6 @@ public class GetPedidoUseCaseTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         port = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
         getPedidoUseCase = new GetPedidoUseCase(port);
     }

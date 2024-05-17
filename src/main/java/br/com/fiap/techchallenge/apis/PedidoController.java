@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.ports.pedido.GetPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,8 +45,8 @@ public class PedidoController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<PedidoDTO> listarPedidoPorId(@PathVariable("id") Long id) {
         log.info("Buscando pedidos por id.");
-        GetPedidoAdapter getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
-        GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
+        GetPedidoOutboundPort getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
+        GetPedidoInboundPort getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
         PedidoDTO pedido = getPedidoUseCase.buscarPedidoPorId(id);
         if (pedido == null) {
             log.error("Pedido não encontrado.");
@@ -54,7 +55,7 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(pedido);
     }
 
-    @Operation(summary = "Lista todos produtos", description = "Está operação consiste em retornar as informações do produto em específico")
+    @Operation(summary = "Lista todos os pedidops", description = "Está operação consiste em retornar as informações de todos os pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
@@ -69,7 +70,7 @@ public class PedidoController {
                                                               @RequestParam Integer size) {
         log.info("Buscando pedidos.");
         GetPedidoOutboundPort getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
-        GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
+        GetPedidoInboundPort getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
         List<PedidoDTO> listaPedidos = getPedidoUseCase.listarPedidos(page, size);
         if (listaPedidos == null || listaPedidos.isEmpty()) {
             log.error("Pedidos não encontrados.");

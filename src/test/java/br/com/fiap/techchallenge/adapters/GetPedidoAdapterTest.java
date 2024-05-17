@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 public class GetPedidoAdapterTest {
 
     @Mock
@@ -35,11 +37,10 @@ public class GetPedidoAdapterTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void buscarPedidoPorId_ReturnsPedidoDTO_WhenPedidoExists() {
+    public void shouldBuscarPedidoPorIdReturnsPedidoDTOWhenPedidoExists() {
         Pedido pedido = new Pedido();
         PedidoDTO pedidoDTO = new PedidoDTO();
         when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
@@ -51,7 +52,7 @@ public class GetPedidoAdapterTest {
     }
 
     @Test
-    public void buscarPedidoPorId_ReturnsNull_WhenPedidoDoesNotExist() {
+    public void mustbuscarPedidoPorIdReturnsNullWhenPedidoDoesNotExist() {
         when(pedidoRepository.findById(1L)).thenReturn(Optional.empty());
 
         PedidoDTO result = getPedidoAdapter.buscarPedidoPorId(1L);
@@ -60,7 +61,7 @@ public class GetPedidoAdapterTest {
     }
 
     @Test
-    public void listarPedidos_ReturnsListOfPedidoDTO_WhenPedidosExist() {
+    public void shouldListarPedidosReturnsListOfPedidoDTOWhenPedidosExist() {
         List<Pedido> pedidos = Arrays.asList(new Pedido(), new Pedido());
         Page<Pedido> page = new PageImpl<>(pedidos);
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
@@ -74,7 +75,7 @@ public class GetPedidoAdapterTest {
     }
 
     @Test
-    public void listarPedidos_ReturnsEmptyList_WhenNoPedidosExist() {
+    public void mustListarPedidosReturnsEmptyListWhenNoPedidosExist() {
         Page<Pedido> page = Page.empty();
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
