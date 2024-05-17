@@ -1,12 +1,17 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.pedido.GetPedidoAdapter;
+import br.com.fiap.techchallenge.adapters.pedido.PostPedidoAdapter;
+import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
+import br.com.fiap.techchallenge.ports.cliente.PostPedidoInboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,6 +82,31 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(listaPedidos);
+    }
+
+    @Operation(summary = "Realizar checkout", description = "Esta operação consiste em realizar o checkout de um pedido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @PostMapping(path = "/{id}/checkout")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<Void> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
+        log.info("Realizando checkout.");
+        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper);
+        PostPedidoInboundPort postPedidoUseCase = new PostPedidoUseCase(getPedidoAdapter);
+
+        PedidoDTO pedidoDTO = postPedidoUseCase.realizarCheckout(id);
+        if (pedidoDTO == null) {
+            log.error("Pedido não encontrado pra realizar checkout.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        log.info("Checkout realizado com sucesso.");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

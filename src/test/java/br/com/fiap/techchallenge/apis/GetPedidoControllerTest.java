@@ -1,13 +1,9 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.pedido.GetPedidoAdapter;
-import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
-import br.com.fiap.techchallenge.domain.entities.StatusPagamento;
-import br.com.fiap.techchallenge.domain.entities.StatusPedido;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
-import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
