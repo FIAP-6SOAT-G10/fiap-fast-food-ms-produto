@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Setter
 @Getter
@@ -36,5 +37,8 @@ public class Produto {
 
     @Column(name = "imagem", nullable = false, length = 500)
     private String imagem;
+
+    @OneToMany(mappedBy = "produto")
+    private List<ProdutoPedido> pedidos;
 
 }
