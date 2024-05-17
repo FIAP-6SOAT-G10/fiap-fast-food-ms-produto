@@ -10,7 +10,6 @@ import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.produto.GetProdutoOutboundPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

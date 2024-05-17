@@ -1,16 +1,19 @@
 package br.com.fiap.techchallenge.adapters.pedido;
 
 import br.com.fiap.techchallenge.domain.entities.Pedido;
+import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
+import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class GetPedidoAdapter implements GetPedidoOutboundPort {
 
     private final PedidoRepository pedidoRepository;
@@ -23,8 +26,9 @@ public class GetPedidoAdapter implements GetPedidoOutboundPort {
 
     @Override
     public PedidoDTO buscarPedidoPorId(Long id) {
+        log.info("buscarPedidoPorId");
         try {
-            Pedido pedido = this.pedidoRepository.findById(id).orElseThrow();
+            Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_INVALIDO));
             return this.pedidoMapper.toDTO(pedido);
         } catch (Exception e) {
             return null;
@@ -33,6 +37,7 @@ public class GetPedidoAdapter implements GetPedidoOutboundPort {
 
     @Override
     public List<PedidoDTO> listarPedidos(Integer page, Integer size) {
+        log.info("listarPedidos");
         List<Pedido> listaPedido = new ArrayList<>();
 
         PageRequest pageable = PageRequest.of(page, size);

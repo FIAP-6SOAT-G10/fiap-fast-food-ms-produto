@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
@@ -65,7 +64,7 @@ public class PedidoController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(@RequestParam Integer page,
-                                                   @RequestParam Integer size) {
+                                                              @RequestParam Integer size) {
         log.info("Buscando pedidos.");
         GetPedidoAdapter getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
         GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);

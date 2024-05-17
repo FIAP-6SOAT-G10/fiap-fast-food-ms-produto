@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.model.ErrorMessage;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
+import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +62,17 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler({ProdutoException.class})
     public ResponseEntity<ErrorsResponse> produtoException(ProdutoException ex) {
+        log.error("exception {}" , ex);
+        log.info(MESSAGE_EXCEPTION, ex.getError().getCode(), ex.getError().getMessage());
+        return ResponseEntity
+                .status(ex.getHttpStatusCode())
+                .body(
+                        buildErrors(ex.getError().getCode(), ex.getError().getMessage())
+                );
+    }
+
+    @ExceptionHandler({PedidoException.class})
+    public ResponseEntity<ErrorsResponse> pedidoException(PedidoException ex) {
         log.error("exception {}" , ex);
         log.info(MESSAGE_EXCEPTION, ex.getError().getCode(), ex.getError().getMessage());
         return ResponseEntity
