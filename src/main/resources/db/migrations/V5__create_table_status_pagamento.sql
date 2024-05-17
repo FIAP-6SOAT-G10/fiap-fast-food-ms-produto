@@ -7,6 +7,7 @@ CREATE TABLE "tech-challenge"."status_pagamento" (
 
 DO $$
 BEGIN
+    INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Aguardando pagamento');
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Pago');
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Recusado');
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Pendente');

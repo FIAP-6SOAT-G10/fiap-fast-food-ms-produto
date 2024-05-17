@@ -1,5 +1,8 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +13,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "cliente")
 @SequenceGenerator(name = "cliente_seq" , sequenceName = "cliente_id_seq" , allocationSize = 1)
 public class Cliente {
@@ -29,6 +35,7 @@ public class Cliente {
     private String email;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<Pedido> pedidos;
 
     public Cliente(Long id, String cpf, String nome, String email) {

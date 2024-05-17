@@ -4,6 +4,7 @@ import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
 
+import java.util.List;
 
 
 public class GetPedidoUseCase implements GetPedidoInboundPort {
@@ -18,5 +19,10 @@ public class GetPedidoUseCase implements GetPedidoInboundPort {
     @Override
     public PedidoDTO buscarPedidoPorId(Long id) {
         return this.port.buscarPedidoPorId(id);
+    }
+
+    @Override
+    public List<PedidoDTO> listarPedidos(Integer page, Integer size) {
+        return this.port.listarPedidos(page, size);
     }
 }

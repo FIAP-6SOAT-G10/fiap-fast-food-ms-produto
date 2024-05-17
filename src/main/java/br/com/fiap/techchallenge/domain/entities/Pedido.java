@@ -1,11 +1,13 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "pedido")
 @SequenceGenerator(name = "pedido_seq" , sequenceName = "pedido_id_seq" , allocationSize = 1)
 public class Pedido {
@@ -24,10 +29,11 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
+    @JsonBackReference
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_status_pedido")
+    @JoinColumn(name = "id_status")
     private StatusPedido status;
 
     @Column(name = "valor")
@@ -48,4 +54,10 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido")
     private List<ProdutoPedido> produtos;
+
+    public interface PedidoResumo {
+        Long getIdCliente();
+        String getStatus();
+        String getStatusPagamento();
+    }
 }
