@@ -1,16 +1,8 @@
 package br.com.fiap.techchallenge.domain.valueobjects;
 
-import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.entities.ProdutoPedido;
-import br.com.fiap.techchallenge.domain.entities.StatusPagamento;
-import br.com.fiap.techchallenge.domain.entities.StatusPedido;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
