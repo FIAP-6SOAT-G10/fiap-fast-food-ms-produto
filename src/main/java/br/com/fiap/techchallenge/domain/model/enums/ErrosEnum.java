@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.Level;
 import org.springframework.http.HttpStatus;
 
-
 @Getter
 @RequiredArgsConstructor
 public enum ErrosEnum {
@@ -37,7 +36,16 @@ public enum ErrosEnum {
     CLIENTE_NOME_OBRIGATORIO("305", "O nome do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
 
     /* ERROS DE PEDIDO 400 - 499 */
-    PEDIDO_INVALIDO("400", "Pedido inválido.", Level.ERROR, HttpStatus.BAD_REQUEST);
+    PEDIDO_NAO_ENCONTRADO("400", "O pedido informado não foi localizado.", Level.ERROR, HttpStatus.NOT_FOUND),
+    PEDIDO_FALHA_DURANTE_ATUALIZACAO("401", "Erro durante a atualização do status do pedido no banco de dados.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR),
+    PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO("402", "O identificador do pedido é inválido.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_OBRIGATORIO("403", "O status à ser atualizado é obrigatório.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_NAO_ENCONTRADO("404", "Não é possível atualizar o pedido para o status informado.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_RECEBIDO_EM_PREPARACAO("405", "Pedidos no status 'Recebido' só podem avançar para o status 'Em preparação'.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_EM_PREPARACAO_PRONTO("406", "Pedidos no status 'Em preparação' só podem avançar para o status 'Pronto'.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_PRONTO_FINALIZADO("407", "Pedidos no status 'Pronto' só podem avançar para o status 'Finalizado'.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_STATUS_FINALIZADO("408", "Pedidos no status 'Finalizado' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String code;
     private final String message;

@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,6 +39,7 @@ public class Produto {
     @Column(name = "imagem", nullable = false, length = 500)
     private String imagem;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "produto")
     private List<ProdutoPedido> pedidos;
 

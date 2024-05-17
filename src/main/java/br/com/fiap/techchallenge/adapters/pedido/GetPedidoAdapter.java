@@ -28,7 +28,7 @@ public class GetPedidoAdapter implements GetPedidoOutboundPort {
     public PedidoDTO buscarPedidoPorId(Long id) {
         log.info("buscarPedidoPorId");
         try {
-            Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_INVALIDO));
+            Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO));
             return this.pedidoMapper.toDTO(pedido);
         } catch (Exception e) {
             log.error("O identificador informado não existe no banco de dados.");

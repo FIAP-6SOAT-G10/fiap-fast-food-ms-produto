@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import br.com.fiap.techchallenge.domain.model.enums.StatusPedidoEnum;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -25,5 +26,10 @@ public class StatusPedido {
 
     @Column(name = "nome")
     private String nome;
+
+    public StatusPedido(String nome) {
+        StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byStatus(nome);
+        this.id = (long) statusPedidoEnum.getId();
+    }
 
 }

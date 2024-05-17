@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categorias")
 @RequiredArgsConstructor
+@Tag(name = "Categorias", description = "Conjunto de operações que podem ser realizadas no contexto de categorias de produtos.")
 public class CategoriaController {
 
     private final CategoriaRepository repository;
