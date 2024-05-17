@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -67,7 +68,7 @@ public class PedidoController {
     public ResponseEntity<List<PedidoDTO>> listarTodosPedidos(@RequestParam Integer page,
                                                               @RequestParam Integer size) {
         log.info("Buscando pedidos.");
-        GetPedidoAdapter getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
+        GetPedidoOutboundPort getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
         GetPedidoUseCase getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
         List<PedidoDTO> listaPedidos = getPedidoUseCase.listarPedidos(page, size);
         if (listaPedidos == null || listaPedidos.isEmpty()) {
