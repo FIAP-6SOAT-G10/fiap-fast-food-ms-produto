@@ -1,18 +1,21 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import br.com.fiap.techchallenge.domain.utils.deserializers.StatusPedidoDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
+@Data
 @Entity
 @Builder
 @AllArgsConstructor
@@ -33,10 +36,11 @@ public class Pedido {
     private Cliente cliente;
 
     @ManyToOne
+    @JsonDeserialize(using = StatusPedidoDeserializer.class)
     @JoinColumn(name = "id_status")
     private StatusPedido status;
 
-    @Column(name = "valor")
+    @Column(name = "valor", scale = 5, precision = 2)
     private BigDecimal valor;
 
     @Column(name = "data_criacao")

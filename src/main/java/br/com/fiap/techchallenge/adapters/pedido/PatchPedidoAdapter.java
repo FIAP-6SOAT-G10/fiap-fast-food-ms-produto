@@ -7,6 +7,7 @@ import br.com.fiap.techchallenge.domain.model.enums.StatusPedidoEnum;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
 import br.com.fiap.techchallenge.ports.pedido.PatchPedidoOutboundPort;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -14,6 +15,7 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -33,7 +35,7 @@ public class PatchPedidoAdapter implements PatchPedidoOutboundPort {
             throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
 
-        try{
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
 
@@ -41,15 +43,15 @@ public class PatchPedidoAdapter implements PatchPedidoOutboundPort {
             JsonNode patched = patch.apply(objectMapper.convertValue(pedidoAtual, JsonNode.class));
 
             Pedido pedidoAtualizado = objectMapper.treeToValue(patched, Pedido.class);
+            pedidoAtualizado.setCliente(pedidoAtual.getCliente());
 
             validarMudancaDeStatus(pedidoAtual, pedidoAtualizado);
+            definirDataFinalizacaoPedido(pedidoAtualizado);
+
             return pedidoRepository.saveAndFlush(pedidoAtualizado);
-        } catch (JsonPatchException jsonPatchException) {
-            log.error("Erro ao atualizar o registro no banco de dados", jsonPatchException);
+        } catch (JsonPatchException | JsonProcessingException jsonException) {
+            log.error("Erro ao atualizar o registro no banco de dados", jsonException);
             throw new PedidoException(ErrosEnum.PEDIDO_FALHA_DURANTE_ATUALIZACAO);
-        } catch (Exception exception) {
-            log.error("Falha genérica.", exception);
-            throw new PedidoException(ErrosEnum.PEDIDO_FALHA_GENERICA);
         }
     }
 
@@ -67,6 +69,13 @@ public class PatchPedidoAdapter implements PatchPedidoOutboundPort {
         );
 
         mudancaStatusPedido.validarMudancaDeStatus(statusAtual, statusNovo);
+    }
+
+    private void definirDataFinalizacaoPedido(Pedido novo) {
+        StatusPedidoEnum statusNovo = StatusPedidoEnum.byId(novo.getStatus().getId());
+        if (StatusPedidoEnum.FINALIZADO.equals(statusNovo)) {
+            novo.setDataFinalizacao(LocalDateTime.now());
+        }
     }
 
 }

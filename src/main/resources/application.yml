@@ -13,7 +13,7 @@ spring:
         default_schema: tech-challenge
         dialect: org.hibernate.dialect.PostgreSQLDialect
         enable_lazy_load_no_trans: true
-    show-sql: true
+    show-sql: false
 
 server:
   servlet:

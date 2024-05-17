@@ -22,11 +22,11 @@ public enum StatusPedidoEnum {
 
     public static StatusPedidoEnum byId(Long id) {
         Predicate<StatusPedidoEnum> byId = s -> s.id == id.intValue();
-        return Arrays.stream(values()).filter(byId).findFirst().orElse(null);
+        return Arrays.stream(values()).filter(byId).findAny().orElse(null);
     }
 
     public static StatusPedidoEnum byStatus(String status) {
         Predicate<StatusPedidoEnum> byStatus = s -> s.status.equalsIgnoreCase(status);
-        return Arrays.stream(values()).filter(byStatus).findFirst().orElse(null);
+        return Arrays.stream(values()).filter(byStatus).findAny().orElse(null);
     }
 }

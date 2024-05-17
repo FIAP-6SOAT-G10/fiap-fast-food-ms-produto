@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -126,7 +127,7 @@ public class PedidoController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Pedido> atualizarStatusDoPedido(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
-
+        log.info("Atualizar status do pedido.");
         PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
         PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
         Pedido pedido = patchPedidoUseCase.atualizarStatusDoPedido(id, patch);
