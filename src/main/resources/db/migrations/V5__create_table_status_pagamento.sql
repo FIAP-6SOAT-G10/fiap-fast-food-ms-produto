@@ -10,5 +10,4 @@ BEGIN
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Pago');
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Recusado');
     INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('Pendente');
-    INSERT INTO "tech-challenge"."status_pagamento" (nome) VALUES ('CANCELADO');
 END $$;
