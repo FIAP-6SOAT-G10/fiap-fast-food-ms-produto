@@ -11,4 +11,5 @@ BEGIN
     INSERT INTO "tech-challenge"."status_pedido" (nome) VALUES ('Em preparação');
     INSERT INTO "tech-challenge"."status_pedido" (nome) VALUES ('Pronto');
     INSERT INTO "tech-challenge"."status_pedido" (nome) VALUES ('Finalizado');
+    INSERT INTO "tech-challenge"."status_pedido" (nome) VALUES ('Cancelado');
 END $$;
