@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class StatusPedidoDeserializer extends JsonDeserializer<StatusPedido> {
     @Override
-    public StatusPedido deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {        ;
+    public StatusPedido deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         return new StatusPedido(jsonParser.getText());
     }
 }

@@ -7,8 +7,6 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PedidoMapper {
 

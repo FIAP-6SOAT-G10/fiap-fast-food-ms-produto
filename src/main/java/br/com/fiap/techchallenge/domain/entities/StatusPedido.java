@@ -24,7 +24,7 @@ public class StatusPedido {
 
     public StatusPedido(String nome) {
         StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byStatus(nome);
-        this.id = (long) statusPedidoEnum.getId();
+        this.id = statusPedidoEnum.getId();
         this.nome = statusPedidoEnum.getStatus();
     }
 

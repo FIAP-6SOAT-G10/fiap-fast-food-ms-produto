@@ -7,21 +7,21 @@ import java.util.function.Predicate;
 
 @Getter
 public enum StatusPedidoEnum {
-    RECEBIDO(1, "recebido"),
-    EM_PREPARACAO(2, "preparacao"),
-    PRONTO(3, "pronto"),
-    FINALIZADO(4, "finalizado");
+    RECEBIDO(1L, "recebido"),
+    EM_PREPARACAO(2L, "preparacao"),
+    PRONTO(3L, "pronto"),
+    FINALIZADO(4L, "finalizado");
 
-    private final int id;
+    private final Long id;
     private final String status;
 
-    StatusPedidoEnum(final int id, final String status) {
+    StatusPedidoEnum(final Long id, final String status) {
         this.id = id;
         this.status = status;
     }
 
     public static StatusPedidoEnum byId(Long id) {
-        Predicate<StatusPedidoEnum> byId = s -> s.id == id.intValue();
+        Predicate<StatusPedidoEnum> byId = s -> s.id.equals(id);
         return Arrays.stream(values()).filter(byId).findAny().orElse(null);
     }
 
