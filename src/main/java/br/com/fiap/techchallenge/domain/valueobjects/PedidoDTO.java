@@ -40,7 +40,7 @@ public class PedidoDTO {
     private LocalDateTime dataCancelamento;
 
     @Schema(description = "Campo que informa o status de pagamento do pedido", example = "Pago")
-    private StatusPagamentoDTO pagamento;
+    private StatusPagamentoDTO statusPagamentoDTO;
 
     @Schema(description = "Campo que informa os produtos do pedido")
     private List<ProdutoPedido> produtos;

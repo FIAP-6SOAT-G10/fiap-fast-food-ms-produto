@@ -37,8 +37,10 @@ public enum ErrosEnum {
     CLIENTE_NOME_OBRIGATORIO("305", "O nome do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
 
     /* ERROS DE PEDIDO 400 - 499 */
-    PEDIDO_INVALIDO("400", "Pedido inválido.", Level.ERROR, HttpStatus.BAD_REQUEST);
+    PEDIDO_INVALIDO("400", "Pedido inválido.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_VAZIO("401", "Todos os itens do pedido vieram vazios por favor escolha algum item e tente novamente.", Level.ERROR, HttpStatus.BAD_REQUEST)
 
+    ;
     private final String code;
     private final String message;
     private final Level logLevel;

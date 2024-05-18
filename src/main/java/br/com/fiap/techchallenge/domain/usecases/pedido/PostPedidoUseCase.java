@@ -1,9 +1,14 @@
 package br.com.fiap.techchallenge.domain.usecases.pedido;
 
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
+import br.com.fiap.techchallenge.domain.valueobjects.PedidoRequestDTO;
+import br.com.fiap.techchallenge.domain.valueobjects.response.PedidoResponseDTO;
+import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
 import lombok.extern.slf4j.Slf4j;
+
+import static br.com.fiap.techchallenge.domain.model.enums.ErrosEnum.PEDIDO_VAZIO;
 
 @Slf4j
 public class PostPedidoUseCase implements PostPedidoInboundPort {
@@ -17,5 +22,25 @@ public class PostPedidoUseCase implements PostPedidoInboundPort {
     @Override
     public PedidoDTO realizarCheckout(Long id) throws InterruptedException {
         return port.realizarCheckout(id);
+    }
+
+    @Override
+    public PedidoResponseDTO criarPedido(PedidoRequestDTO request) {
+        if (itensPedidoVazio(request)) {
+            throw new PedidoException(PEDIDO_VAZIO);
+        }
+        PedidoDTO pedido = this.port.criarPedido(request);
+        return PedidoResponseDTO
+                .builder()
+                .id(pedido.getId())
+                .total(pedido.getValor())
+                .build();
+    }
+
+    private boolean itensPedidoVazio(PedidoRequestDTO request) {
+        return request.getItems().getAcompanhamento().isEmpty() &&
+                request.getItems().getBebida().isEmpty() &&
+                request.getItems().getLanches().isEmpty() &&
+                request.getItems().getSobremesa().isEmpty();
     }
 }
