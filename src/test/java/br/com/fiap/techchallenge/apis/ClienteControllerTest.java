@@ -1,18 +1,13 @@
 package br.com.fiap.techchallenge.apis;
 
-import br.com.fiap.techchallenge.adapters.cliente.GetClienteAdapter;
-import br.com.fiap.techchallenge.adapters.cliente.PostClienteAdapter;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -21,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

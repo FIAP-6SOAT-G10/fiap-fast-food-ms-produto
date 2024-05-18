@@ -6,7 +6,6 @@ import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.cliente.GetClienteOutboundPort;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;

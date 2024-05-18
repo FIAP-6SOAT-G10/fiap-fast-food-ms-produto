@@ -12,9 +12,10 @@ spring:
       hibernate:
         default_schema: tech-challenge
         enable_lazy_load_no_trans: true
-    show-sql: true
+    show-sql: false
   flyway:
     schemas: tech-challenge
+
 server:
   servlet:
     context-path: /api

@@ -4,7 +4,6 @@ import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-import java.util.List;
 
 import java.util.List;
 
