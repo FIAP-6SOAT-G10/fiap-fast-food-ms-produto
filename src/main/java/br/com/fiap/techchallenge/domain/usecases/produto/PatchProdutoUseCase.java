@@ -26,8 +26,8 @@ public class PatchProdutoUseCase implements PatchProdutoInboundPort {
     }
 
     private void validarDados(String id, JsonPatch patch) {
-        Pattern pattern = Pattern.compile("^[\\d+]");
-        if (!pattern.matcher(id).find()) {
+        Pattern pattern = Pattern.compile("[^\\d+]");
+        if (pattern.matcher(id).find()) {
             throw new ProdutoException(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
 

@@ -11,4 +11,5 @@ public class PedidoException extends BaseException {
     public PedidoException(ErrosEnum erro, String... violations) {
         super(erro, violations);
     }
+
 }

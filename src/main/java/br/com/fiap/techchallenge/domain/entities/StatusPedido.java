@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import br.com.fiap.techchallenge.domain.model.enums.StatusPedidoEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Table(name = "status_pedido")
 public class StatusPedido {
 
@@ -25,5 +21,11 @@ public class StatusPedido {
 
     @Column(name = "nome")
     private String nome;
+
+    public StatusPedido(String nome) {
+        StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byStatus(nome);
+        this.id = statusPedidoEnum.getId();
+        this.nome = statusPedidoEnum.getStatus();
+    }
 
 }

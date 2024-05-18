@@ -1,19 +1,27 @@
 package br.com.fiap.techchallenge.apis;
 
 import br.com.fiap.techchallenge.adapters.pedido.GetPedidoAdapter;
+import br.com.fiap.techchallenge.adapters.pedido.PatchPedidoAdapter;
 import br.com.fiap.techchallenge.adapters.pedido.PostPedidoAdapter;
+import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.ports.cliente.PostPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
-import br.com.fiap.techchallenge.ports.cliente.PostPedidoInboundPort;
+import br.com.fiap.techchallenge.ports.pedido.PatchPedidoInboundPort;
+import br.com.fiap.techchallenge.ports.pedido.PatchPedidoOutboundPort;
+import com.github.fge.jsonpatch.JsonPatch;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,6 +32,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -32,6 +41,24 @@ import java.util.List;
 @RequestMapping("/pedidos")
 @RequiredArgsConstructor
 public class PedidoController {
+
+    private static final String VALID_REQUEST = """
+            [
+                {
+                    "op": "replace",
+                    "path": "/nome",
+                    "value": "NovoNome"
+                }
+            ]
+    """;
+
+    private static final String INVALID_REQUEST = """
+            {
+                "op": "replace",
+                "path": "/nome",
+                "value": "NovoNome"
+            }
+    """;
 
     private final PedidoRepository pedidoRepository;
 
@@ -82,6 +109,37 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(listaPedidos);
+    }
+
+    @Operation(summary = "Atualizar Status do Produto", description = "Esta operação deve ser utilizada para atualizar o status de um pedido individualmente", requestBody =
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
+            @Content(examples = {
+                    @ExampleObject(name = "Valid Request", value = PedidoController.VALID_REQUEST),
+                    @ExampleObject(name = "Invalid Request", value = PedidoController.INVALID_REQUEST)
+            })
+    }),
+            externalDocs = @ExternalDocumentation(url = "https://jsonpatch.com/", description = "Utilize essa documentação para montar a PATCH request.")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Pedido> atualizarStatusDoPedido(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
+        log.info("Atualizar status do pedido.");
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+        Pedido pedido = patchPedidoUseCase.atualizarStatusDoPedido(id, patch);
+        if (pedido == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(pedido);
     }
 
     @Operation(summary = "Realizar checkout", description = "Esta operação consiste em realizar o checkout de um pedido")
