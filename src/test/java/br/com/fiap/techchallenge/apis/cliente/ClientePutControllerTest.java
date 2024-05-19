@@ -1,6 +1,7 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.cliente;
 
-import br.com.fiap.techchallenge.adapters.cliente.PatchClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PutClienteAdapter;
+import br.com.fiap.techchallenge.apis.ClienteController;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-class ClientePatchControllerTest {
+class ClientePutControllerTest {
 
     @Mock
     private ClienteRepository clienteRepository;
     @Mock
-    private PatchClienteAdapter patchClienteAdapter;
+    private PutClienteAdapter putClienteAdapter;
     @Mock
     private ClienteMapper clienteMapper;
 
@@ -35,35 +37,33 @@ class ClientePatchControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        patchClienteAdapter = new PatchClienteAdapter(clienteRepository, clienteMapper);
+        putClienteAdapter = new PutClienteAdapter(clienteRepository, clienteMapper);
     }
 
     @Test
-    void shouldReturnOkWhenUpdatingDataOfExistingClient() {
+    void shouldReturnOkWhenUpdatingExistingClient() {
         ClienteDTO clienteDTO = new ClienteDTO("23456789012", "Test Client 2", "test2@email.com");
         Cliente existingCliente = Cliente.builder().cpf("23456789012").email("Test Client 2").nome("test2@email.com").id(12L).build();
         when(clienteRepository.findByCpf(any())).thenReturn(Optional.of(existingCliente));
-        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
-        ResponseEntity<ClienteDTO> response = clienteController.atualizarDadosCliente(clienteDTO);
+        when(putClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
+        ResponseEntity<ClienteDTO> response = clienteController.atualizarCliente(clienteDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(clienteDTO, response.getBody());
     }
 
     @Test
-    void shouldReturnNotFoundWhenUpdatingDataOfNonExistingClient() {
+    void shouldReturnNotFoundWhenUpdatingNonExistingClient() {
         ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Teste", "email@email.com");
         when(clienteRepository.findByCpf(any())).thenReturn(null);
 
-        assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
+        assertThrows(ClienteException.class, () -> clienteController.atualizarCliente(clienteDTO));
     }
 
     @Test
-    void shouldReturnNotFoundWhenUpdatingDataOfClientWithEmptyCpf() {
+    void shouldReturnNotFoundWhenUpdatingClientWithEmptyCpf() {
         ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
 
-        assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
+        assertThrows(ClienteException.class, () -> clienteController.atualizarCliente(clienteDTO));
     }
-
-
 }

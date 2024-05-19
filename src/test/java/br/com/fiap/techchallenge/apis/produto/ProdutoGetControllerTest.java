@@ -1,5 +1,6 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.produto;
 
+import br.com.fiap.techchallenge.apis.ProdutoController;
 import br.com.fiap.techchallenge.domain.entities.Categoria;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;

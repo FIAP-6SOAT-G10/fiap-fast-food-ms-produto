@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.usecases.produto;
 
 import br.com.fiap.techchallenge.adapters.produto.GetProdutoAdapter;
-import br.com.fiap.techchallenge.apis.ProdutoController;
 import br.com.fiap.techchallenge.domain.entities.Categoria;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 public class GetProdutosUseCaseTest {
 
     @Mock
@@ -38,8 +35,6 @@ public class GetProdutosUseCaseTest {
 
     @Autowired
     private ProdutoMapper produtoMapper;
-
-    private ProdutoController produtoController;
 
     private GetProdutoInboundPort getProdutosUseCase;
 
@@ -50,7 +45,7 @@ public class GetProdutosUseCaseTest {
     }
 
     @Test
-    void itShouldListarTodos10PrimeirosProdutos() {
+    void shouldListarTodos10PrimeirosProdutos() {
         int page = 0;
         int size = 10;
 
@@ -62,7 +57,7 @@ public class GetProdutosUseCaseTest {
     }
 
     @Test
-    void itShouldRetornarSomenteUmProduto() {
+    void shouldRetornarSomenteUmProduto() {
         int page = 0;
         int size = 10;
 
@@ -74,7 +69,7 @@ public class GetProdutosUseCaseTest {
     }
 
     @Test
-    void itShouldRetornarNenhumProduto() {
+    void shouldRetornarNenhumProduto() {
         int page = 0;
         int size = 10;
 
@@ -86,7 +81,7 @@ public class GetProdutosUseCaseTest {
     }
 
     @Test
-    void itShouldRetornarUmProdutoPeloPreco() {
+    void shouldRetornarUmProdutoPeloPreco() {
         int page = 0;
         int size = 10;
 
@@ -98,7 +93,7 @@ public class GetProdutosUseCaseTest {
     }
 
     @Test
-    void itShouldRetornarUmProdutoPelaDescricao() {
+    void shouldRetornarUmProdutoPelaDescricao() {
         int page = 0;
         int size = 10;
 
@@ -111,7 +106,7 @@ public class GetProdutosUseCaseTest {
 
     private Page<Produto> getMockPageProduto() {
         List<Produto> produtos = new ArrayList<>();
-        Categoria categoria = new Categoria(1L, "Sanduiche", "Um Sanduiche", new HashSet<>());
+        Categoria categoria = new Categoria(1L, "lanche", "Lanches", new HashSet<>());
         produtos.addAll(List.of(
                 new Produto(1L, "Heimno", "Niarhois", categoria, new BigDecimal("10.5"), ""),
                 new Produto(2L, "Duerwadak", "Vigauval", categoria, new BigDecimal("12.5"), ""),
@@ -127,7 +122,7 @@ public class GetProdutosUseCaseTest {
         return new PageImpl<>(produtos);
     }
     private Optional<List<Produto>> getListMockedOptionalProdutos(){
-        Categoria categoria = new Categoria(1L, "Sanduiche", "Um Sanduiche", new HashSet<>());
+        Categoria categoria = new Categoria(1L, "lanche", "Lanches", new HashSet<>());
         return Optional.of(List.of(
                 new Produto(1L, "Heimno", "TESTE", categoria, new BigDecimal("10.5"), ""),
                 new Produto(2L, "Duerwadak", "Vigauval", categoria, new BigDecimal("1345.0"), ""),

@@ -1,12 +1,11 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import br.com.fiap.techchallenge.domain.model.enums.StatusPagamentoEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -20,5 +19,11 @@ public class StatusPagamento {
 
     @Column(name = "nome")
     private String nome;
+
+    public StatusPagamento(String nome) {
+        StatusPagamentoEnum statusPagamentoEnum = StatusPagamentoEnum.byStatus(nome);
+        this.id = statusPagamentoEnum.getId();
+        this.nome = statusPagamentoEnum.getStatus();
+    }
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Categoria", description = "Essa classe deve ser utilizada para enviar as informações para o cadastro de uma nova categoria no sistema")
+@Schema(name = "Categoria", description = "Objeto que representa uma categoria de produtos dentro do sistema")
 public class CategoriaDTO {
 
     @Schema(description = "O nome da categoria que será criado.", example = "Bebida")

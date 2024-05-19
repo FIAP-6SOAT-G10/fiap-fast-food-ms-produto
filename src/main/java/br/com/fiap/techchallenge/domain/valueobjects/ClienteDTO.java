@@ -2,18 +2,20 @@ package br.com.fiap.techchallenge.domain.valueobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@Schema(description = "")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Schema(description = "Objeto que representa um cliente dentro do sistema")
 public class ClienteDTO implements Serializable {
 
     @Schema(description = "Campo identificador único de pessoas fisicas no Brasil", example = "12345678900")

@@ -1,7 +1,10 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.pedido;
 
+import br.com.fiap.techchallenge.apis.PedidoController;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.entities.StatusPedido;
+import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
@@ -35,6 +38,12 @@ class PedidoPatchControllerTest {
     @Autowired
     PedidoMapper pedidoMapper;
 
+    @Autowired
+    ClienteMapper clienteMapper;
+
+    @Autowired
+    ProdutoPedidoMapper produtoPedidoMapper;
+
     @Test
     void shouldAtualizarStatusDoPedidoParaEmPreparacao() throws JsonPointerException {
         Pedido pedido = new Pedido();
@@ -50,7 +59,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -71,7 +80,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -92,7 +101,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -113,7 +122,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDoPedido("1A", jsonPatch));
     }
 
@@ -129,7 +138,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDoPedido("99", jsonPatch));
     }
 

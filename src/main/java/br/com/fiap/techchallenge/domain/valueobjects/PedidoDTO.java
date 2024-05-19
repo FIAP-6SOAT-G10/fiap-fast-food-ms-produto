@@ -1,29 +1,29 @@
 package br.com.fiap.techchallenge.domain.valueobjects;
 
-import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.entities.ProdutoPedido;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@Schema(description = "")
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Schema(description = "Objeto que representa um pedido dentro do sistema")
 public class PedidoDTO {
 
     @Schema(description = "Campo identificador único de pedido", example = "12345678900")
     private Long id;
 
     @Schema(description = "Campo identificador único de do cliente que solicitou o pedido", example = "12345678900")
-    private Cliente cliente;
+    private ClienteDTO cliente;
 
     @Schema(description = "Campo que informa o status do pedido", example = "Em Preparo")
     private StatusPedidoDTO status;
@@ -41,9 +41,9 @@ public class PedidoDTO {
     private LocalDateTime dataCancelamento;
 
     @Schema(description = "Campo que informa o status de pagamento do pedido", example = "Pago")
-    private StatusPagamentoDTO pagamento;
+    private StatusPagamentoDTO statusPagamento;
 
     @Schema(description = "Campo que informa os produtos do pedido")
-    private List<ProdutoPedido> produtos;
+    private List<ProdutoPedidoDTO> produtos;
 
 }

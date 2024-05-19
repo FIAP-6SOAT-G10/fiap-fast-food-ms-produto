@@ -10,4 +10,6 @@ public interface GetPedidoOutboundPort {
 
     List<PedidoDTO> listarPedidos(Integer page, Integer size);
 
+    List<PedidoDTO> listarPedidosPorStatus(String status, Integer page, Integer size);
+
 }

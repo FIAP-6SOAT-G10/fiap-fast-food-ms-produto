@@ -9,4 +9,7 @@ public interface GetPedidoInboundPort {
     PedidoDTO buscarPedidoPorId(Long id);
 
     List<PedidoDTO> listarPedidos(Integer page, Integer size);
+
+    List<PedidoDTO> listarPedidosPorStatus(String status, Integer page, Integer size);
+
 }

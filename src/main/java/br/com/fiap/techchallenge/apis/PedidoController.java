@@ -5,6 +5,8 @@ import br.com.fiap.techchallenge.adapters.pedido.PatchPedidoAdapter;
 import br.com.fiap.techchallenge.adapters.pedido.PostPedidoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
+import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PatchPedidoUseCase;
@@ -20,6 +22,7 @@ import br.com.fiap.techchallenge.ports.pedido.PatchPedidoOutboundPort;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,6 +66,10 @@ public class PedidoController {
     private final PedidoRepository pedidoRepository;
 
     private final PedidoMapper pedidoMapper;
+
+    private final ClienteMapper clienteMapper;
+
+    private final ProdutoPedidoMapper produtoPedidoMapper;
 
     @Operation(summary = "Lista o produto em especifico", description = "Está operação consiste em retornar as informações do produto em específico")
     @ApiResponses(value = {
@@ -155,7 +162,7 @@ public class PedidoController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
         log.info("Realizando checkout.");
-        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper);
+        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
         PostPedidoInboundPort postPedidoUseCase = new PostPedidoUseCase(getPedidoAdapter);
 
         PedidoDTO pedidoDTO = postPedidoUseCase.realizarCheckout(id);
@@ -165,6 +172,34 @@ public class PedidoController {
         }
         log.info("Checkout realizado com sucesso.");
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(summary = "Lista pedidos por status", description = "Esta operação consiste em buscar todos os pedidos de acordo com um determinado status.", parameters = {
+            @Parameter(name = "status", examples = {
+                    @ExampleObject(name = "RECEBIDO", value = "recebido", description = "Pedidos com status 'Recebido'"),
+                    @ExampleObject(name = "EM PREPARAÇÃO", value = "preparacao", description = "Pedidos com status 'Em preparação'"),
+                    @ExampleObject(name = "PRONTO", value = "pronto", description = "Pedidos com status 'Pronto'"),
+                    @ExampleObject(name = "FINALIZADO", value = "finalizado", description = "Pedidos com status 'Finalizado'"),
+            })
+    })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @GetMapping(path = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<List<PedidoDTO>> listarPedidosPorStatus(@PathVariable("status") String status,
+                                                                  @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                  @RequestParam(name = "size", defaultValue = "25") Integer size) {
+        GetPedidoOutboundPort getPedidoAdapter = new GetPedidoAdapter(pedidoRepository, pedidoMapper);
+        GetPedidoInboundPort getPedidoUseCase = new GetPedidoUseCase(getPedidoAdapter);
+        List<PedidoDTO> pedidos = getPedidoUseCase.listarPedidosPorStatus(status, page, size);
+
+        return ResponseEntity.ok(pedidos);
     }
 
 }
