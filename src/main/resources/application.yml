@@ -15,6 +15,10 @@ spring:
     show-sql: false
   flyway:
     schemas: tech-challenge
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
 server:
   servlet:

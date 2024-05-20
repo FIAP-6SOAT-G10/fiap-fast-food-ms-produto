@@ -1,6 +1,7 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.produto;
 
 import br.com.fiap.techchallenge.adapters.produto.PatchProdutoAdapter;
+import br.com.fiap.techchallenge.apis.ProdutoController;
 import br.com.fiap.techchallenge.domain.entities.Produto;
 import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;

@@ -1,6 +1,7 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.cliente;
 
-import br.com.fiap.techchallenge.adapters.cliente.PutClienteAdapter;
+import br.com.fiap.techchallenge.adapters.cliente.PatchClienteAdapter;
+import br.com.fiap.techchallenge.apis.ClienteController;
 import br.com.fiap.techchallenge.domain.entities.Cliente;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
@@ -21,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-class ClientePutControllerTest {
+class ClientePatchControllerTest {
 
     @Mock
     private ClienteRepository clienteRepository;
     @Mock
-    private PutClienteAdapter putClienteAdapter;
+    private PatchClienteAdapter patchClienteAdapter;
     @Mock
     private ClienteMapper clienteMapper;
 
@@ -36,33 +37,35 @@ class ClientePutControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        putClienteAdapter = new PutClienteAdapter(clienteRepository, clienteMapper);
+        patchClienteAdapter = new PatchClienteAdapter(clienteRepository, clienteMapper);
     }
 
     @Test
-    void shouldReturnOkWhenUpdatingExistingClient() {
+    void shouldReturnOkWhenUpdatingDataOfExistingClient() {
         ClienteDTO clienteDTO = new ClienteDTO("23456789012", "Test Client 2", "test2@email.com");
         Cliente existingCliente = Cliente.builder().cpf("23456789012").email("Test Client 2").nome("test2@email.com").id(12L).build();
         when(clienteRepository.findByCpf(any())).thenReturn(Optional.of(existingCliente));
-        when(putClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
-        ResponseEntity<ClienteDTO> response = clienteController.atualizarCliente(clienteDTO);
+        when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
+        ResponseEntity<ClienteDTO> response = clienteController.atualizarDadosCliente(clienteDTO);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(clienteDTO, response.getBody());
     }
 
     @Test
-    void shouldReturnNotFoundWhenUpdatingNonExistingClient() {
+    void shouldReturnNotFoundWhenUpdatingDataOfNonExistingClient() {
         ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Teste", "email@email.com");
         when(clienteRepository.findByCpf(any())).thenReturn(null);
 
-        assertThrows(ClienteException.class, () -> clienteController.atualizarCliente(clienteDTO));
+        assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
     }
 
     @Test
-    void shouldReturnNotFoundWhenUpdatingClientWithEmptyCpf() {
+    void shouldReturnNotFoundWhenUpdatingDataOfClientWithEmptyCpf() {
         ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
 
-        assertThrows(ClienteException.class, () -> clienteController.atualizarCliente(clienteDTO));
+        assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
     }
+
+
 }

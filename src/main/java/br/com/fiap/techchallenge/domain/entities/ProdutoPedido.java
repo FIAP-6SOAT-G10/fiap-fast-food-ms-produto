@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class ProdutoPedido {
     private Produto produto;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 

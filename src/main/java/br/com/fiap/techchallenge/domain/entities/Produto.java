@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,7 @@ public class Produto {
     private String imagem;
 
     @JsonIgnore
+    @JsonManagedReference("produto.pedidos")
     @OneToMany(mappedBy = "produto")
     private List<ProdutoPedido> pedidos;
 

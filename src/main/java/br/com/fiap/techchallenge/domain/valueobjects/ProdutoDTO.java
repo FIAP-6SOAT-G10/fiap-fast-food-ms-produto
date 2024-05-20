@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.domain.valueobjects;
 
 import br.com.fiap.techchallenge.domain.model.enums.CategoriaEnum;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +12,14 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Schema(name = "Produto", description = "Essa classe deve ser utilizada para enviar as informações para cadastro de um novo produto no sistema")
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Schema(name = "Produto", description = "Objeto que representa um produto dentro do sistema")
 public class ProdutoDTO {
+
+    @Schema(description = "O identificador do produto.", example = "1")
+    private Long id;
 
     @Schema(description = "O nome do produto que será criado.", example = "Magnífico Bacon")
     private String nome;

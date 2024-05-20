@@ -1,5 +1,6 @@
-package br.com.fiap.techchallenge.apis;
+package br.com.fiap.techchallenge.apis.categoria;
 
+import br.com.fiap.techchallenge.apis.CategoriaController;
 import br.com.fiap.techchallenge.domain.entities.Categoria;
 import br.com.fiap.techchallenge.domain.model.mapper.categoria.CategoriaMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.CategoriaDTO;

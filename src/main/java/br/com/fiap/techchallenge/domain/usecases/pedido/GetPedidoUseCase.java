@@ -23,4 +23,9 @@ public class GetPedidoUseCase implements GetPedidoInboundPort {
     public List<PedidoDTO> listarPedidos(Integer page, Integer size) {
         return this.port.listarPedidos(page, size);
     }
+
+    @Override
+    public List<PedidoDTO> listarPedidosPorStatus(String status, Integer page, Integer size) {
+        return this.port.listarPedidosPorStatus(status, page, size);
+    }
 }

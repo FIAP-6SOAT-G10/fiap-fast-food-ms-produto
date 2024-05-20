@@ -6,16 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @AllArgsConstructor
@@ -32,7 +30,7 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    @JsonBackReference
+    @JsonBackReference("cliente.pedidos")
     private Cliente cliente;
 
     @ManyToOne
@@ -54,9 +52,10 @@ public class Pedido {
 
     @ManyToOne
     @JoinColumn(name = "id_status_pagamento")
-    private StatusPagamento pagamento;
+    private StatusPagamento statusPagamento;
 
     @OneToMany(mappedBy = "pedido")
+    @JsonBackReference("produtos.pedido")
     private List<ProdutoPedido> produtos;
 
 }

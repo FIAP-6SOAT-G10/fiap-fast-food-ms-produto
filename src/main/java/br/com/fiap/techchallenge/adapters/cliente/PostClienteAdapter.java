@@ -7,6 +7,7 @@ import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.ports.cliente.PostClienteOutboundPort;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.Optional;
 
 import static br.com.fiap.techchallenge.domain.model.enums.ErrosEnum.CLIENTE_JA_CADASTRADO;
