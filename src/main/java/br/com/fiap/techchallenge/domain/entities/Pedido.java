@@ -59,4 +59,9 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido")
     private List<ProdutoPedido> produtos;
 
+    @PrePersist
+    protected void onCreate() {
+        dataCriacao = LocalDateTime.now();
+    }
+
 }

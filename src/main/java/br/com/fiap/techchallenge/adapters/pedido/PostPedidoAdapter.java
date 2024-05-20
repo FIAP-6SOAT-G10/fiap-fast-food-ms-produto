@@ -62,7 +62,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         pedidoDTO.setDataCriacao(existingPedido.getDataCriacao());
         pedidoDTO.setDataFinalizacao(existingPedido.getDataFinalizacao());
         pedidoDTO.setDataCancelamento(existingPedido.getDataCancelamento());
-        pedidoDTO.setStatusPagamentoDTO(statusPagamento);
+        pedidoDTO.setPagamento(statusPagamento);
         pedidoDTO.setProdutos(existingPedido.getProdutos());
 
         return pedidoMapper.toDTO(pedidoRepository.saveAndFlush(pedidoMapper.toEntity(pedidoDTO)));
@@ -77,8 +77,8 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
             produtoPedido.setQuantidade(BigInteger.ZERO);
             produtoPedido.setValorTotal(BigDecimal.ZERO);
             value.forEach(valueIt -> {
-                produtoPedido.getQuantidade().add(BigInteger.valueOf(valueIt.getQuantidade()));
-                produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(valueIt.getQuantidade())));
+                produtoPedido.setQuantidade(produtoPedido.getQuantidade().add(BigInteger.valueOf(valueIt.getQuantidade())));
+                produtoPedido.setValorTotal(produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(valueIt.getQuantidade()))));
             });
             todosOsItensDoPedidoSumarizado.add(produtoPedido);
         });
@@ -97,7 +97,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
                 .builder()
                 .valor(totalSumarizado)
-                .statusPagamentoDTO(StatusPagamentoDTO
+                .pagamento(StatusPagamentoDTO
                         .builder()
                         .id(StatusPagamentoEnum.PENDENTE.getId())
                         .nome(StatusPagamentoEnum.PENDENTE.getNome())
@@ -108,6 +108,12 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
                         .nome(StatusPedidoEnum.RECEBIDO.getStatus())
                         .build())
                 .build()));
+
+
+
+
+
+
 
         return pedidoMapper.toDTO(pedido);
     }
