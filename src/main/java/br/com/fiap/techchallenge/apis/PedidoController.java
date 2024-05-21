@@ -8,7 +8,6 @@ import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
-import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PostPedidoUseCase;
