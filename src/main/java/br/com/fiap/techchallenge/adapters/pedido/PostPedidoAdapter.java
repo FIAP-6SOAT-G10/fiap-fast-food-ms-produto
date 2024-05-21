@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class PostPedidoAdapter implements PostPedidoOutboundPort {
 
     private final PedidoRepository pedidoRepository;
-    private final PedidoMapper mapper;
+    private final PedidoMapper pedidoMapper;
     private final ClienteMapper clienteMapper;
     private final ProdutoPedidoMapper produtoPedidoMapper;
     private final ProdutoRepository produtoRepository;
@@ -41,7 +41,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
 
     public PostPedidoAdapter(PedidoRepository pedidoRepository, PedidoMapper mapper, ClienteMapper clienteMapper, ProdutoPedidoMapper produtoPedidoMapper, ProdutoRepository produtoRepository, ProdutoPedidoRepository produtoPedidoRepository, ClienteRepository clienteRepository) {
         this.pedidoRepository = pedidoRepository;
-        this.mapper = mapper;
+        this.pedidoMapper = mapper;
         this.clienteMapper = clienteMapper;
         this.produtoPedidoMapper = produtoPedidoMapper;
         this.produtoRepository = produtoRepository;
@@ -64,7 +64,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         pedido.setStatus(new StatusPedido(StatusPedidoEnum.RECEBIDO.getStatus()));
         pedido.setStatusPagamento(new StatusPagamento(StatusPagamentoEnum.PAGO.getStatus()));
 
-        return mapper.toDTO(pedidoRepository.saveAndFlush(pedido));
+        return this.pedidoMapper.toDTO(pedidoRepository.saveAndFlush(pedido));
     }
 
     private List<ProdutoPedido> sumarizaItemDoPedido(List<ItemPedidoDTO> item) {
@@ -99,9 +99,9 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getSobremesa()));
         BigDecimal totalSumarizado = todosOsItensDoPedidoSumarizado.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        Pedido pedido = pedidoRepository.saveAndFlush(mapper.toEntity(PedidoDTO
+
+        Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
                 .builder()
-                .cliente(cliente == null ? null : clienteMapper.toDTO(cliente))
                 .valor(totalSumarizado)
                 .statusPagamento(StatusPagamentoDTO
                         .builder()
@@ -114,12 +114,11 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
                         .nome(StatusPedidoEnum.RECEBIDO.getStatus())
                         .build())
                 .build()));
-
         todosOsItensDoPedidoSumarizado.parallelStream().forEach(itemDoPedido -> {
             itemDoPedido.setPedido(pedido);
             produtoPedidoRepository.saveAndFlush(itemDoPedido);
         });
-        return mapper.toDTO(pedido);
+        return this.pedidoMapper.toDTO(pedido);
     }
 
     private Cliente buscaCliente(PedidoRequestDTO request) {

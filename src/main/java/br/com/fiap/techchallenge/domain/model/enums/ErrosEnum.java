@@ -47,8 +47,9 @@ public enum ErrosEnum {
     PEDIDO_STATUS_PRONTO_FINALIZADO("407", "Pedidos no status 'Pronto' só podem avançar para o status 'Finalizado'.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_STATUS_FINALIZADO("408", "Pedidos no status 'Finalizado' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_VAZIO("409", "Todos os itens do pedido vieram vazios por favor escolha algum item e tente novamente.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
 
+    ;
     private final String code;
     private final String message;
     private final Level logLevel;
