@@ -67,20 +67,20 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         return this.pedidoMapper.toDTO(pedidoRepository.saveAndFlush(pedido));
     }
 
-    private List<ProdutoPedido> sumarizaItemDoPedido(List<ItemPedidoDTO> item) {
+    private List<ProdutoPedido> sumarizaItemDoPedido(List<ItemPedidoDTO> listaDeItens) {
         List<ProdutoPedido> todosOsItensDoPedidoSumarizado = new ArrayList<>();
-        Map<Long, List<ItemPedidoDTO>> itensDoPedido = item.stream().collect(Collectors.groupingBy(ItemPedidoDTO::getId));
-        itensDoPedido.forEach((key, value) -> {
-            Produto produto = produtoRepository.findById(key).orElseThrow(()-> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
+        Map<Long, List<ItemPedidoDTO>> itensDoPedido = listaDeItens.stream().collect(Collectors.groupingBy(ItemPedidoDTO::getId));
+        itensDoPedido.forEach((id, itens) -> {
+            Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
             ProdutoPedido produtoPedido = ProdutoPedido
                     .builder()
                     .produto(produto)
+                    .quantidade(BigInteger.ZERO)
+                    .valorTotal(BigDecimal.ZERO)
                     .build();
-            produtoPedido.setQuantidade(BigInteger.ZERO);
-            produtoPedido.setValorTotal(BigDecimal.ZERO);
-            value.forEach(valueIt -> {
-                produtoPedido.setQuantidade(produtoPedido.getQuantidade().add(BigInteger.valueOf(valueIt.getQuantidade())));
-                produtoPedido.setValorTotal(produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(valueIt.getQuantidade()))));
+            itens.forEach(item -> {
+                produtoPedido.setQuantidade(produtoPedido.getQuantidade().add(BigInteger.valueOf(item.getQuantidade())));
+                produtoPedido.setValorTotal(produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(item.getQuantidade()))));
             });
             todosOsItensDoPedidoSumarizado.add(produtoPedido);
         });
@@ -98,7 +98,6 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getBebida()));
         todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getSobremesa()));
         BigDecimal totalSumarizado = todosOsItensDoPedidoSumarizado.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
-
 
         Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
                 .builder()

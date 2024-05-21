@@ -175,7 +175,7 @@ public class PedidoController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
         log.info("Realizando checkout.");
-        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper, produtoRepository, produtoPedidoRepository,clienteRepository);
+        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper, produtoRepository, produtoPedidoRepository, clienteRepository);
         PostPedidoInboundPort postPedidoUseCase = new PostPedidoUseCase(getPedidoAdapter);
 
         PedidoDTO pedidoDTO = postPedidoUseCase.realizarCheckout(id);
