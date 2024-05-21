@@ -7,9 +7,9 @@ import java.util.function.Predicate;
 
 @Getter
 public enum StatusPagamentoEnum {
-    RECEBIDO(1L, "pago"),
-    EM_PREPARACAO(2L, "recusado"),
-    PRONTO(3L, "pendente");
+    PAGO(1L, "pago"),
+    RECUSADO(2L, "recusado"),
+    PENDENTE(3L, "pendente");
 
     private final Long id;
     private final String status;

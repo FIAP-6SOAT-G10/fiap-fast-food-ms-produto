@@ -42,7 +42,7 @@ class ClientePatchControllerTest {
 
     @Test
     void shouldReturnOkWhenUpdatingDataOfExistingClient() {
-        ClienteDTO clienteDTO = new ClienteDTO("23456789012", "Test Client 2", "test2@email.com");
+        ClienteDTO clienteDTO = new ClienteDTO(1l,"23456789012", "Test Client 2", "test2@email.com");
         Cliente existingCliente = Cliente.builder().cpf("23456789012").email("Test Client 2").nome("test2@email.com").id(12L).build();
         when(clienteRepository.findByCpf(any())).thenReturn(Optional.of(existingCliente));
         when(patchClienteAdapter.atualizarClientes(clienteDTO)).thenReturn(clienteDTO);
@@ -54,7 +54,7 @@ class ClientePatchControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenUpdatingDataOfNonExistingClient() {
-        ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Teste", "email@email.com");
+        ClienteDTO clienteDTO = new ClienteDTO(1l,"12345678901", "Teste", "email@email.com");
         when(clienteRepository.findByCpf(any())).thenReturn(null);
 
         assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
@@ -62,7 +62,7 @@ class ClientePatchControllerTest {
 
     @Test
     void shouldReturnNotFoundWhenUpdatingDataOfClientWithEmptyCpf() {
-        ClienteDTO clienteDTO = new ClienteDTO("", "Teste", "email@email.com");
+        ClienteDTO clienteDTO = new ClienteDTO(1l,"", "Teste", "email@email.com");
 
         assertThrows(ClienteException.class, () -> clienteController.atualizarDadosCliente(clienteDTO));
     }

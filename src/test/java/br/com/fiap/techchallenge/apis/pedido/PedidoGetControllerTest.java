@@ -8,7 +8,10 @@ import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoPedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +47,21 @@ class PedidoGetControllerTest {
     @Autowired
     private ProdutoPedidoMapper produtoPedidoMapper;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ProdutoPedidoRepository produtoPedidoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     @Test
     void shouldListarPedidoPorIdReturnsPedidoDTOWhenIdExists() {
         PedidoDTO pedidoDTO = new PedidoDTO();
         when(pedidoRepository.findById(1L)).thenReturn(Optional.of(new Pedido()));
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<PedidoDTO> response = pedidoController.listarPedidoPorId(1L);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -60,7 +72,7 @@ class PedidoGetControllerTest {
     void mustListarPedidoPorIdReturnsNotFoundWhenIdDoesNotExist() {
         when(pedidoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<PedidoDTO> response = pedidoController.listarPedidoPorId(1L);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -70,7 +82,7 @@ class PedidoGetControllerTest {
     void shouldReturnOkWhenListarTodosClientesAndClientesExist() {
         when(pedidoRepository.findAll(Pageable.ofSize(2))).thenReturn(new PageImpl<>(List.of(new Pedido())));
 
-        PedidoController controller = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController controller =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = controller.listarTodosPedidos(0, 2);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -80,7 +92,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Collections.emptyList());
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarTodosPedidos(0, 2);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -97,7 +109,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Arrays.asList(pedidoUm, pedidoDois));
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarPedidosPorStatus("recebido", 1, 25);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -115,7 +127,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Arrays.asList(pedidoUm, pedidoDois));
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarPedidosPorStatus("preparacao", 1, 25);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -133,7 +145,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Arrays.asList(pedidoUm, pedidoDois));
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarPedidosPorStatus("pronto", 1, 25);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -151,7 +163,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Arrays.asList(pedidoUm, pedidoDois));
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarPedidosPorStatus("finalizado", 1, 25);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -163,7 +175,7 @@ class PedidoGetControllerTest {
         Page<Pedido> page = new PageImpl<>(Collections.emptyList());
         when(pedidoRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController = new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<List<PedidoDTO>> response = pedidoController.listarPedidosPorStatus("finalizado", 1, 25);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -172,7 +184,7 @@ class PedidoGetControllerTest {
 
     @Test
     void mustLancarPedidoExceptionQuandoInformarUmStatusInexistente() {
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
 
         assertThrows(PedidoException.class, () -> pedidoController.listarPedidosPorStatus("reaberto", 1, 25));
     }

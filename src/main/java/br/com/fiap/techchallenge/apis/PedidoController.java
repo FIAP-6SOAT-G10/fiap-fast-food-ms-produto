@@ -3,22 +3,33 @@ package br.com.fiap.techchallenge.apis;
 import br.com.fiap.techchallenge.adapters.pedido.GetPedidoAdapter;
 import br.com.fiap.techchallenge.adapters.pedido.PatchPedidoAdapter;
 import br.com.fiap.techchallenge.adapters.pedido.PostPedidoAdapter;
+import br.com.fiap.techchallenge.adapters.produto.GetProdutoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.model.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
+import br.com.fiap.techchallenge.domain.model.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.domain.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PostPedidoUseCase;
+import br.com.fiap.techchallenge.domain.usecases.produto.GetProdutoUseCase;
 import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
+import br.com.fiap.techchallenge.domain.valueobjects.PedidoRequestDTO;
+import br.com.fiap.techchallenge.domain.valueobjects.response.PedidoResponseDTO;
+import br.com.fiap.techchallenge.infra.exception.BaseException;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoPedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.GetPedidoOutboundPort;
 import br.com.fiap.techchallenge.ports.pedido.PatchPedidoInboundPort;
 import br.com.fiap.techchallenge.ports.pedido.PatchPedidoOutboundPort;
+import br.com.fiap.techchallenge.ports.produto.GetProdutoInboundPort;
+import br.com.fiap.techchallenge.ports.produto.GetProdutoOutboundPort;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +47,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -65,11 +77,17 @@ public class PedidoController {
 
     private final PedidoRepository pedidoRepository;
 
+    private final ProdutoRepository produtoRepository;
+
+    private final ProdutoPedidoRepository produtoPedidoRepository;
+
     private final PedidoMapper pedidoMapper;
 
     private final ClienteMapper clienteMapper;
 
     private final ProdutoPedidoMapper produtoPedidoMapper;
+
+    private final ClienteRepository clienteRepository;
 
     @Operation(summary = "Lista o produto em especifico", description = "Está operação consiste em retornar as informações do produto em específico")
     @ApiResponses(value = {
@@ -162,7 +180,7 @@ public class PedidoController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
         log.info("Realizando checkout.");
-        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PostPedidoOutboundPort getPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper, produtoRepository, produtoPedidoRepository,clienteRepository);
         PostPedidoInboundPort postPedidoUseCase = new PostPedidoUseCase(getPedidoAdapter);
 
         PedidoDTO pedidoDTO = postPedidoUseCase.realizarCheckout(id);
@@ -202,4 +220,21 @@ public class PedidoController {
         return ResponseEntity.ok(pedidos);
     }
 
+    @Operation(summary = "Cadastrar Pedido", description = "Esta operação deve ser utilizada para cadastrar um novo pedido no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PedidoResponseDTO> cadastrarPedido(@RequestBody @Valid PedidoRequestDTO request) throws BaseException {
+        log.info("Criando um pedido.");
+        PostPedidoOutboundPort postPedidoAdapter = new PostPedidoAdapter(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper, produtoRepository, produtoPedidoRepository, clienteRepository);
+        PostPedidoInboundPort postPedidoUseCase = new PostPedidoUseCase(postPedidoAdapter);
+        return ResponseEntity.status(HttpStatus.OK).body(postPedidoUseCase.criarPedido(request));
+    }
 }
