@@ -34,6 +34,7 @@ public enum ErrosEnum {
     CLIENTE_CPF_OBRIGATORIO("303", "O CPF do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
     CLIENTE_CPF_NAO_EXISTENTE("304", "O campo cpf é obrigatório na atualização de um cliente.", Level.ERROR, HttpStatus.BAD_REQUEST),
     CLIENTE_NOME_OBRIGATORIO("305", "O nome do cliente é obrigatório", Level.ERROR, HttpStatus.BAD_REQUEST),
+    CLIENTE_CPF_NAO_EXISTE("306", "CPF informado não existe", Level.ERROR, HttpStatus.BAD_REQUEST),
 
     /* ERROS DE PEDIDO 400 - 499 */
     PEDIDO_NAO_ENCONTRADO("400", "O pedido informado não foi localizado.", Level.ERROR, HttpStatus.NOT_FOUND),
@@ -45,8 +46,10 @@ public enum ErrosEnum {
     PEDIDO_STATUS_EM_PREPARACAO_PRONTO("406", "Pedidos no status 'Em preparação' só podem avançar para o status 'Pronto'.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_STATUS_PRONTO_FINALIZADO("407", "Pedidos no status 'Pronto' só podem avançar para o status 'Finalizado'.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_STATUS_FINALIZADO("408", "Pedidos no status 'Finalizado' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
-    PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+    PEDIDO_VAZIO("409", "Todos os itens do pedido vieram vazios por favor escolha algum item e tente novamente.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
 
+    ;
     private final String code;
     private final String message;
     private final Level logLevel;

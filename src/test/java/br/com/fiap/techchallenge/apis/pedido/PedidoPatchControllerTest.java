@@ -7,7 +7,10 @@ import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoPedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jackson.jsonpointer.JsonPointer;
@@ -44,6 +47,15 @@ class PedidoPatchControllerTest {
     @Autowired
     ProdutoPedidoMapper produtoPedidoMapper;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ProdutoPedidoRepository produtoPedidoRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     @Test
     void shouldAtualizarStatusDoPedidoParaEmPreparacao() throws JsonPointerException {
         Pedido pedido = new Pedido();
@@ -59,7 +71,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -80,7 +92,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -101,7 +113,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDoPedido("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -122,7 +134,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDoPedido("1A", jsonPatch));
     }
 
@@ -138,7 +150,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDoPedido("99", jsonPatch));
     }
 

@@ -58,4 +58,9 @@ public class Pedido {
     @JsonBackReference("produtos.pedido")
     private List<ProdutoPedido> produtos;
 
+    @PrePersist
+    protected void onCreate() {
+        dataCriacao = LocalDateTime.now();
+    }
+
 }

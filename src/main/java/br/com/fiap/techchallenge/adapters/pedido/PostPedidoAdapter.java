@@ -1,37 +1,52 @@
 package br.com.fiap.techchallenge.adapters.pedido;
 
-import br.com.fiap.techchallenge.domain.entities.Cliente;
-import br.com.fiap.techchallenge.domain.entities.Pedido;
-import br.com.fiap.techchallenge.domain.entities.StatusPagamento;
-import br.com.fiap.techchallenge.domain.entities.StatusPedido;
+import br.com.fiap.techchallenge.domain.entities.*;
 import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
+import br.com.fiap.techchallenge.domain.model.enums.StatusPagamentoEnum;
+import br.com.fiap.techchallenge.domain.model.enums.StatusPedidoEnum;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.pedido.PedidoMapper;
-import br.com.fiap.techchallenge.domain.valueobjects.ClienteDTO;
-import br.com.fiap.techchallenge.domain.valueobjects.PedidoDTO;
+import br.com.fiap.techchallenge.domain.valueobjects.*;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
+import br.com.fiap.techchallenge.infra.exception.ClienteException;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
+import br.com.fiap.techchallenge.infra.exception.ProdutoException;
+import br.com.fiap.techchallenge.infra.repositories.ClienteRepository;
 import br.com.fiap.techchallenge.infra.repositories.PedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoPedidoRepository;
+import br.com.fiap.techchallenge.infra.repositories.ProdutoRepository;
 import br.com.fiap.techchallenge.ports.cliente.PostPedidoOutboundPort;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class PostPedidoAdapter implements PostPedidoOutboundPort {
 
     private final PedidoRepository pedidoRepository;
-    private final PedidoMapper mapper;
+    private final PedidoMapper pedidoMapper;
     private final ClienteMapper clienteMapper;
     private final ProdutoPedidoMapper produtoPedidoMapper;
+    private final ProdutoRepository produtoRepository;
+    private final ProdutoPedidoRepository produtoPedidoRepository;
+    private final ClienteRepository clienteRepository;
 
-    public PostPedidoAdapter(PedidoRepository pedidoRepository, PedidoMapper mapper, ClienteMapper clienteMapper, ProdutoPedidoMapper produtoPedidoMapper) {
+    public PostPedidoAdapter(PedidoRepository pedidoRepository, PedidoMapper mapper, ClienteMapper clienteMapper, ProdutoPedidoMapper produtoPedidoMapper, ProdutoRepository produtoRepository, ProdutoPedidoRepository produtoPedidoRepository, ClienteRepository clienteRepository) {
         this.pedidoRepository = pedidoRepository;
-        this.mapper = mapper;
+        this.pedidoMapper = mapper;
         this.clienteMapper = clienteMapper;
         this.produtoPedidoMapper = produtoPedidoMapper;
+        this.produtoRepository = produtoRepository;
+        this.produtoPedidoRepository = produtoPedidoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Override
@@ -46,17 +61,74 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         }
 
         Pedido pedido = pedidoOptional.get();
-        pedido.setStatus(new StatusPedido("recebido"));
-        pedido.setStatusPagamento(new StatusPagamento("pago"));
+        pedido.setStatus(new StatusPedido(StatusPedidoEnum.RECEBIDO.getStatus()));
+        pedido.setStatusPagamento(new StatusPagamento(StatusPagamentoEnum.PAGO.getStatus()));
 
-        return mapper.toDTO(pedidoRepository.saveAndFlush(pedido));
+        return this.pedidoMapper.toDTO(pedidoRepository.saveAndFlush(pedido));
     }
 
-    private ClienteDTO fromClienteToClienteDTO(Cliente cliente) {
-        return ClienteDTO.builder()
-                .nome(cliente.getNome())
-                .cpf(cliente.getCpf())
-                .email(cliente.getEmail()).build();
+    private List<ProdutoPedido> sumarizaItemDoPedido(List<ItemPedidoDTO> listaDeItens) {
+        List<ProdutoPedido> todosOsItensDoPedidoSumarizado = new ArrayList<>();
+        Map<Long, List<ItemPedidoDTO>> itensDoPedido = listaDeItens.stream().collect(Collectors.groupingBy(ItemPedidoDTO::getId));
+        itensDoPedido.forEach((id, itens) -> {
+            Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
+            ProdutoPedido produtoPedido = ProdutoPedido
+                    .builder()
+                    .produto(produto)
+                    .quantidade(BigInteger.ZERO)
+                    .valorTotal(BigDecimal.ZERO)
+                    .build();
+            itens.forEach(item -> {
+                produtoPedido.setQuantidade(produtoPedido.getQuantidade().add(BigInteger.valueOf(item.getQuantidade())));
+                produtoPedido.setValorTotal(produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(item.getQuantidade()))));
+            });
+            todosOsItensDoPedidoSumarizado.add(produtoPedido);
+        });
+        return todosOsItensDoPedidoSumarizado;
     }
 
+    @Override
+    public PedidoDTO criarPedido(PedidoRequestDTO request) {
+
+        Cliente cliente = buscaCliente(request);
+
+        List<ProdutoPedido> todosOsItensDoPedidoSumarizado = new ArrayList<>();
+        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getLanches()));
+        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getAcompanhamento()));
+        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getBebida()));
+        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getSobremesa()));
+        BigDecimal totalSumarizado = todosOsItensDoPedidoSumarizado.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
+                .builder()
+                .valor(totalSumarizado)
+                .cliente(cliente == null ? null : clienteMapper.toDTO(cliente))
+                .statusPagamento(StatusPagamentoDTO
+                        .builder()
+                        .id(StatusPagamentoEnum.PENDENTE.getId())
+                        .nome(StatusPagamentoEnum.PENDENTE.getStatus())
+                        .build())
+                .status(StatusPedidoDTO
+                        .builder()
+                        .id(StatusPedidoEnum.RECEBIDO.getId())
+                        .nome(StatusPedidoEnum.RECEBIDO.getStatus())
+                        .build())
+                .build()));
+        todosOsItensDoPedidoSumarizado.parallelStream().forEach(itemDoPedido -> {
+            itemDoPedido.setPedido(pedido);
+            produtoPedidoRepository.saveAndFlush(itemDoPedido);
+        });
+        return this.pedidoMapper.toDTO(pedido);
+    }
+
+    private Cliente buscaCliente(PedidoRequestDTO request) {
+        if(request.getCliente() == null || request.getCliente().isBlank() || request.getCliente().isEmpty()) {
+            return null;
+        }
+        Optional<Cliente> cliente = clienteRepository.findByCpf(request.getCliente());
+        if (cliente.isEmpty()){
+            throw new ClienteException(ErrosEnum.CLIENTE_CPF_NAO_EXISTE);
+        }
+        return cliente.get();
+    }
 }

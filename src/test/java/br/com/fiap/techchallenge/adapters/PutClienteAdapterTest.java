@@ -36,7 +36,7 @@ class PutClienteAdapterTest {
 
     @Test
     void shouldUpdateClienteWhenValidInputProvided() {
-        ClienteDTO clienteDTO = new ClienteDTO("12345678901", "Nomelindo de Jesus", "email@email.com");
+        ClienteDTO clienteDTO = new ClienteDTO(1l,"12345678901", "Nomelindo de Jesus", "email@email.com");
         Cliente existingCliente = new Cliente();
         Cliente updatedCliente = new Cliente();
 
