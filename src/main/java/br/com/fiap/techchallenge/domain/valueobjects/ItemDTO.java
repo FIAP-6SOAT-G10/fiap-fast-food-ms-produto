@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,9 +23,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemDTO {
 
-    List<ItemPedidoDTO> lanches;
-    List<ItemPedidoDTO> acompanhamento;
-    List<ItemPedidoDTO> bebida;
-    List<ItemPedidoDTO> sobremesa;
+    private List<ItemPedidoDTO> lanches = new ArrayList<>();
+    private List<ItemPedidoDTO> acompanhamento = new ArrayList<>();
+    private List<ItemPedidoDTO> bebida = new ArrayList<>();
+    private List<ItemPedidoDTO> sobremesa = new ArrayList<>();
 
 }
