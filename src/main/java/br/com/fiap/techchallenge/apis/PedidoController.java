@@ -118,7 +118,7 @@ public class PedidoController {
         return ResponseEntity.status(HttpStatus.OK).body(listaPedidos);
     }
 
-    @Operation(summary = "Atualizar Status do Produto", description = "Esta operação deve ser utilizada para atualizar o status de um pedido individualmente", requestBody =
+    @Operation(summary = "Atualizar Status do Pedido", description = "Esta operação deve ser utilizada para atualizar o status de um pedido individualmente", requestBody =
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
             @Content(examples = {
                     @ExampleObject(name = "Valid Request", value = PedidoController.VALID_REQUEST),
@@ -136,12 +136,43 @@ public class PedidoController {
                     {@Content(mediaType = "application/json", schema =
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(path = "/{id}/status", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Pedido> atualizarStatusDoPedido(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
         log.info("Atualizar status do pedido.");
         PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
         PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
         Pedido pedido = patchPedidoUseCase.atualizarStatusDoPedido(id, patch);
+        if (pedido == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(pedido);
+    }
+
+    @Operation(summary = "Atualizar Status de Pagamento do Pedido", description = "Esta operação deve ser utilizada para atualizar o status de pagamento de um pedido individualmente", requestBody =
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = {
+            @Content(examples = {
+                    @ExampleObject(name = "Valid Request", value = PedidoController.VALID_REQUEST),
+                    @ExampleObject(name = "Invalid Request", value = PedidoController.INVALID_REQUEST)
+            })
+    }),
+            externalDocs = @ExternalDocumentation(url = "https://jsonpatch.com/", description = "Utilize essa documentação para montar a PATCH request.")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @PatchMapping(path = "/{id}/pagamento", consumes = "application/json-patch+json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Pedido> atualizarStatusDePagamento(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
+        log.info("Atualizar pagamento pedido.");
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+        Pedido pedido = patchPedidoUseCase.atualizarPagamentoDoPedido(id, patch);
         if (pedido == null) {
             return ResponseEntity.internalServerError().build();
         }
