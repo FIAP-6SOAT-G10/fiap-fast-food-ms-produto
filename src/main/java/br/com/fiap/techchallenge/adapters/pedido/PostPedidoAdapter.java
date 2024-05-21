@@ -103,6 +103,7 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
                 .builder()
                 .valor(totalSumarizado)
+                .cliente(cliente == null ? null : clienteMapper.toDTO(cliente))
                 .statusPagamento(StatusPagamentoDTO
                         .builder()
                         .id(StatusPagamentoEnum.PENDENTE.getId())
