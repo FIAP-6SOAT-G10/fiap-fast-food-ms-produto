@@ -1,5 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities;
 
+import br.com.fiap.techchallenge.domain.utils.deserializers.PagamentoPedidoDeserializer;
 import br.com.fiap.techchallenge.domain.utils.deserializers.StatusPedidoDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -34,7 +35,7 @@ public class Pedido {
     private Cliente cliente;
 
     @ManyToOne
-    @JsonDeserialize(using = StatusPedidoDeserializer.class)
+    @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
     @JoinColumn(name = "id_status")
     private StatusPedido status;
 
@@ -51,6 +52,7 @@ public class Pedido {
     private LocalDateTime dataCancelamento;
 
     @ManyToOne
+    @JsonDeserialize(contentUsing = PagamentoPedidoDeserializer.class)
     @JoinColumn(name = "id_status_pagamento")
     private StatusPagamento statusPagamento;
 

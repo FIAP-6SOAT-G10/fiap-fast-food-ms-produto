@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.apis.pedido;
 
 import br.com.fiap.techchallenge.apis.PedidoController;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
+import br.com.fiap.techchallenge.domain.entities.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.StatusPedido;
 import br.com.fiap.techchallenge.domain.model.mapper.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.domain.model.mapper.cliente.ClienteMapper;
@@ -152,6 +153,86 @@ class PedidoPatchControllerTest {
 
         PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDoPedido("99", jsonPatch));
+    }
+
+    @Test
+    void shouldAtualizarPagamentoDoPedidoParaPago() throws JsonPointerException {
+        Pedido pedido = new Pedido();
+        pedido.setStatusPagamento(new StatusPagamento("pendente"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(pedido);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        ResponseEntity<Pedido> response = pedidoController.atualizarStatusDePagamento("1", jsonPatch);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    void shouldAtualizarPagamentoDoPedidoParaRecusado() throws JsonPointerException {
+        Pedido pedido = new Pedido();
+        pedido.setStatusPagamento(new StatusPagamento("pendente"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(pedido);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("recusado", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        ResponseEntity<Pedido> response = pedidoController.atualizarStatusDePagamento("1", jsonPatch);
+
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    void mustLancarPedidoExceptionQuandoAtualizarPagamentoDoPedidoComStatusRecusado() throws JsonPointerException {
+        Pedido pedido = new Pedido();
+        pedido.setStatusPagamento(new StatusPagamento("recusado"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(pedido);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDePagamento("1", jsonPatch));
+    }
+
+    @Test
+    void mustLancarPedidoExceptionQuandoAtualizarPagamentoDoPedidoComStatusPago() throws JsonPointerException {
+        Pedido pedido = new Pedido();
+        pedido.setStatusPagamento(new StatusPagamento("pago"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(pedido));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(pedido);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("recusado", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+
+        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDePagamento("1", jsonPatch));
     }
 
 }
