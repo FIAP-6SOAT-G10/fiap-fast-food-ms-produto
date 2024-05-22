@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.adapters.pedido;
 
 import br.com.fiap.techchallenge.domain.cors.statuspagamento.MudancaPagamentoPedido;
 import br.com.fiap.techchallenge.domain.cors.statuspagamento.MudancaPagamentoPedidoPago;
+import br.com.fiap.techchallenge.domain.cors.statuspagamento.MudancaPagamentoPedidoRecusado;
 import br.com.fiap.techchallenge.domain.cors.statuspedido.*;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
 import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
@@ -112,7 +113,9 @@ public class PatchPedidoAdapter implements PatchPedidoOutboundPort {
         PagamentoPedidoEnum statusPagamentoAtual = PagamentoPedidoEnum.byId(atual.getStatusPagamento().getId());
         PagamentoPedidoEnum statusPagamentoNovo = PagamentoPedidoEnum.byId(novo.getStatusPagamento().getId());
 
-        MudancaPagamentoPedido mudancaPagamentoPedido = new MudancaPagamentoPedidoPago();
+        MudancaPagamentoPedido mudancaPagamentoPedido = new MudancaPagamentoPedidoPago(
+                new MudancaPagamentoPedidoRecusado()
+        );
 
         mudancaPagamentoPedido.validarMudancaDePagamento(statusPagamentoAtual, statusPagamentoNovo);
     }

@@ -76,8 +76,8 @@ public class PatchPedidoUseCase implements PatchPedidoInboundPort {
                 throw new PedidoException(ErrosEnum.PEDIDO_PAGAMENTO_PAGAMENTO_OBRIGATORIO);
             }
 
-            PagamentoPedidoEnum statusPedidoEnum = PagamentoPedidoEnum.byStatus(statusPagamentoPedidoContent);
-            if (statusPedidoEnum == null) {
+            PagamentoPedidoEnum pagamentoPedidoEnum = PagamentoPedidoEnum.byStatus(statusPagamentoPedidoContent);
+            if (pagamentoPedidoEnum == null) {
                 throw new PedidoException(ErrosEnum.PEDIDO_PAGAMENTO_PAGAMENTO_NAO_ENCONTRADO);
             }
         }

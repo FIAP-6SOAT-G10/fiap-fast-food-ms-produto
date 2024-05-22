@@ -35,7 +35,7 @@ public class Pedido {
     private Cliente cliente;
 
     @ManyToOne
-    @JsonDeserialize(using = StatusPedidoDeserializer.class)
+    @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
     @JoinColumn(name = "id_status")
     private StatusPedido status;
 
@@ -52,7 +52,7 @@ public class Pedido {
     private LocalDateTime dataCancelamento;
 
     @ManyToOne
-    @JsonDeserialize(using = PagamentoPedidoDeserializer.class)
+    @JsonDeserialize(contentUsing = PagamentoPedidoDeserializer.class)
     @JoinColumn(name = "id_status_pagamento")
     private StatusPagamento statusPagamento;
 

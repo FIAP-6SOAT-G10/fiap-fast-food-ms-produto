@@ -47,6 +47,7 @@ public enum ErrosEnum {
     PEDIDO_STATUS_EM_PREPARACAO_PRONTO("406", "Pedidos no status 'Em preparação' só podem avançar para o status 'Pronto'.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_STATUS_PRONTO_FINALIZADO("407", "Pedidos no status 'Pronto' só podem avançar para o status 'Finalizado'.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_PAGAMENTO_PAGO("407", "Pedidos no status 'Pago' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
+    PEDIDO_PAGAMENTO_RECUSADO("407", "Pedidos no status 'Recusado' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_STATUS_FINALIZADO("408", "Pedidos no status 'Finalizado' não podem ser alterados.", Level.ERROR, HttpStatus.BAD_REQUEST),
     PEDIDO_FALHA_GENERICA("499", "Erro genérico ao atualizar o status do pedido.", Level.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 
