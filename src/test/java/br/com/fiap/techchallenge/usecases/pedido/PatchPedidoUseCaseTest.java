@@ -2,7 +2,9 @@ package br.com.fiap.techchallenge.usecases.pedido;
 
 import br.com.fiap.techchallenge.adapters.pedido.PatchPedidoAdapter;
 import br.com.fiap.techchallenge.domain.entities.Pedido;
+import br.com.fiap.techchallenge.domain.entities.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.StatusPedido;
+import br.com.fiap.techchallenge.domain.model.enums.StatusPagamentoEnum;
 import br.com.fiap.techchallenge.domain.model.enums.StatusPedidoEnum;
 import br.com.fiap.techchallenge.domain.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
@@ -146,4 +148,101 @@ class PatchPedidoUseCaseTest {
         assertThrows(PedidoException.class, () -> patchPedidoUseCase.atualizarStatusDoPedido("99", jsonPatch));
     }
 
+    @Test
+    void shouldAtualizarPagamentoDoPedidoParaPago() throws JsonPointerException {
+        Pedido retorno = new Pedido();
+        retorno.setStatusPagamento(new StatusPagamento("pendente"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(retorno));
+
+        Pedido novoRetorno = new Pedido();
+        novoRetorno.setId(2L);
+        novoRetorno.setStatusPagamento(new StatusPagamento("pago"));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(novoRetorno);
+
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+        Pedido pedido = patchPedidoUseCase.atualizarPagamentoDoPedido("1", jsonPatch);
+
+        assertEquals(StatusPagamentoEnum.byStatus("pago"), StatusPagamentoEnum.byStatus(pedido.getStatusPagamento().getNome()));
+    }
+
+    @Test
+    void shouldAtualizarPagamentoDoPedidoParaRecusado() throws JsonPointerException {
+        Pedido retorno = new Pedido();
+        retorno.setStatusPagamento(new StatusPagamento("recusado"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(retorno));
+
+        Pedido novoRetorno = new Pedido();
+        novoRetorno.setId(2L);
+        novoRetorno.setStatusPagamento(new StatusPagamento("pago"));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(novoRetorno);
+
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+        assertThrows(PedidoException.class, () -> patchPedidoUseCase.atualizarPagamentoDoPedido("1", jsonPatch));
+    }
+
+    @Test
+    void mustLancarPedidoExceptionQuandoAtualizarPagamentoDoPedidoComStatusRecusado() throws JsonPointerException {
+        Pedido retorno = new Pedido();
+        retorno.setStatusPagamento(new StatusPagamento("recusado"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(retorno));
+
+        Pedido novoRetorno = new Pedido();
+        novoRetorno.setId(2L);
+        novoRetorno.setStatusPagamento(new StatusPagamento("pago"));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(novoRetorno);
+
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+        assertThrows(PedidoException.class, () -> patchPedidoUseCase.atualizarPagamentoDoPedido("1", jsonPatch));
+    }
+
+    @Test
+    void mustLancarPedidoExceptionQuandoAtualizarPagamentoDoPedidoComStatusPago() throws JsonPointerException {
+        Pedido retorno = new Pedido();
+        retorno.setStatusPagamento(new StatusPagamento("pago"));
+        when(pedidoRepository.findById(any())).thenReturn(Optional.of(retorno));
+
+        Pedido novoRetorno = new Pedido();
+        novoRetorno.setId(2L);
+        novoRetorno.setStatusPagamento(new StatusPagamento("recusado"));
+        when(pedidoRepository.saveAndFlush(any())).thenReturn(novoRetorno);
+
+        PatchPedidoOutboundPort patchPedidoAdapter = new PatchPedidoAdapter(pedidoRepository);
+        PatchPedidoInboundPort patchPedidoUseCase = new PatchPedidoUseCase(patchPedidoAdapter);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeDTO = objectMapper.convertValue("recusado", JsonNode.class);
+
+        JsonPointer pointer = new JsonPointer("/statusPagamento");
+        List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+
+        JsonPatch jsonPatch = new JsonPatch(operations);
+        assertThrows(PedidoException.class, () -> patchPedidoUseCase.atualizarPagamentoDoPedido("1", jsonPatch));
+    }
 }
