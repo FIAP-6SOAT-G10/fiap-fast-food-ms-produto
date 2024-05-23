@@ -21,12 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class PostPedidoAdapter implements PostPedidoOutboundPort {
@@ -67,41 +65,63 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
         return this.pedidoMapper.toDTO(pedidoRepository.saveAndFlush(pedido));
     }
 
-    private List<ProdutoPedido> sumarizaItemDoPedido(List<ItemPedidoDTO> listaDeItens) {
-        List<ProdutoPedido> todosOsItensDoPedidoSumarizado = new ArrayList<>();
-        Map<Long, List<ItemPedidoDTO>> itensDoPedido = listaDeItens.stream().collect(Collectors.groupingBy(ItemPedidoDTO::getId));
-        itensDoPedido.forEach((id, itens) -> {
-            Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
-            ProdutoPedido produtoPedido = ProdutoPedido
-                    .builder()
-                    .produto(produto)
-                    .quantidade(BigInteger.ZERO)
-                    .valorTotal(BigDecimal.ZERO)
-                    .build();
-            itens.forEach(item -> {
-                produtoPedido.setQuantidade(produtoPedido.getQuantidade().add(BigInteger.valueOf(item.getQuantidade())));
-                produtoPedido.setValorTotal(produtoPedido.getValorTotal().add(produto.getPreco().multiply(new BigDecimal(item.getQuantidade()))));
-            });
-            todosOsItensDoPedidoSumarizado.add(produtoPedido);
-        });
-        return todosOsItensDoPedidoSumarizado;
+    private List<ProdutoPedido> totalizaItensDoPedido(ItemDTO item) {
+        Map<Long, List<ItemPedidoDTO>> items = Stream.of(
+                                                        item.getLanches(),
+                                                        item.getAcompanhamento(),
+                                                        item.getBebida(),
+                                                        item.getSobremesa())
+                                                .reduce(this::unificarItens)
+                                                .get()
+                                                .stream()
+                                                .collect(Collectors.groupingBy(ItemPedidoDTO::getId));
+
+        return items.entrySet().stream().map(this::criarListaDeProdutosPedido)
+                                                .reduce(this::unificarProdutos)
+                                                .stream()
+                                                .findAny()
+                                                .orElse(Collections.emptyList());
+    }
+
+    private List<ItemPedidoDTO> unificarItens(List<ItemPedidoDTO> primeira, List<ItemPedidoDTO> segunda) {
+        primeira.addAll(segunda);
+        return primeira;
+    }
+
+    private List<ProdutoPedido> unificarProdutos(List<ProdutoPedido> primeira, List<ProdutoPedido> segunda) {
+        List<ProdutoPedido> produtos = new ArrayList<>();
+        produtos.addAll(primeira);
+        produtos.addAll(segunda);
+
+        return produtos;
+    }
+
+    private List<ProdutoPedido> criarListaDeProdutosPedido(Map.Entry<Long, List<ItemPedidoDTO>> entry) {
+        Long id = entry.getKey();
+        List<ItemPedidoDTO> itens = entry.getValue();
+
+        long quantidade = itens.stream().map(ItemPedidoDTO::getQuantidade).reduce(0L, Long::sum);
+        Produto produto = produtoRepository.findById(id).orElseThrow(()-> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
+
+        return List.of(ProdutoPedido
+                .builder()
+                .produto(produto)
+                .quantidade(BigInteger.valueOf(quantidade))
+                .valorTotal(produto.getPreco().multiply(BigDecimal.valueOf(quantidade)))
+                .build()
+        );
     }
 
     @Override
     public PedidoDTO criarPedido(PedidoRequestDTO request) {
-
         Cliente cliente = buscaCliente(request);
 
-        List<ProdutoPedido> todosOsItensDoPedidoSumarizado = new ArrayList<>();
-        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getLanches()));
-        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getAcompanhamento()));
-        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getBebida()));
-        todosOsItensDoPedidoSumarizado.addAll(sumarizaItemDoPedido(request.getItems().getSobremesa()));
-        BigDecimal totalSumarizado = todosOsItensDoPedidoSumarizado.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+        List<ProdutoPedido> itens = totalizaItensDoPedido(request.getItems());
+        BigDecimal subtotal = itens.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         Pedido pedido = pedidoRepository.saveAndFlush(pedidoMapper.toEntity(PedidoDTO
                 .builder()
-                .valor(totalSumarizado)
+                .valor(subtotal)
                 .cliente(cliente == null ? null : clienteMapper.toDTO(cliente))
                 .statusPagamento(StatusPagamentoDTO
                         .builder()
@@ -114,10 +134,10 @@ public class PostPedidoAdapter implements PostPedidoOutboundPort {
                         .nome(StatusPedidoEnum.RECEBIDO.getStatus())
                         .build())
                 .build()));
-        todosOsItensDoPedidoSumarizado.parallelStream().forEach(itemDoPedido -> {
-            itemDoPedido.setPedido(pedido);
-            produtoPedidoRepository.saveAndFlush(itemDoPedido);
-        });
+
+        itens.parallelStream().forEach(item -> item.setPedido(pedido));
+        produtoPedidoRepository.saveAll(itens);
+
         return this.pedidoMapper.toDTO(pedido);
     }
 

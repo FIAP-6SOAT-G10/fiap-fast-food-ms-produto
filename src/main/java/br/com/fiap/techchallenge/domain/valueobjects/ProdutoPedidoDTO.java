@@ -27,9 +27,6 @@ public class ProdutoPedidoDTO {
     @Schema(description = "Quantidade total do mesmo produto")
     private BigInteger quantidade;
 
-    @Schema(description = "Pedido feito pelo cliente")
-    private PedidoDTO pedido;
-
     @Schema(description = "Identificados do Produto Pedido")
     private Long id;
 
