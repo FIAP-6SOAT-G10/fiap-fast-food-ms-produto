@@ -1,4 +1,3 @@
-### TODO - Remover mocks de inserts na tabela
 # PosTech - Arquitetura de Software - FIAP
 <img height="350" src="src/main/resources/fiap.png" title="Fiap Logo" width="1000"/>
 
@@ -9,7 +8,7 @@ Repositório para o desafio do Tech Challenge da Pós-gradução em Software Arc
 Uma lanchonete de bairro que está expandido sua operação devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso.
 Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.
 
-## Membros do Grupo nota 10
+## Membros do Grupo
 - [Anderson Oliveira](https://github.com/anderson-solucoes)
 - [Gabriel Fonte](https://github.com/sourceGabriel)
 - [Gabriel Marcelino](https://github.com/GabsMarcelino)
@@ -114,7 +113,8 @@ A aplicação fornece as seguintes rotas:
 - `GET /pedidos/{id}`: Retorna um pedido específico. Retorna 200 se for bem-sucedido, 404 se não for encontrado e 500 para erros internos do servidor.
 - `GET /pedidos`: Retorna uma lista de todos os pedidos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
 - `POST /pedidos/{id}/checkout`: Realiza o checkout de um pedido. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
-- `PATCH /pedidos/{id}`: Atualiza o status de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `PATCH /pedidos/{id}/status`: Atualiza o status de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `PATCH /pedidos/{id}/pagamento`: Atualiza o status de pagamento de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
 - `GET /pedidos/status/{status}`: Retorna todos os pedidos em um determinado status. Os status disponíveis são: Recebido (recebido), Em Preparação (preparacao), Pronto (pronto) e Finalizado (finalizado). Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
 
 ## Códigos de Erro
