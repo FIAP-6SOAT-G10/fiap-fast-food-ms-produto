@@ -178,27 +178,24 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 
 <a id="recurso1"></a>
 #### Cadastrar Cliente
-```json
+```sh
 POST http://localhost:8080/api/clientes
-Request
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
     "nome": "Rafaela Lorena Almada"
 }
 ```
-
 <a id="recurso2"></a>
 #### Listar Clientes
-```json
+```sh
 GET http://localhost:8080/api/clientes?page=0&size=10
 ```
 
 <a id="recurso3"></a>
 #### Atualização Parcial de Clientes
-```json
+```sh
 PATCH http://localhost:8080/api/clientes
-Request
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
@@ -208,9 +205,8 @@ Request
 
 <a id="recurso4"></a>
 #### Atualização de Clientes
-```json
+```sh
 PUT http://localhost:8080/api/clientes
-Request
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
@@ -222,9 +218,8 @@ Request
 
 <a id="recurso5"></a>
 #### Cadastrar Produto
-```json
+```sh
 POST http://localhost:8080/api/produtos
-Request
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
@@ -236,15 +231,14 @@ Request
 
 <a id="recurso6"></a>
 #### Listar Produtos
-```json
+```sh
 GET http://localhost:8080/api/produtos?pageIndex=0&pageSize=10&nome=string&descricao=string&preco=string
 ```
 
 <a id="recurso7"></a>
 #### Atualização Parcial de Produto
-```json
+```sh
 PATCH http://localhost:8080/api/produtos/:id
-Request
 [
     {
     "op": "replace",
@@ -256,9 +250,8 @@ Request
 
 <a id="recurso8"></a>
 #### Atualização de Produto
-```json
+```sh
 PUT http://localhost:8080/api/produtos/:id
-Request
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
@@ -270,13 +263,13 @@ Request
 
 <a id="recurso9"></a>
 #### Exclusão de Produto
-```json
+```sh
 DELETE http://localhost:8080/api/produtos/:id
 ```
 
 <a id="recurso10"></a>
 #### Listar Produtos por Categoria
-```json
+```sh
 GET http://localhost:8080/api/produtos/categoria/:categoria
 :categoria
 - LANCHE
@@ -289,27 +282,26 @@ GET http://localhost:8080/api/produtos/categoria/:categoria
 
 <a id="recurso11"></a>
 #### Obter Pedido por Identificador
-```json
+```sh
 GET http://localhost:8080/api/pedidos/:id
 ```
 
 <a id="recurso12"></a>
 #### Listar Pedidos
-```json
+```sh
 GET http://localhost:8080/api/pedidos?page=0&size=10
 ```
 
 <a id="recurso13"></a>
 #### Realizar Pagamento de Pedido
-```json
+```sh
 POST http://localhost:8080/api/pedidos/:id/checkout
 ```
 
 <a id="recurso14"></a>
 #### Atualizar Status do Pedido
-```json
+```sh
 PATCH http://localhost:8080/api/pedidos/:id/status
-Request
 [
     {
         "op": "replace",
@@ -321,7 +313,7 @@ Request
 
 <a id="recurso15"></a>
 #### Atualizar Status de Pagamento do Pedido
-```json
+```sh
 PATCH http://localhost:8080/api/pedidos/:id/pagamento
 [
   {
@@ -334,7 +326,7 @@ PATCH http://localhost:8080/api/pedidos/:id/pagamento
 
 <a id="recurso16"></a>
 #### Listar Pedidos por Status
-```json
+```sh
 GET http://localhost:8080/api/pedidos/status/:status
 ```
 
