@@ -170,7 +170,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDePagamento("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -191,7 +191,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDePagamento("1", jsonPatch);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
@@ -212,7 +212,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDePagamento("1", jsonPatch));
     }
 
@@ -231,7 +231,7 @@ class PedidoPatchControllerTest {
 
         JsonPatch jsonPatch = new JsonPatch(operations);
 
-        PedidoController pedidoController = new PedidoController(pedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper);
+        PedidoController pedidoController =  new PedidoController(pedidoRepository, produtoRepository, produtoPedidoRepository, pedidoMapper, clienteMapper, produtoPedidoMapper,clienteRepository);
         assertThrows(PedidoException.class, () -> pedidoController.atualizarStatusDePagamento("1", jsonPatch));
     }
 
