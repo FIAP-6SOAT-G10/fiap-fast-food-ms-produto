@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres_container:5432/postgres
+  jpa:
+    show-sql: false

@@ -1,10 +1,3 @@
-version: '3.5'
-
-networks:
-  fiap-techchallenge:
-    driver: bridge
-    name: "fiap-techchallenge"
-
 services:
   postgres:
     container_name: postgres_container
@@ -16,4 +9,27 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - fiap-techchallenge
+      - fiaptechchallengenetwork
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U tech" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  fiapfastfood:
+    container_name: fiap-fast-food
+    build:
+      context: .
+    image: fiap/fastfoodgrupo10
+    ports:
+      - "8080:8080"
+    networks:
+      - fiaptechchallengenetwork
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+networks:
+  fiaptechchallengenetwork:
+    name: fiaptechchallengenetwork
+    driver: bridge

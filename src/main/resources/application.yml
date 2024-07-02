@@ -1,10 +1,9 @@
 spring:
   profiles:
-    active: application
+    active: '@activeProfile@'
   application:
     name: tech-challenge
   datasource:
-    url: jdbc:postgresql://0.0.0.0:5432/postgres
     username: tech
     password: tech_passwd
   jpa:
