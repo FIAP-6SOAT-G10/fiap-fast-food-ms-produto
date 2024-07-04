@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.infra.exception;
 
-import br.com.fiap.techchallenge.domain.model.enums.ErrosEnum;
+import br.com.fiap.techchallenge.domain.ErrosEnum;
 import lombok.Getter;
 import lombok.ToString;
 
