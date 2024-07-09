@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities.produto;
 
-import br.com.fiap.techchallenge.infra.controllers.CategoriaDTO;
+import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
