@@ -8,7 +8,7 @@
 //import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 //import br.com.fiap.techchallenge.naousar.domain.usecases.pedido.GetPedidoUseCase;
 //import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import br.com.fiap.techchallenge.naousar.ports.pedido.GetPedidoOutboundPort;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@
 //public class GetPedidoUseCaseTest {
 //
 //    @Mock
-//    private PedidoRepository pedidoRepository;
+//    private PedidoEntityRepository pedidoRepository;
 //
 //    @Autowired
 //    private PedidoMapper pedidoMapper;

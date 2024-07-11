@@ -1,9 +1,9 @@
 package br.com.fiap.techchallenge.infra.mapper.pedido;
 
+import br.com.fiap.techchallenge.infra.controllers.PedidoDTO;
 import br.com.fiap.techchallenge.infra.mapper.categoria.CategoriaMapper;
 import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

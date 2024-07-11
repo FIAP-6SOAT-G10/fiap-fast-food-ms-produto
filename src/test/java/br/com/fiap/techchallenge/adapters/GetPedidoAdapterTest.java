@@ -4,7 +4,7 @@
 //import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
 //import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 //import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.InjectMocks;
@@ -27,7 +27,7 @@
 //public class GetPedidoAdapterTest {
 //
 //    @Mock
-//    private PedidoRepository pedidoRepository;
+//    private PedidoEntityRepository pedidoRepository;
 //
 //    @Mock
 //    private PedidoMapper pedidoMapper;

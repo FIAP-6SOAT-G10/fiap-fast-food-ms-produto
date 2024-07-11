@@ -15,7 +15,7 @@
 //import br.com.fiap.techchallenge.naousar.domain.valueobjects.response.PedidoResponseDTO;
 //import br.com.fiap.techchallenge.naousar.infra.exception.PedidoException;
 //import br.com.fiap.techchallenge.infra.persistence.ClienteRepository;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
 //import br.com.fiap.techchallenge.naousar.ports.cliente.PostPedidoInboundPort;
@@ -37,7 +37,7 @@
 //public class PostPedidoUseCaseTest {
 //
 //    @Mock
-//    private PedidoRepository pedidoRepository;
+//    private PedidoEntityRepository pedidoRepository;
 //
 //    @Autowired
 //    private PedidoMapper pedidoMapper;
