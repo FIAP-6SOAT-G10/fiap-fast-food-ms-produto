@@ -1,21 +1,39 @@
 package br.com.fiap.techchallenge.infra.mapper.cliente;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Cliente;
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.ClienteDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
+import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
+import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ClienteMapper {
+public class ClienteMapper {
 
-    Cliente toEntity(ClienteDTO clienteDTO);
+    public ClienteEntity fromDomainToEntity(Cliente cliente) {
+        ClienteEntity clienteEntity = new ClienteEntity();
+        clienteEntity.setId(cliente.getId());
+        clienteEntity.setCpf(cliente.getCpf());
+        clienteEntity.setNome(cliente.getNome());
+        clienteEntity.setEmail(cliente.getEmail());
+//        clienteEntity.setPedidos(PedidoMapper);
 
-    ClienteDTO toDTO(Cliente cliente);
+        return clienteEntity;
+    }
 
-    List<ClienteDTO> fromListEntityToListDTO(List<Cliente> clientes);
+    public Cliente fromEntityToDomain(ClienteEntity clienteEntity) {
+        Cliente cliente = new Cliente();
+        cliente.setId(clienteEntity.getId());
+        cliente.setCpf(clienteEntity.getCpf());
+        cliente.setNome(clienteEntity.getNome());
+        cliente.setEmail(clienteEntity.getEmail());
+//        cliente.setPedidos(PedidoMapper);
 
-    List<Cliente> fromListDTOToListEntity(List<ClienteDTO> clientes);
+        return cliente;
+    }
 
+    public List<Cliente> fromListEntityToListDomain(List<ClienteEntity> clientes) {
+        return clientes.stream().map(this::fromEntityToDomain).toList();
+    }
+
+    public List<ClienteEntity> fromListDomainToListEntity(List<Cliente> clientes) {
+        return clientes.stream().map(this::fromDomainToEntity).toList();
+    }
 }
