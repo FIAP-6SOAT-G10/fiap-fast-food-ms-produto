@@ -65,7 +65,7 @@ public class ClienteController {
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<List<Cliente>> listarTodosClientes(@RequestParam Integer page,
+    public ResponseEntity<List<ClienteDTO>> listarTodosClientes(@RequestParam Integer page,
                                                              @RequestParam Integer size,
                                                              @RequestParam(required = false) String email,
                                                              @RequestParam(required = false) String cpf
@@ -74,7 +74,7 @@ public class ClienteController {
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(clientes);
+        return ResponseEntity.status(HttpStatus.OK).body(clientes.stream().map(cliente -> new ClienteDTO(cliente.getId(), cliente.getCpf(), cliente.getNome(), cliente.getEmail())).toList());
     }
 
     @Operation(summary = "Atualizar Dados do Cliente", description = "Está operação consiste em atualizar os dados do cliente cadastrado")
