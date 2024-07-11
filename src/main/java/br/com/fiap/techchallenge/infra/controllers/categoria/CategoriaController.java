@@ -3,10 +3,6 @@ package br.com.fiap.techchallenge.infra.controllers.categoria;
 import br.com.fiap.techchallenge.application.usecases.categoria.ListarCategoriasUseCase;
 import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
-import br.com.fiap.techchallenge.infra.mapper.categoria.CategoriaMapper;
-import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
-import br.com.fiap.techchallenge.naousar.domain.usecases.categoria.GetCategoriaUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,7 +42,7 @@ public class CategoriaController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<CategoriaDTO>> listarTodasCategorias() {
-        List<CategoriaEntity> categorias = categoriasUseCase.listarCategorias();
+        List<Categoria> categorias = categoriasUseCase.listarCategorias();
         if (categorias.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
