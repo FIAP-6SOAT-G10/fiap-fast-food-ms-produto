@@ -9,7 +9,7 @@
 //import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 //import br.com.fiap.techchallenge.naousar.infra.exception.PedidoException;
 //import br.com.fiap.techchallenge.infra.persistence.ClienteRepository;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
 //import com.fasterxml.jackson.databind.JsonNode;
@@ -37,7 +37,7 @@
 //class PedidoPatchControllerTest {
 //
 //    @Mock
-//    PedidoRepository pedidoRepository;
+//    PedidoEntityRepository pedidoRepository;
 //
 //    @Autowired
 //    PedidoMapper pedidoMapper;

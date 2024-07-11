@@ -1,11 +1,11 @@
 package br.com.fiap.techchallenge.infra.gateways;
 
 import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
+import br.com.fiap.techchallenge.domain.statuspagamento.MudancaPagamentoPedido;
+import br.com.fiap.techchallenge.domain.statuspagamento.MudancaPagamentoPedidoPago;
+import br.com.fiap.techchallenge.domain.statuspagamento.MudancaPagamentoPedidoRecusado;
+import br.com.fiap.techchallenge.domain.statuspedido.*;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
-import br.com.fiap.techchallenge.naousar.domain.cors.statuspagamento.MudancaPagamentoPedido;
-import br.com.fiap.techchallenge.naousar.domain.cors.statuspagamento.MudancaPagamentoPedidoPago;
-import br.com.fiap.techchallenge.naousar.domain.cors.statuspagamento.MudancaPagamentoPedidoRecusado;
-import br.com.fiap.techchallenge.naousar.domain.cors.statuspedido.*;
 import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
 import br.com.fiap.techchallenge.domain.ErrosEnum;
 import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoPedidoEnum;
@@ -17,16 +17,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
-public class PedidoRepository implements IPedidoRepository {
+public class PedidoEntityRepository implements IPedidoRepository {
 
     private final br.com.fiap.techchallenge.infra.persistence.PedidoRepository pedidoRepository;
 
-    public PedidoRepository(br.com.fiap.techchallenge.infra.persistence.PedidoRepository pedidoRepository) {
+    public PedidoEntityRepository(br.com.fiap.techchallenge.infra.persistence.PedidoRepository pedidoRepository) {
         this.pedidoRepository = pedidoRepository;
     }
 

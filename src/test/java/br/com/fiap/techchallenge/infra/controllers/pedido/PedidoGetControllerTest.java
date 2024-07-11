@@ -9,7 +9,7 @@
 //import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
 //import br.com.fiap.techchallenge.naousar.infra.exception.PedidoException;
 //import br.com.fiap.techchallenge.infra.persistence.ClienteRepository;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
 //import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
 //import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@
 //class PedidoGetControllerTest {
 //
 //    @Mock
-//    private PedidoRepository pedidoRepository;
+//    private PedidoEntityRepository pedidoRepository;
 //
 //    @Autowired
 //    private PedidoMapper pedidoMapper;
