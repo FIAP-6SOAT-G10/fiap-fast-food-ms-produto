@@ -32,7 +32,7 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     @JsonBackReference("cliente.pedidos")
-    private Cliente cliente;
+    private ClienteEntity cliente;
 
     @ManyToOne
     @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
