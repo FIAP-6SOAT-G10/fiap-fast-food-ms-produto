@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class PedidoDTO {
 
     private String cliente;
+
     private ItemDTO items;
 
 }

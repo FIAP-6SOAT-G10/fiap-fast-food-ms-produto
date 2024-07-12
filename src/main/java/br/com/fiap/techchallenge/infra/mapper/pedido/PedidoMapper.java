@@ -4,7 +4,6 @@ import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.infra.mapper.categoria.CategoriaMapper;
 import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

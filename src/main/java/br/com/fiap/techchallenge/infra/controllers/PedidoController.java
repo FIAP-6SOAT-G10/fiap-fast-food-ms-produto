@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.infra.controllers;
 
 
+import br.com.fiap.techchallenge.application.usecases.pedido.AtualizarPedidoParcialUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PostPedidoUseCase;
@@ -57,6 +58,7 @@ public class PedidoController {
     private final PostPedidoUseCase postPedidoUseCase;
     private final GetPedidoUseCase getPedidoUseCase;
     private final PatchPedidoUseCase patchPedidoUseCase;
+    private final AtualizarPedidoParcialUseCase atualizarPedidoParcialUseCase;
 
     @Operation(summary = "Cadastrar Pedido", description = "Esta operação deve ser utilizada para cadastrar um novo pedido no sistema")
     @ApiResponses(value = {
@@ -72,12 +74,12 @@ public class PedidoController {
     public ResponseEntity<Pedido> cadastrarPedido(@RequestBody @Valid PedidoDTO request) throws BaseException {
         log.info("Criando um pedido.");
         return ResponseEntity.status(HttpStatus.OK).body(
-            postPedidoUseCase.criarPedido(
-                new Pedido(
-                    Cliente.builder().cpf(request.getCliente()).build(),
-                    new Item(request.getItems())
+                postPedidoUseCase.criarPedido(
+                        new Pedido(
+                                Cliente.builder().cpf(request.getCliente()).build(),
+                                new Item(request.getItems())
+                        )
                 )
-            )
         );
     }
 
@@ -100,8 +102,8 @@ public class PedidoController {
     @GetMapping(path = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<List<Pedido>> listarPedidosPorStatus(@PathVariable("status") String status,
-                                                                  @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                                  @RequestParam(name = "size", defaultValue = "25") Integer size) {
+                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                               @RequestParam(name = "size", defaultValue = "25") Integer size) {
         return ResponseEntity.ok(getPedidoUseCase.listarPedidosPorStatus(status, page, size));
     }
 

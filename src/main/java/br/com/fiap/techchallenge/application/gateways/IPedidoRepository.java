@@ -9,9 +9,9 @@ public interface IPedidoRepository {
 
     Pedido criarPedido(Pedido pedido);
 
-    Pedido atualizarStatusDoPedido(Long aLong, JsonPatch patch);
+    Pedido atualizarStatusDoPedido(Long id, JsonPatch patch);
 
-    Pedido atualizarPagamentoDoPedido(Long aLong, JsonPatch patch);
+    Pedido atualizarPagamentoDoPedido(Long id, JsonPatch patch);
 
     Pedido buscarPedidoPorId(Long id);
 
@@ -20,4 +20,5 @@ public interface IPedidoRepository {
     List<Pedido> listarPedidosPorStatus(String status, Integer page, Integer size);
 
     Pedido realizarCheckout(Long id) throws InterruptedException;
+
 }

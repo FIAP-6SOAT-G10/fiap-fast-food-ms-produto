@@ -8,7 +8,7 @@
 //import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedidoEnum;
 //import br.com.fiap.techchallenge.naousar.domain.usecases.pedido.PatchPedidoUseCase;
 //import br.com.fiap.techchallenge.naousar.infra.exception.PedidoException;
-//import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+//import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 //import br.com.fiap.techchallenge.naousar.ports.pedido.PatchPedidoInboundPort;
 //import br.com.fiap.techchallenge.naousar.ports.pedido.PatchPedidoOutboundPort;
 //import com.fasterxml.jackson.databind.JsonNode;
@@ -34,7 +34,7 @@
 //class PatchPedidoUseCaseTest {
 //
 //    @Mock
-//    PedidoRepository pedidoRepository;
+//    PedidoEntityRepository pedidoRepository;
 //
 //    @Test
 //    void shouldAtualizarStatusDoPedidoParaEmPreparacao() throws JsonPointerException {
