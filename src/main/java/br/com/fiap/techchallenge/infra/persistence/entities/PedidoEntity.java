@@ -24,7 +24,7 @@ import java.util.List;
         property = "id")
 @Table(name = "pedido")
 @SequenceGenerator(name = "pedido_seq" , sequenceName = "pedido_id_seq" , allocationSize = 1)
-public class Pedido {
+public class PedidoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_seq")
     private Long id;
@@ -32,7 +32,7 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     @JsonBackReference("cliente.pedidos")
-    private Cliente cliente;
+    private ClienteEntity clienteEntity;
 
     @ManyToOne
     @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)

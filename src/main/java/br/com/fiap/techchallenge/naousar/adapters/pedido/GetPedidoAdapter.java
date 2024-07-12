@@ -1,12 +1,12 @@
 package br.com.fiap.techchallenge.naousar.adapters.pedido;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
+import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
 import br.com.fiap.techchallenge.domain.ErrosEnum;
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedidoEnum;
 import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
-import br.com.fiap.techchallenge.infra.persistence.PedidoRepository;
+import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.naousar.ports.pedido.GetPedidoOutboundPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,10 +19,10 @@ import java.util.function.Predicate;
 @Slf4j
 public class GetPedidoAdapter implements GetPedidoOutboundPort {
 
-    private final PedidoRepository pedidoRepository;
+    private final PedidoEntityRepository pedidoRepository;
     private final PedidoMapper pedidoMapper;
 
-    public GetPedidoAdapter(PedidoRepository pedidoRepository, PedidoMapper pedidoMapper) {
+    public GetPedidoAdapter(PedidoEntityRepository pedidoRepository, PedidoMapper pedidoMapper) {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
     }
@@ -31,8 +31,8 @@ public class GetPedidoAdapter implements GetPedidoOutboundPort {
     public PedidoDTO buscarPedidoPorId(Long id) {
         log.info("buscarPedidoPorId");
         try {
-            Pedido pedido = this.pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO));
-            return this.pedidoMapper.toDTO(pedido);
+            PedidoEntity pedido = this.pedidoRepository.findById(id).orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO));
+            return this.pedidoMapper.fromEntityToDomain(pedido);
         } catch (Exception e) {
             log.error("O identificador informado não existe no banco de dados.");
             return null;
@@ -42,10 +42,10 @@ public class GetPedidoAdapter implements GetPedidoOutboundPort {
     @Override
     public List<PedidoDTO> listarPedidos(Integer page, Integer size) {
         log.info("listarPedidos");
-        List<Pedido> listaPedido = new ArrayList<>();
+        List<PedidoEntity> listaPedido = new ArrayList<>();
 
         PageRequest pageable = PageRequest.of(page, size);
-        Page<Pedido> pagePedido = pedidoRepository.findAll(pageable);
+        Page<PedidoEntity> pagePedido = pedidoRepository.findAll(pageable);
 
         if (pagePedido != null) {
             listaPedido.addAll(pagePedido.toList());

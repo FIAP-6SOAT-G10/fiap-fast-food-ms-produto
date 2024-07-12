@@ -5,8 +5,8 @@
 Repositório para o desafio do Tech Challenge da Pós-gradução em Software Architecture pela FIAP.
 
 ## Introdução
-Uma lanchonete de bairro que está expandido sua operação devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso.
-Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.
+Uma lanchonete de bairro que está expandido sua operação devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clienteEntities pode ser caótico e confuso.
+Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clienteEntities selecionar e fazer pedidos sem precisar interagir com um atendente.
 
 ## Índice
 <a name="membros"></a>
@@ -128,10 +128,10 @@ Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu obj
 - `GET /categoriaEntities`: Retorna a lista de categoriaEntities de produtoEntities cadastradas no sistema. Atualmente, temos as categoriaEntities LANCHE, ACOMPANHAMENTO, BEBIDA e SOBREMESA.
 
 ### Rotas de Clientes
-- `POST /clientes`: Cria um novo cliente. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
-- `GET /clientes`: Retorna uma lista de todos os clientes. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
-- `PATCH /clientes`: Atualiza os dados do cliente. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
-- `PUT /clientes`: Atualiza um cliente. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `POST /clienteEntities`: Cria um novo clienteEntity. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
+- `GET /clienteEntities`: Retorna uma lista de todos os clienteEntities. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `PATCH /clienteEntities`: Atualiza os dados do clienteEntity. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `PUT /clienteEntities`: Atualiza um clienteEntity. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
 ### Rotas de Produtos
 - `POST /produtoEntities`: Cria um novo produtoEntity. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
@@ -153,7 +153,7 @@ Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu obj
 ## Ordem de Execução das API
 Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à depender do cenário desejado:
 
-### Realizar pedido para cliente _não identificado_
+### Realizar pedido para clienteEntity _não identificado_
 <a name="recurso"></a>
 1. [Listar produtoEntities por categoriaEntity](#recurso10)
 2. [Criar pedido](#recurso11)
@@ -163,7 +163,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 6. [Atualizar status do pedido para 'Finalizado'](#recurso14)
 
 ### Realizar pedido para _cliente identificado_
-1. [Cadastrar cliente](#recurso1)
+1. [Cadastrar clienteEntity](#recurso1)
 2. [Listar produtoEntities por categoriaEntity](#recurso10)
 3. [Criar pedido](#recurso11)
 4. [Realizar checkout](#recurso13)
@@ -179,7 +179,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 <a id="recurso1"></a>
 #### Cadastrar Cliente
 ```sh
-POST http://localhost:8080/api/clientes
+POST http://localhost:8080/api/clienteEntities
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
@@ -189,13 +189,13 @@ POST http://localhost:8080/api/clientes
 <a id="recurso2"></a>
 #### Listar Clientes
 ```sh
-GET http://localhost:8080/api/clientes?page=0&size=10
+GET http://localhost:8080/api/clienteEntities?page=0&size=10
 ```
 
 <a id="recurso3"></a>
 #### Atualização Parcial de Clientes
 ```sh
-PATCH http://localhost:8080/api/clientes
+PATCH http://localhost:8080/api/clienteEntities
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
@@ -206,7 +206,7 @@ PATCH http://localhost:8080/api/clientes
 <a id="recurso4"></a>
 #### Atualização de Clientes
 ```sh
-PUT http://localhost:8080/api/clientes
+PUT http://localhost:8080/api/clienteEntities
 {
     "cpf": "52001817983",
     "email": "rafaela-almada91@imail.com",
@@ -347,13 +347,13 @@ GET http://localhost:8080/api/pedidos/status/:status
 - `207`: Erro genérico ao atualizar o produtoEntity.
 - `208`: A categoriaEntity do produtoEntity é obrigatória.
 - `209`: Não existem produtoEntities registrados para a categoriaEntity informada.
-### Erros de clientes:
+### Erros de clienteEntities:
 - `300`: CPF inválido.
-- `301`: O cliente com o CPF informado já existe.
-- `302`: O email do cliente é obrigatório.
-- `303`: O CPF do cliente é obrigatório.
-- `304`: O campo CPF é obrigatório ao atualizar um cliente.
-- `305`: O nome do cliente é obrigatório.
+- `301`: O clienteEntity com o CPF informado já existe.
+- `302`: O email do clienteEntity é obrigatório.
+- `303`: O CPF do clienteEntity é obrigatório.
+- `304`: O campo CPF é obrigatório ao atualizar um clienteEntity.
+- `305`: O nome do clienteEntity é obrigatório.
 ### Erros de pedidos:
 - `400`: O pedido informado não foi localizado.
 - `401`: Erro durante a atualização do status do pedido no banco de dados.

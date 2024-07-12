@@ -1,7 +1,8 @@
 package br.com.fiap.techchallenge.infra.mapper.pedido;
 
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.infra.mapper.categoria.CategoriaMapper;
-import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
+import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.PedidoDTO;
 import org.mapstruct.Mapper;
@@ -15,12 +16,12 @@ import java.util.List;
 })
 public interface PedidoMapper {
 
-    PedidoDTO toDTO(Pedido pedido);
+    Pedido fromEntityToDomain(PedidoEntity pedido);
 
-    Pedido toEntity(PedidoDTO pedidoDTO);
+    PedidoEntity toEntity(Pedido pedido);
 
-    List<PedidoDTO> fromListEntityToListDTO(List<Pedido> pedidos);
+    List<Pedido> fromListEntityToListDTO(List<PedidoEntity> pedidos);
 
-    List<Pedido> fromListDTOToListEntity(List<PedidoDTO> pedidos);
+    List<PedidoEntity> fromListDTOToListEntity(List<Pedido> pedidos);
 
 }

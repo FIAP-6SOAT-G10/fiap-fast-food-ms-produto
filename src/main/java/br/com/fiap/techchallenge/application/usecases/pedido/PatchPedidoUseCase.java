@@ -1,36 +1,36 @@
-package br.com.fiap.techchallenge.naousar.domain.usecases.pedido;
+package br.com.fiap.techchallenge.application.usecases.pedido;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
+import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
 import br.com.fiap.techchallenge.domain.ErrosEnum;
 import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoPedidoEnum;
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedidoEnum;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
-import br.com.fiap.techchallenge.naousar.ports.pedido.PatchPedidoInboundPort;
-import br.com.fiap.techchallenge.naousar.ports.pedido.PatchPedidoOutboundPort;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Pattern;
 
-public class PatchPedidoUseCase implements PatchPedidoInboundPort {
+@Slf4j
+public class PatchPedidoUseCase {
 
-    private final PatchPedidoOutboundPort port;
+    private final IPedidoRepository pedidoRepository;
 
-    public PatchPedidoUseCase(PatchPedidoOutboundPort port) {
-        this.port = port;
+    public PatchPedidoUseCase(IPedidoRepository pedidoRepository) {
+        this.pedidoRepository = pedidoRepository;
     }
 
-    @Override
-    public PedidoEntity atualizarStatusDoPedido(String id, JsonPatch patch) {
+    public Pedido atualizarStatusDoPedido(String id, JsonPatch patch) {
         validarDados(id, patch);
-        return this.port.atualizarStatusDoPedido(Long.valueOf(id), patch);
+        return pedidoRepository.atualizarStatusDoPedido(Long.valueOf(id), patch);
     }
 
-    @Override
-    public PedidoEntity atualizarPagamentoDoPedido(String id, JsonPatch patch) {
+
+    public Pedido atualizarPagamentoDoPedido(String id, JsonPatch patch) {
         validarDados(id, patch);
-        return this.port.atualizarPagamentoDoPedido(Long.valueOf(id), patch);
+        return pedidoRepository.atualizarPagamentoDoPedido(Long.valueOf(id), patch);
     }
 
     private void validarDados(String id, JsonPatch patch) {

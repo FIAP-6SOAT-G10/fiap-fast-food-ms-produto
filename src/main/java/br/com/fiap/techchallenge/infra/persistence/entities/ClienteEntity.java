@@ -19,7 +19,7 @@ import java.util.List;
         property = "id")
 @Table(name = "cliente")
 @SequenceGenerator(name = "cliente_seq" , sequenceName = "cliente_id_seq" , allocationSize = 1)
-public class Cliente {
+public class ClienteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE , generator = "cliente_seq")
@@ -37,9 +37,9 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference("cliente.pedidos")
-    private List<Pedido> pedidos;
+    private List<PedidoEntity> pedidos;
 
-    public Cliente(Long id, String cpf, String nome, String email) {
+    public ClienteEntity(Long id, String cpf, String nome, String email) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;

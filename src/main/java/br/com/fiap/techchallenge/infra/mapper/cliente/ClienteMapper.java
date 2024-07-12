@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.infra.mapper.cliente;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Cliente;
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.ClienteDTO;
+import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
+import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -10,12 +10,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ClienteMapper {
 
-    Cliente toEntity(ClienteDTO clienteDTO);
+    ClienteEntity toEntity(Cliente cliente);
 
-    ClienteDTO toDTO(Cliente cliente);
+    Cliente fromEntityToDomain(ClienteEntity clienteEntity);
 
-    List<ClienteDTO> fromListEntityToListDTO(List<Cliente> clientes);
+    List<Cliente> fromListEntityToListDTO(List<ClienteEntity> clienteEntities);
 
-    List<Cliente> fromListDTOToListEntity(List<ClienteDTO> clientes);
+    List<ClienteEntity> fromListDTOToListEntity(List<Cliente> clientes);
 
 }

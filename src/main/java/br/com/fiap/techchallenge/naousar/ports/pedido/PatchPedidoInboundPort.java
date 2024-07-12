@@ -1,9 +1,9 @@
 package br.com.fiap.techchallenge.naousar.ports.pedido;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
+import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
 import com.github.fge.jsonpatch.JsonPatch;
 
 public interface PatchPedidoInboundPort {
-    Pedido atualizarStatusDoPedido(String id, JsonPatch patch);
-    Pedido atualizarPagamentoDoPedido(String id, JsonPatch patch);
+    PedidoEntity atualizarStatusDoPedido(String id, JsonPatch patch);
+    PedidoEntity atualizarPagamentoDoPedido(String id, JsonPatch patch);
 }
