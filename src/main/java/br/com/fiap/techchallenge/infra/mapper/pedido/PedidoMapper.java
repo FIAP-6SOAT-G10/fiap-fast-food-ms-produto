@@ -9,18 +9,26 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {
-        CategoriaMapper.class,
-        ProdutoMapper.class
-})
-public interface PedidoMapper {
+public class PedidoMapper {
 
-    PedidoDTO toDTO(Pedido pedido);
+    public PedidoDTO toDTO(Pedido pedido) {
+        PedidoDTO dto = new PedidoDTO();
+        dto.setId(pedido.getId());
+        return dto;
+    }
 
-    Pedido toEntity(PedidoDTO pedidoDTO);
+    public Pedido toEntity(PedidoDTO pedidoDTO) {
+        Pedido pedido = new Pedido();
+        pedido.setId(pedidoDTO.getId());
+        return pedido;
+    }
 
-    List<PedidoDTO> fromListEntityToListDTO(List<Pedido> pedidos);
+    public List<PedidoDTO> fromListEntityToListDTO(List<Pedido> pedidos) {
+        return pedidos.stream().map(this::toDTO).toList();
+    }
 
-    List<Pedido> fromListDTOToListEntity(List<PedidoDTO> pedidos);
+    public List<Pedido> fromListDTOToListEntity(List<PedidoDTO> pedidos) {
+        return pedidos.stream().map(this::toEntity).toList();
+    }
 
 }

@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.gateways.categorias.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,7 +19,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class CategoriaEntityControllerTest {
+class CategoriaControllerTest {
 
     ListarCategoriasUseCase categoriasUseCase;
     @Mock
@@ -37,7 +38,34 @@ class CategoriaEntityControllerTest {
         when(categoriaEntityRepository.findAll()).thenReturn(categeorias);
         CategoriaController controller = new CategoriaController(categoriasUseCase);
         ResponseEntity<List<CategoriaDTO>> responseCategorias = controller.listarTodasCategorias();
-        System.out.println(responseCategorias);
+        if (!responseCategorias.hasBody()) {
+            Assertions.fail();
+        }
+        if (responseCategorias.getBody().isEmpty()) {
+            Assertions.fail();
+        }
+        Assertions.assertEquals(1, responseCategorias.getBody().size());
+    }
+
+
+    @Test
+    void itShouldReturnCategoriaComValoresCorretos() {
+        ArrayList<CategoriaEntity> categeorias = new ArrayList<>();
+        Long id = 1L;
+        String nome = "Gabs";
+        String descricao = "Descricao";
+        categeorias.add(new CategoriaEntity(id, nome, descricao, null));
+        when(categoriaEntityRepository.findAll()).thenReturn(categeorias);
+        CategoriaController controller = new CategoriaController(categoriasUseCase);
+        ResponseEntity<List<CategoriaDTO>> responseCategorias = controller.listarTodasCategorias();
+        if (!responseCategorias.hasBody()) {
+            Assertions.fail();
+        }
+        if (responseCategorias.getBody().isEmpty()) {
+            Assertions.fail();
+        }
+        Assertions.assertEquals(nome, responseCategorias.getBody().get(0).getNome());
+        Assertions.assertEquals(descricao, responseCategorias.getBody().get(0).getDescricao());
     }
 
 }

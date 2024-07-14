@@ -1,6 +1,7 @@
 package br.com.fiap.techchallenge.infra.config;
 
 import br.com.fiap.techchallenge.application.gateways.ICategoriaRepository;
+import br.com.fiap.techchallenge.application.usecases.categoria.ListarCategoriasUseCase;
 import br.com.fiap.techchallenge.infra.gateways.categorias.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,11 @@ public class CategoriaConfig {
             CategoriaEntityRepository categoriaEntityRepository
     ) {
         return new CategoriaRepository(categoriaEntityRepository);
+    }
+
+    @Bean
+    public ListarCategoriasUseCase criarListarCategoriasUseCase(ICategoriaRepository categoriaRepository){
+        return new ListarCategoriasUseCase(categoriaRepository);
     }
 
 }
