@@ -15,37 +15,37 @@ import org.springframework.context.annotation.Configuration;
 public class PedidoConfig {
 
     @Bean
-    public AtualizarPedidoParcialUseCase criarListagemProdutosUseCase(IPedidoRepository pedidoRepository) {
+    public AtualizarPedidoParcialUseCase criarListagemPedidoProdutosUseCase(IPedidoRepository pedidoRepository) {
         return new AtualizarPedidoParcialUseCase(pedidoRepository);
     }
 
     @Bean
-    public CadastrarProdutoUseCase criarCadastrarProdutoUseCase(IProdutoRepository produtoRepository) {
+    public CadastrarProdutoUseCase criarCadastrarPedidoProdutoUseCase(IProdutoRepository produtoRepository) {
         return new CadastrarProdutoUseCase(produtoRepository);
     }
 
     @Bean
-    public DeletarProdutoUseCase criarDeletarProdutoUseCase(IProdutoRepository produtoRepository) {
+    public DeletarProdutoUseCase criarDeletarPedidoProdutoUseCase(IProdutoRepository produtoRepository) {
         return new DeletarProdutoUseCase(produtoRepository);
     }
 
     @Bean
-    public AtualizarProdutoParcialUseCase criarAtualizarProdutoParcialUseCase(IProdutoRepository produtoRepository) {
+    public AtualizarProdutoParcialUseCase criarAtualizarPedidoProdutoParcialUseCase(IProdutoRepository produtoRepository) {
         return new AtualizarProdutoParcialUseCase(produtoRepository);
     }
 
     @Bean
-    public AtualizarProdutoUseCase criarAtualizarProdutoUseCase(IProdutoRepository produtoRepository) {
+    public AtualizarProdutoUseCase criarAtualizarPedidoProdutoUseCase(IProdutoRepository produtoRepository) {
         return new AtualizarProdutoUseCase(produtoRepository);
     }
 
     @Bean
-    public IProdutoRepository criarProdutoRepository(ProdutoEntityRepository produtoEntityRepository, CategoriaEntityRepository categoriaEntityRepository, ProdutoMapper produtoMapper) {
+    public IProdutoRepository criarPedidoProdutoRepository(ProdutoEntityRepository produtoEntityRepository, CategoriaEntityRepository categoriaEntityRepository, ProdutoMapper produtoMapper) {
         return new ProdutoRepository(produtoEntityRepository, categoriaEntityRepository, produtoMapper);
     }
 
     @Bean
-    public ProdutoMapper criarProdutoMapper() {
+    public ProdutoMapper criarPedidoProdutoMapper() {
         return new ProdutoMapper();
     }
 
