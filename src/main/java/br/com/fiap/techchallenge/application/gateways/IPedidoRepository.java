@@ -1,11 +1,24 @@
 package br.com.fiap.techchallenge.application.gateways;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import com.github.fge.jsonpatch.JsonPatch;
 
-public interface IPedidoRepository {
-    Pedido atualizarStatusDoPedido(String id, JsonPatch patch);
+import java.util.List;
 
-    Pedido atualizarPagamentoDoPedido(String id, JsonPatch patch);
+public interface IPedidoRepository {
+
+    Pedido criarPedido(Pedido pedido);
+
+    Pedido atualizarStatusDoPedido(Long id, JsonPatch patch);
+
+    Pedido atualizarPagamentoDoPedido(Long id, JsonPatch patch);
+
+    Pedido buscarPedidoPorId(Long id);
+
+    List<Pedido> listarPedidos(Integer page, Integer size);
+
+    List<Pedido> listarPedidosPorStatus(String status, Integer page, Integer size);
+
+    Pedido realizarCheckout(Long id) throws InterruptedException;
 
 }

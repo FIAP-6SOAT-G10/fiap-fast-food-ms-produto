@@ -35,7 +35,7 @@ public class ClienteEntity {
 
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference("cliente.pedidos")
-    private List<Pedido> pedidos;
+    private List<PedidoEntity> pedidos;
 
     public ClienteEntity(Long id, String cpf, String nome, String email) {
         this.id = id;

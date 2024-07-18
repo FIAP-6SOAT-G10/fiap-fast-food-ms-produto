@@ -132,6 +132,12 @@ public class ProdutoRepository implements IProdutoRepository {
         }
     }
 
+    @Override
+    public Produto findById(Long id) {
+        ProdutoEntity produtoEntity = produtoEntityRepository.findById(id).orElseThrow(() -> new ProdutoException(ErrosEnum.PRODUTO_NAO_ENCONTRADO));
+        return produtoMapper.fromEntityToDomain(produtoEntity);
+    }
+
     private void preencherComDadosNovos(ProdutoEntity antigoProdutoEntity, ProdutoEntity novoProdutoEntity) {
         antigoProdutoEntity.setNome(novoProdutoEntity.getNome());
         antigoProdutoEntity.setDescricao(novoProdutoEntity.getDescricao());

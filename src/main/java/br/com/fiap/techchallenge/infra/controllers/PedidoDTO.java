@@ -1,6 +1,5 @@
 package br.com.fiap.techchallenge.infra.controllers;
 
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.ProdutoPedidoDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.StatusPagamentoDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.StatusPedidoDTO;
@@ -49,5 +48,8 @@ public class PedidoDTO {
 
     @Schema(description = "Campo que informa os produtos do pedido")
     private List<ProdutoPedidoDTO> produtos;
+
+    @Schema(description = "Campo que informa os itens do pedido")
+    private ItemDTO items;
 
 }
