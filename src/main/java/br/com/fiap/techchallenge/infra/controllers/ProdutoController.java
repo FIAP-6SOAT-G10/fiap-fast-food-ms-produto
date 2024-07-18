@@ -5,6 +5,7 @@ import br.com.fiap.techchallenge.domain.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import br.com.fiap.techchallenge.domain.entities.produto.CategoriaEnum;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
+import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
