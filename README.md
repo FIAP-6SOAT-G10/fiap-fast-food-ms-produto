@@ -11,21 +11,21 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 ## Índice
 <a name="membros"></a>
 1. [Membros do Grupo](#membro)
-<a name="documentacoes"></a>
+   <a name="documentacoes"></a>
 2. [Documentação do Projeto com Event Storming](#documentacao)
-<a name="requisitos"></a>
+   <a name="requisitos"></a>
 3. [Requisitos para Execução](#requisito)
-<a name="local"></a>
+   <a name="local"></a>
 4. [Execução do projeto localmente](#execucao-local)
-<a name="docker"></a>
+   <a name="docker"></a>
 5. [Execução do projeto pelo Docker](#execucao-docker)
-<a name="rotas"></a>
+   <a name="rotas"></a>
 6. [Rotas da API](#rota)
-<a name="ordens"></a>
+   <a name="ordens"></a>
 7. [Ordem de Execução das API](#ordem)
-<a name="recursos"></a>
+   <a name="recursos"></a>
 8. [Recursos](#recurso)
-<a name="erros"></a>
+   <a name="erros"></a>
 9. [Códigos de Erro](#erro)
 
 <a id="membro"></a>
@@ -53,19 +53,19 @@ Antes de iniciar, certifique-se de que sua máquina atenda aos seguintes requisi
 
 **JDK 11 instalado:**<br/>
 Certifique-se de ter o JDK 11 instalado em sua máquina.<br/>
-Para verificar a versão do JDK instalada, execute o seguinte comando no terminal: 
+Para verificar a versão do JDK instalada, execute o seguinte comando no terminal:
 ```bash
 java -version
 ```
 
 **Maven >= 3 instalado:**<br/>
-Verifique se você tem o Maven instalado em sua máquina. Para verificar a versão do Maven instalada, execute o seguinte comando no terminal: 
+Verifique se você tem o Maven instalado em sua máquina. Para verificar a versão do Maven instalada, execute o seguinte comando no terminal:
 ```bash
 mvn -version
 ``` 
 
 **Docker desktop instalado:**<br/>
-Verifique se você tem o Docker instalado em sua máquina. Para verificar a versão do Docker instalada, execute o seguinte comando no terminal: 
+Verifique se você tem o Docker instalado em sua máquina. Para verificar a versão do Docker instalada, execute o seguinte comando no terminal:
 ```bash
 docker -v
 ``` 
@@ -125,7 +125,7 @@ Para executar os testes unitários, basta executar o comando abaixo:
 Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu objetivo e possíveis códigos de retorno:
 
 ### Rotas de Categorias
-- `GET /categoriaEntities`: Retorna a lista de categoriaEntities de produtoEntities cadastradas no sistema. Atualmente, temos as categoriaEntities LANCHE, ACOMPANHAMENTO, BEBIDA e SOBREMESA.
+- `GET /categorias`: Retorna a lista de categorias de produtos cadastradas no sistema. Atualmente, temos as categorias LANCHE, ACOMPANHAMENTO, BEBIDA e SOBREMESA.
 
 ### Rotas de Clientes
 - `POST /clientes`: Cria um novo cliente. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
@@ -134,12 +134,12 @@ Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu obj
 - `PUT /clientes`: Atualiza um cliente. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
 ### Rotas de Produtos
-- `POST /produtoEntities`: Cria um novo produtoEntity. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
-- `GET /produtoEntities`: Retorna uma lista de todos os produtoEntities. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
-- `PATCH /produtoEntities/{id}`: Atualiza os dados do produtoEntity. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
-- `PUT /produtoEntities/{id}`: Atualiza um produtoEntity. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
-- `DELETE /produtoEntities/{id}`: Exclui um produtoEntity. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
-- `GET /produtoEntities/categoriaEntity/{categoriaEntity}`: Retorna uma lista de produtoEntities por categoriaEntity. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `POST /produtos`: Cria um novo produto. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
+- `GET /produtos`: Retorna uma lista de todos os produtos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `PATCH /produtos/{id}`: Atualiza os dados do produto. Retorna 200 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `PUT /produtos/{id}`: Atualiza um produto. Retorna 204 se for bem-sucedido, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `DELETE /produtos/{id}`: Exclui um produto. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
+- `GET /produtos/categoria/{categoria}`: Retorna uma lista de produtos por categoria. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
 ### Rotas de Pedidos
 - `GET /pedidos/{id}`: Retorna um pedido específico. Retorna 200 se for bem-sucedido, 404 se não for encontrado e 500 para erros internos do servidor.
@@ -155,7 +155,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 
 ### Realizar pedido para cliente _não identificado_
 <a name="recurso"></a>
-1. [Listar produtoEntities por categoriaEntity](#recurso10)
+1. [Listar produtos por categoria](#recurso10)
 2. [Criar pedido](#recurso11)
 3. [Realizar checkout](#recurso13)
 4. [Atualizar status do pedido para 'Em preparação'](#recurso14)
@@ -164,7 +164,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 
 ### Realizar pedido para _cliente identificado_
 1. [Cadastrar cliente](#recurso1)
-2. [Listar produtoEntities por categoriaEntity](#recurso10)
+2. [Listar produtos por categoria](#recurso10)
 3. [Criar pedido](#recurso11)
 4. [Realizar checkout](#recurso13)
 5. [Atualizar status do pedido para 'Em preparação'](#recurso14)
@@ -219,11 +219,11 @@ PUT http://localhost:8080/api/clientes
 <a id="recurso5"></a>
 #### Cadastrar Produto
 ```sh
-POST http://localhost:8080/api/produtoEntities
+POST http://localhost:8080/api/produtos
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
-    "categoriaEntity": "BEBIDA",
+    "categoria": "BEBIDA",
     "preco": 19.9,
     "imagem": "CDN:imagem"
 }
@@ -232,13 +232,13 @@ POST http://localhost:8080/api/produtoEntities
 <a id="recurso6"></a>
 #### Listar Produtos
 ```sh
-GET http://localhost:8080/api/produtoEntities?pageIndex=0&pageSize=10&nome=string&descricao=string&preco=string
+GET http://localhost:8080/api/produtos?pageIndex=0&pageSize=10&nome=string&descricao=string&preco=string
 ```
 
 <a id="recurso7"></a>
 #### Atualização Parcial de Produto
 ```sh
-PATCH http://localhost:8080/api/produtoEntities/:id
+PATCH http://localhost:8080/api/produtos/:id
 [
     {
     "op": "replace",
@@ -251,11 +251,11 @@ PATCH http://localhost:8080/api/produtoEntities/:id
 <a id="recurso8"></a>
 #### Atualização de Produto
 ```sh
-PUT http://localhost:8080/api/produtoEntities/:id
+PUT http://localhost:8080/api/produtos/:id
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
-    "categoriaEntity": "BEBIDA",
+    "categoria": "BEBIDA",
     "preco": 19.9,
     "imagem": "CDN:imagem"
 }
@@ -264,14 +264,14 @@ PUT http://localhost:8080/api/produtoEntities/:id
 <a id="recurso9"></a>
 #### Exclusão de Produto
 ```sh
-DELETE http://localhost:8080/api/produtoEntities/:id
+DELETE http://localhost:8080/api/produtos/:id
 ```
 
 <a id="recurso10"></a>
 #### Listar Produtos por Categoria
 ```sh
-GET http://localhost:8080/api/produtoEntities/categoriaEntity/:categoriaEntity
-:categoriaEntity
+GET http://localhost:8080/api/produtos/categoria/:categoria
+:categoria
 - LANCHE
 - BEBIDA
 - ACOMPANHAMENTO
@@ -334,19 +334,19 @@ GET http://localhost:8080/api/pedidos/status/:status
 ## Códigos de Erro
 ### Erros genéricos:
 - `001`: Parâmetro obrigatório não foi enviado.
-### Erros de categoriaEntity:
+### Erros de categoria:
 - `100`: Categoria inválida.
-### Erros de produtoEntities:
-- `200`: O nome do produtoEntity é obrigatório.
-- `201`: A descrição do produtoEntity é obrigatória.
-- `202`: O preço do produtoEntity é obrigatório.
-- `203`: A imagem do produtoEntity é obrigatória.
-- `204`: Identificador de produtoEntity inválido.
-- `205`: O identificador fornecido não está relacionado a nenhum produtoEntity existente.
-- `206`: Erro durante a atualização do produtoEntity no banco de dados.
-- `207`: Erro genérico ao atualizar o produtoEntity.
-- `208`: A categoriaEntity do produtoEntity é obrigatória.
-- `209`: Não existem produtoEntities registrados para a categoriaEntity informada.
+### Erros de produtos:
+- `200`: O nome do produto é obrigatório.
+- `201`: A descrição do produto é obrigatória.
+- `202`: O preço do produto é obrigatório.
+- `203`: A imagem do produto é obrigatória.
+- `204`: Identificador de produto inválido.
+- `205`: O identificador fornecido não está relacionado a nenhum produto existente.
+- `206`: Erro durante a atualização do produto no banco de dados.
+- `207`: Erro genérico ao atualizar o produto.
+- `208`: A categoria do produto é obrigatória.
+- `209`: Não existem produtos registrados para a categoria informada.
 ### Erros de clientes:
 - `300`: CPF inválido.
 - `301`: O cliente com o CPF informado já existe.
