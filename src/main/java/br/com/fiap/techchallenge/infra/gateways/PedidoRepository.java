@@ -19,8 +19,10 @@ import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import br.com.fiap.techchallenge.infra.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
+import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
+import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,15 +48,15 @@ public class PedidoRepository implements IPedidoRepository {
     private final PedidoEntityRepository pedidoEntityRepository;
     private final PedidoMapper pedidoMapper;
     private final ClienteMapper clienteMapper;
-    private final ClienteRepository clienteRepository;
+    private final ClienteEntityRepository clienteEntityRepository;
     private final ProdutoPedidoRepository produtoPedidoRepository;
     private final ProdutoPedidoMapper produtoPedidoMapper;
 
-    public PedidoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteMapper clienteMapper, ClienteRepository clienteRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
+    public PedidoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteMapper clienteMapper, ClienteEntityRepository clienteEntityRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
         this.pedidoEntityRepository = pedidoEntityRepository;
         this.pedidoMapper = pedidoMapper;
         this.clienteMapper = clienteMapper;
-        this.clienteRepository = clienteRepository;
+        this.clienteEntityRepository = clienteEntityRepository;
         this.produtoPedidoRepository = produtoPedidoRepository;
         this.produtoPedidoMapper = produtoPedidoMapper;
     }
@@ -117,11 +119,12 @@ public class PedidoRepository implements IPedidoRepository {
         if(request.getCliente() == null || request.getCliente().getCpf().isBlank() || request.getCliente().getCpf().isEmpty()) {
             return null;
         }
-        Optional<Cliente> cliente = clienteRepository.findByCpf(request.getCliente().getCpf());
-        if (cliente.isEmpty()){
+        Optional<ClienteEntity> clienteEntity = clienteEntityRepository.findByCpf(request.getCliente().getCpf());
+        if (clienteEntity.isEmpty()){
             throw new ClienteException(ErrosEnum.CLIENTE_CPF_NAO_EXISTE);
         }
-        return cliente.get();
+        Cliente cliente = new ClienteMapper().fromEntityToDomain(clienteEntity.get());
+        return cliente;
     }
 
     private void validarMudancaDeStatus(Pedido atual, Pedido novo) {

@@ -1,6 +1,5 @@
 package br.com.fiap.techchallenge.infra.controllers;
 
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.ClienteDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.ProdutoPedidoDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.StatusPagamentoDTO;
 import br.com.fiap.techchallenge.naousar.domain.valueobjects.StatusPedidoDTO;

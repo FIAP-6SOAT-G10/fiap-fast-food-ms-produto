@@ -1,6 +1,6 @@
 package br.com.fiap.techchallenge.naousar.ports.pedido;
 
-import br.com.fiap.techchallenge.infra.persistence.entities.Pedido;
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import com.github.fge.jsonpatch.JsonPatch;
 
 public interface PatchPedidoOutboundPort {

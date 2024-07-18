@@ -73,16 +73,26 @@ public class PedidoController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Pedido> cadastrarPedido(@RequestBody @Valid PedidoDTO request) throws BaseException {
+    public ResponseEntity<Pedido> cadastrarPedido(@RequestBody @Valid PedidoDTO pedidoDTO) throws BaseException {
         log.info("Criando um pedido.");
-        return ResponseEntity.status(HttpStatus.OK).body(
-                postPedidoUseCase.criarPedido(
-                        new Pedido(
-                                Cliente.builder().cpf(request.getCliente().getCpf()).build(),
-                                new Item(request.getItems())
-                        )
-                )
-        );
+        ClienteDTO clienteDTO = pedidoDTO.getCliente();
+        if (clienteDTO != null && clienteDTO.cpf() != null && pedidoDTO.getItems() != null) {
+            Pedido pedido = new Pedido(
+                    Cliente.builder()
+                            .cpf(clienteDTO.cpf())
+                            .nome(clienteDTO.nome())
+                            .email(clienteDTO.email()
+                            ).build(),
+                    new Item(pedidoDTO.getItems())
+            );
+
+            Pedido pedidoResponse =  postPedidoUseCase.criarPedido(pedido);
+
+            return ResponseEntity.status(HttpStatus.OK).body(pedidoResponse);
+        } else {
+            log.error("Itens não encontrados.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @Operation(summary = "Lista pedidos por status", description = "Esta operação consiste em buscar todos os pedidos de acordo com um determinado status.", parameters = {
