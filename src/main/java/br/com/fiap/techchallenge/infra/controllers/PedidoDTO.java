@@ -50,4 +50,7 @@ public class PedidoDTO {
     @Schema(description = "Campo que informa os produtos do pedido")
     private List<ProdutoPedidoDTO> produtos;
 
+    @Schema(description = "Campo que informa os itens do pedido")
+    private ItemDTO items;
+
 }

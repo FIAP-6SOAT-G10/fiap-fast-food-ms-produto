@@ -1,11 +1,13 @@
 package br.com.fiap.techchallenge.domain.entities.cliente;
 
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class Cliente {
     private Long id;
     private String cpf;
@@ -15,6 +17,12 @@ public class Cliente {
 
     public Cliente() {
     }
+
+    public Cliente(Long id, String cpf, String nome, String email, List<Pedido> pedidos) {
+    this(cpf, nome, email);
+    this.id = id;
+    this.pedidos = pedidos;
+}
 
     public Cliente(String cpf, String nome, String email) {
 

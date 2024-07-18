@@ -9,20 +9,28 @@ import br.com.fiap.techchallenge.infra.exception.PedidoException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Pattern;
 
-public class AtualizarPedidoParcialUseCase {
+@Slf4j
+public class PatchPedidoUseCase {
 
     private final IPedidoRepository pedidoRepository;
 
-    public AtualizarPedidoParcialUseCase(IPedidoRepository pedidoRepository) {
+    public PatchPedidoUseCase(IPedidoRepository pedidoRepository) {
         this.pedidoRepository = pedidoRepository;
     }
 
+    public Pedido atualizarStatusDoPedido(String id, JsonPatch patch) {
+        validarDados(id, patch);
+        return pedidoRepository.atualizarStatusDoPedido(Long.valueOf(id), patch);
+    }
+
+
     public Pedido atualizarPagamentoDoPedido(String id, JsonPatch patch) {
         validarDados(id, patch);
-        return this.pedidoRepository.atualizarPagamentoDoPedido(Long.getLong(id), patch);
+        return pedidoRepository.atualizarPagamentoDoPedido(Long.valueOf(id), patch);
     }
 
     private void validarDados(String id, JsonPatch patch) {
