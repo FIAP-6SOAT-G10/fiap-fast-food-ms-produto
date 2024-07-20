@@ -1,9 +1,9 @@
 package br.com.fiap.techchallenge.infra.controllers.pedido;
 
+import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedido;
 import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
-import br.com.fiap.techchallenge.infra.persistence.entities.StatusPagamentoEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class PedidoDTO {
     private LocalDateTime dataCancelamento;
 
     @Schema(description = "Campo que informa o status de pagamento do pedido", example = "Pago")
-    private StatusPagamentoEntity statusPagamentoEntity;
+    private StatusPagamento statusPagamento;
 
     @Schema(description = "Campo que informa os produtos do pedido")
     private List<ProdutoPedido> produtos;

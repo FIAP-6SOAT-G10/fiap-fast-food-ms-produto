@@ -1,8 +1,8 @@
 package br.com.fiap.techchallenge.application.usecases.produto;
 
 import br.com.fiap.techchallenge.application.gateways.IProdutoRepository;
-import br.com.fiap.techchallenge.domain.entities.produto.Produto;
 import br.com.fiap.techchallenge.domain.entities.produto.CategoriaEnum;
+import br.com.fiap.techchallenge.domain.entities.produto.Produto;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -2,7 +2,6 @@ package br.com.fiap.techchallenge.infra.persistence.entities;
 
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedidoEnum;
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "status_pedido")

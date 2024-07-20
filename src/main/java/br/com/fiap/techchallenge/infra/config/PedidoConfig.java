@@ -4,7 +4,6 @@ import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
 import br.com.fiap.techchallenge.application.usecases.pedido.AtualizarPedidoParcialUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
-import br.com.fiap.techchallenge.infra.gateways.ClienteRepository;
 import br.com.fiap.techchallenge.infra.gateways.PedidoRepository;
 import br.com.fiap.techchallenge.infra.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;

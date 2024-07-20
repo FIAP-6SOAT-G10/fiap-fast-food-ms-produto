@@ -3,7 +3,6 @@ package br.com.fiap.techchallenge.domain.entities.produto;
 import br.com.fiap.techchallenge.infra.controllers.categoria.CategoriaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
 
 import java.util.List;
 

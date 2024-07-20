@@ -22,7 +22,9 @@ import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.*;
+import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
+import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
+import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -204,10 +206,14 @@ public class PedidoRepository implements IPedidoRepository {
     private List<PedidoEntity> removerPedidosFinalizadosCancelados(List<PedidoEntity> listaPedido) {
         Predicate<PedidoEntity> exceptDone = pedidoEntity -> !(pedidoEntity.getStatus().getId().equals(StatusPedidoEnum.FINALIZADO.getId()));
         Predicate<PedidoEntity> exceptCancelled = pedidoEntity -> !(pedidoEntity.getStatus().getId().equals(StatusPedidoEnum.CANCELADO.getId()));
-        return listaPedido.stream().filter(exceptDone.and(exceptCancelled)).sorted(this::ordenarPorStatus).toList();
+        return listaPedido.stream().filter(exceptDone.and(exceptCancelled)).sorted(this::ordenarPorHorarioRecebimento).sorted(this::ordernarPorStatus).toList();
     }
 
-    private int ordenarPorStatus(PedidoEntity pedidoEntity, PedidoEntity pedidoEntity1) {
+    private int ordenarPorHorarioRecebimento(PedidoEntity pedidoEntity, PedidoEntity pedidoEntity1) {
+        return pedidoEntity.getDataCriacao().compareTo(pedidoEntity1.getDataCriacao());
+    }
+
+    private int ordernarPorStatus(PedidoEntity pedidoEntity, PedidoEntity pedidoEntity1) {
         return pedidoEntity1.getStatus().getId().compareTo(pedidoEntity.getStatus().getId());
     }
 
