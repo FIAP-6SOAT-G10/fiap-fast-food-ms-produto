@@ -72,13 +72,11 @@ public class PostPedidoUseCase  {
         long quantidade = itens.stream().map(ItemPedido::getQuantidade).reduce(0L, Long::sum);
         Produto produto = produtoRepository.findById(id);
 
-        return List.of(ProdutoPedido
-                .builder()
-                .produto(produto)
-                .quantidade(BigInteger.valueOf(quantidade))
-                .valorTotal(produto.getPreco().multiply(BigDecimal.valueOf(quantidade)))
-                .build()
-        );
+        ProdutoPedido produtoPedido = new ProdutoPedido();
+        produtoPedido.setProduto(produto);
+        produtoPedido.setQuantidade(BigInteger.valueOf(quantidade));
+        produtoPedido.setValorTotal(produto.getPreco().multiply(BigDecimal.valueOf(quantidade)));
+        return List.of(produtoPedido);
     }
 
     private List<ProdutoPedido> unificarProdutos(List<ProdutoPedido> primeira, List<ProdutoPedido> segunda) {

@@ -2,15 +2,15 @@ package br.com.fiap.techchallenge.domain.entities.pedido;
 
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Pedido {
     private Long id;
     private Cliente cliente;
@@ -26,14 +26,21 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id, Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
-    this(cliente, status, valor, dataCriacao, dataFinalizacao, dataCancelamento, statusPagamento, produtoPedidos, items);
-    this.id = id;
-}
-
     public Pedido(Cliente cliente, Item items) {
+        this(items);
         this.cliente = cliente;
+    }
+
+    public Pedido(Item items) {
+        if (items == null) {
+            throw new IllegalArgumentException("Items é um campo obrigatório no cadastro de novos pedidos.");
+        }
         this.items = items;
+    }
+
+    public Pedido(Long id, Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
+        this(cliente, status, valor, dataCriacao, dataFinalizacao, dataCancelamento, statusPagamento, produtoPedidos, items);
+        this.id = id;
     }
 
     public Pedido(Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
@@ -81,6 +88,86 @@ public class Pedido {
         this.dataCancelamento = dataCancelamento;
         this.statusPagamento = statusPagamento;
         this.produtoPedidos = produtoPedidos;
+        this.items = items;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public StatusPedido getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataFinalizacao() {
+        return dataFinalizacao;
+    }
+
+    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {
+        this.dataFinalizacao = dataFinalizacao;
+    }
+
+    public LocalDateTime getDataCancelamento() {
+        return dataCancelamento;
+    }
+
+    public void setDataCancelamento(LocalDateTime dataCancelamento) {
+        this.dataCancelamento = dataCancelamento;
+    }
+
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = statusPagamento;
+    }
+
+    public List<ProdutoPedido> getProdutoPedidos() {
+        return produtoPedidos;
+    }
+
+    public void setProdutoPedidos(List<ProdutoPedido> produtoPedidos) {
+        this.produtoPedidos = produtoPedidos;
+    }
+
+    public Item getItems() {
+        return items;
+    }
+
+    public void setItems(Item items) {
         this.items = items;
     }
 }

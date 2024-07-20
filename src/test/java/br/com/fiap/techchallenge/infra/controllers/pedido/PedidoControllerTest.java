@@ -5,9 +5,9 @@ import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
-import br.com.fiap.techchallenge.infra.controllers.*;
+import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedido;
+import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
-import br.com.fiap.techchallenge.naousar.domain.valueobjects.StatusPedidoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +47,7 @@ public class PedidoControllerTest {
 
     @Test
     public void testCadastrarPedidoWithoutItems() throws BaseException {
-        PedidoDTO pedidoDTO = new PedidoDTO(1L, new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"), new StatusPedidoDTO(1L, "any()status"), BigDecimal.TEN, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, null, null);
+        PedidoDTO pedidoDTO = new PedidoDTO(1L, new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"), new StatusPedido(1L, "any()status"), BigDecimal.TEN, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, null, null);
         pedidoDTO.setCliente(new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"));
         ResponseEntity<Pedido> response = pedidoController.cadastrarPedido(pedidoDTO);
 

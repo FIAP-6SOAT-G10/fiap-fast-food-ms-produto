@@ -22,9 +22,7 @@ import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
-import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
-import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
+import br.com.fiap.techchallenge.infra.persistence.entities.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +32,7 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -63,26 +62,15 @@ public class PedidoRepository implements IPedidoRepository {
 
     @Override
     public Pedido criarPedido(Pedido pedido) {
-
         Cliente cliente = buscarCliente(pedido);
-        PedidoEntity pedidoEntity = pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(Pedido
-                .builder()
-                .valor(pedido.getValor())
-                .cliente(cliente == null ? null : cliente)
-                .statusPagamento(StatusPagamento
-                        .builder()
-                        .id(StatusPagamentoEnum.PENDENTE.getId())
-                        .nome(StatusPagamentoEnum.PENDENTE.getStatus())
-                        .build())
-                .status(StatusPedido
-                        .builder()
-                        .id(StatusPedidoEnum.RECEBIDO.getId())
-                        .nome(StatusPedidoEnum.RECEBIDO.getStatus())
-                        .build())
-                .build()));
 
-        List<ProdutoPedidoEntity> produtoPedidos = produtoPedidoMapper.fromDomainToEntity(pedido.getProdutoPedidos());
-        produtoPedidos.parallelStream().forEach(item -> item.setPedido(pedidoEntity));
+        pedido.setCliente(cliente);
+        pedido.setStatusPagamento(new StatusPagamento(StatusPagamentoEnum.PENDENTE.getStatus()));
+        pedido.setStatus(new StatusPedido(StatusPedidoEnum.RECEBIDO.getStatus()));
+
+        PedidoEntity pedidoEntity = pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedido));
+        List<ProdutoPedidoEntity> produtoPedidos = produtoPedidoMapper.fromListDomainToListEntity(pedido.getProdutoPedidos());
+        produtoPedidos.parallelStream().forEach(item -> item.setPedidoEntity(pedidoEntity));
         produtoPedidoRepository.saveAll(produtoPedidos);
         return pedidoMapper.fromEntityToDomain(pedidoEntity);
     }
@@ -203,16 +191,24 @@ public class PedidoRepository implements IPedidoRepository {
     @Override
     public List<Pedido> listarPedidos(Integer page, Integer size) {
         log.info("listarPedidos");
-        List<PedidoEntity> listaPedido = new ArrayList<>();
+        List<PedidoEntity> listPedidoEntity = removerPedidosFinalizadosCancelados(obterPedidosOrdenadosPeloStatus(page, size));
 
-        PageRequest pageable = PageRequest.of(page, size);
-        Page<PedidoEntity> pagePedido = pedidoEntityRepository.findAll(pageable);
+        return pedidoMapper.fromListEntityToListDTO(listPedidoEntity);
+    }
 
-        if (pagePedido != null) {
-            listaPedido.addAll(pagePedido.toList());
-        }
+    private List<PedidoEntity> obterPedidosOrdenadosPeloStatus(Integer page, Integer size) {
+        Page<PedidoEntity> pagePedido = pedidoEntityRepository.findAll(PageRequest.of(page, size, Sort.by("status.id").descending()));
+        return new ArrayList<>(pagePedido.toList());
+    }
 
-        return pedidoMapper.fromListEntityToListDTO(listaPedido);
+    private List<PedidoEntity> removerPedidosFinalizadosCancelados(List<PedidoEntity> listaPedido) {
+        Predicate<PedidoEntity> exceptDone = pedidoEntity -> !(pedidoEntity.getStatus().getId().equals(StatusPedidoEnum.FINALIZADO.getId()));
+        Predicate<PedidoEntity> exceptCancelled = pedidoEntity -> !(pedidoEntity.getStatus().getId().equals(StatusPedidoEnum.CANCELADO.getId()));
+        return listaPedido.stream().filter(exceptDone.and(exceptCancelled)).sorted(this::ordenarPorStatus).toList();
+    }
+
+    private int ordenarPorStatus(PedidoEntity pedidoEntity, PedidoEntity pedidoEntity1) {
+        return pedidoEntity1.getStatus().getId().compareTo(pedidoEntity.getStatus().getId());
     }
 
     @Override

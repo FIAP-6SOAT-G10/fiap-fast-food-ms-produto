@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Configuration;
 public class PedidoConfig {
 
     @Bean
-    public AtualizarPedidoParcialUseCase criarListagemPedidoProdutosUseCase(IPedidoRepository ipedidoRepository) {
-        return new AtualizarPedidoParcialUseCase(ipedidoRepository);
+    public AtualizarPedidoParcialUseCase criarListagemPedidoProdutosUseCase(IPedidoRepository pedidoRepository) {
+        return new AtualizarPedidoParcialUseCase(pedidoRepository);
     }
 
     @Bean
@@ -29,18 +29,23 @@ public class PedidoConfig {
     }
 
     @Bean
-    public GetPedidoUseCase criarGetPedidoUseCase(IPedidoRepository ipedidoRepository) {
-        return new GetPedidoUseCase(ipedidoRepository);
+    public GetPedidoUseCase criarGetPedidoUseCase(IPedidoRepository pedidoRepository) {
+        return new GetPedidoUseCase(pedidoRepository);
     }
 
     @Bean
-    public PatchPedidoUseCase criarPatchPedidoUseCase(IPedidoRepository ipedidoRepository) {
-        return new PatchPedidoUseCase(ipedidoRepository);
+    public PatchPedidoUseCase criarPatchPedidoUseCase(IPedidoRepository pedidoRepository) {
+        return new PatchPedidoUseCase(pedidoRepository);
     }
 
     @Bean
     public PedidoMapper criarPedidoMapper() {
         return new PedidoMapper();
+    }
+
+    @Bean
+    public ProdutoPedidoMapper criarProdutoPedidoMapper() {
+        return new ProdutoPedidoMapper();
     }
 
 }

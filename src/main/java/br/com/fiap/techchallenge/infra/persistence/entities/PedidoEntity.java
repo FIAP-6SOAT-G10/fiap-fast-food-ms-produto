@@ -1,24 +1,18 @@
 package br.com.fiap.techchallenge.infra.persistence.entities;
 
-import br.com.fiap.techchallenge.naousar.domain.deserializers.PagamentoPedidoDeserializer;
-import br.com.fiap.techchallenge.naousar.domain.deserializers.StatusPedidoDeserializer;
+import br.com.fiap.techchallenge.infra.deserializers.PagamentoPedidoDeserializer;
+import br.com.fiap.techchallenge.infra.deserializers.StatusPedidoDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
@@ -37,7 +31,7 @@ public class PedidoEntity {
     @ManyToOne
     @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
     @JoinColumn(name = "id_status")
-    private StatusPedido status;
+    private StatusPedidoEntity status;
 
     @Column(name = "valor", scale = 5, precision = 2)
     private BigDecimal valor;
@@ -54,9 +48,9 @@ public class PedidoEntity {
     @ManyToOne
     @JsonDeserialize(contentUsing = PagamentoPedidoDeserializer.class)
     @JoinColumn(name = "id_status_pagamento")
-    private StatusPagamento statusPagamento;
+    private StatusPagamentoEntity statusPagamento;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedidoEntity", fetch = FetchType.EAGER)
     @JsonBackReference("produtos.pedido")
     private List<ProdutoPedidoEntity> produtos;
 
@@ -65,4 +59,75 @@ public class PedidoEntity {
         dataCriacao = LocalDateTime.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public ClienteEntity getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteEntity cliente) {
+        this.cliente = cliente;
+    }
+
+    public StatusPedidoEntity getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPedidoEntity status) {
+        this.status = status;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public LocalDateTime getDataFinalizacao() {
+        return dataFinalizacao;
+    }
+
+    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {
+        this.dataFinalizacao = dataFinalizacao;
+    }
+
+    public LocalDateTime getDataCancelamento() {
+        return dataCancelamento;
+    }
+
+    public void setDataCancelamento(LocalDateTime dataCancelamento) {
+        this.dataCancelamento = dataCancelamento;
+    }
+
+    public StatusPagamentoEntity getStatusPagamento() {
+        return statusPagamento;
+    }
+
+    public void setStatusPagamento(StatusPagamentoEntity statusPagamento) {
+        this.statusPagamento = statusPagamento;
+    }
+
+    public List<ProdutoPedidoEntity> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<ProdutoPedidoEntity> produtos) {
+        this.produtos = produtos;
+    }
 }

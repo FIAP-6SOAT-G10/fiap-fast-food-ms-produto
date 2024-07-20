@@ -1,28 +1,33 @@
 package br.com.fiap.techchallenge.domain.entities.cliente;
 
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
-@Data
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cliente {
     private Long id;
     private String cpf;
     private String nome;
     private String email;
-    private List<Pedido> pedidos;
 
     public Cliente() {
     }
 
+    public Cliente(String cpf) {
+        if (cpf == null || cpf.isEmpty() || cpf.isBlank()) {
+            throw new IllegalArgumentException("Cpf é um campo obrigatório no cadastro de novos clientes.");
+        }
+        this.cpf = cpf;
+    }
+
     public Cliente(Long id, String cpf, String nome, String email, List<Pedido> pedidos) {
-    this(cpf, nome, email);
-    this.id = id;
-    this.pedidos = pedidos;
-}
+        this(cpf, nome, email);
+        this.id = id;
+    }
 
     public Cliente(String cpf, String nome, String email) {
 
@@ -40,6 +45,38 @@ public class Cliente {
 
         this.cpf = cpf;
         this.nome = nome;
+        this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 }

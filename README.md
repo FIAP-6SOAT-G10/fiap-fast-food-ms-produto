@@ -318,7 +318,7 @@ PATCH http://localhost:8080/api/pedidos/:id/pagamento
 [
   {
     "op": "replace",
-    "path": "/statusPagamento",
+    "path": "/statusPagamentoEntity",
     "value": "pendente|pago|recusado"
   }
 ]
