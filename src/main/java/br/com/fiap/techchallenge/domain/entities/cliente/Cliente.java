@@ -1,10 +1,7 @@
 package br.com.fiap.techchallenge.domain.entities.cliente;
 
-import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -24,7 +21,7 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-    public Cliente(Long id, String cpf, String nome, String email, List<Pedido> pedidos) {
+    public Cliente(Long id, String cpf, String nome, String email) {
         this(cpf, nome, email);
         this.id = id;
     }
