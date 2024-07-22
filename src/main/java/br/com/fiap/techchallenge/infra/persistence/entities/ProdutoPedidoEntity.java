@@ -29,7 +29,7 @@ public class ProdutoPedidoEntity {
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "id_pedido")
-    private PedidoEntity pedido;
+    private PedidoEntity pedidoEntity;
 
     @Column(name = "valor_total")
     private BigDecimal valorTotal;

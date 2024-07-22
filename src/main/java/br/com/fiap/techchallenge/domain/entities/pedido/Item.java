@@ -1,11 +1,12 @@
 package br.com.fiap.techchallenge.domain.entities.pedido;
 
-import br.com.fiap.techchallenge.infra.controllers.ItemDTO;
+import br.com.fiap.techchallenge.infra.controllers.pedido.ItemDTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static br.com.fiap.techchallenge.domain.ErrosEnum.PEDIDO_VAZIO;
 
@@ -16,28 +17,45 @@ import static br.com.fiap.techchallenge.domain.ErrosEnum.PEDIDO_VAZIO;
             "bebida",
             "sobremesa"
         })
-@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 
-    private List<ItemPedido> lanches = new ArrayList<>();
-    private List<ItemPedido> acompanhamento = new ArrayList<>();
-    private List<ItemPedido> bebida = new ArrayList<>();
-    private List<ItemPedido> sobremesa = new ArrayList<>();
+    private List<ItemPedido> lanches;
+    private List<ItemPedido> acompanhamento;
+    private List<ItemPedido> bebida;
+    private List<ItemPedido> sobremesa;
 
     public Item(ItemDTO itemDTO) {
-        this.lanches = itemDTO.getLanches().stream().map(l -> new ItemPedido(l.getId(), l.getQuantidade())).toList();
-        this.acompanhamento = itemDTO.getAcompanhamento().stream().map(l -> new ItemPedido(l.getId(), l.getQuantidade())).toList();
-        this.bebida = itemDTO.getBebida().stream().map(l -> new ItemPedido(l.getId(), l.getQuantidade())).toList();
-        this.sobremesa = itemDTO.getSobremesa().stream().map(l -> new ItemPedido(l.getId(), l.getQuantidade())).toList();
-        validarItensPedido();
+        verificarSePedidoEstaVazio(itemDTO);
+        this.lanches = itemDTO.getLanches().stream().map(lanche -> new ItemPedido(lanche.getId(), lanche.getQuantidade())).collect(Collectors.toList());
+        this.acompanhamento = itemDTO.getAcompanhamento().stream().map(acompanhamento -> new ItemPedido(acompanhamento.getId(), acompanhamento.getQuantidade())).collect(Collectors.toList());
+        this.bebida = itemDTO.getBebida().stream().map(bebida -> new ItemPedido(bebida.getId(), bebida.getQuantidade())).collect(Collectors.toList());
+        this.sobremesa = itemDTO.getSobremesa().stream().map(sobremesa -> new ItemPedido(sobremesa.getId(), sobremesa.getQuantidade())).collect(Collectors.toList());
     }
 
-    private void validarItensPedido() {
-        if(this.lanches.isEmpty() &&
-                this.acompanhamento.isEmpty() &&
-                this.bebida.isEmpty() &&
-                this.sobremesa.isEmpty()){
+    private void verificarSePedidoEstaVazio(ItemDTO itemDTO) {
+        if(itemDTO.getLanches().isEmpty() &&
+                itemDTO.getAcompanhamento().isEmpty() &&
+                itemDTO.getBebida().isEmpty() &&
+                itemDTO.getSobremesa().isEmpty()){
             throw new IllegalArgumentException(PEDIDO_VAZIO.getMessage());
         }
+    }
+
+    public List<ItemPedido> getLanches() {
+        return lanches;
+    }
+
+    public List<ItemPedido> getAcompanhamento() {
+        return acompanhamento;
+    }
+
+    public List<ItemPedido> getBebida() {
+        return bebida;
+    }
+
+    public List<ItemPedido> getSobremesa() {
+        return sobremesa;
     }
 }

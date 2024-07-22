@@ -1,8 +1,6 @@
 package br.com.fiap.techchallenge.infra.controllers.categoria;
 
 import br.com.fiap.techchallenge.application.usecases.categoria.ListarCategoriasUseCase;
-import br.com.fiap.techchallenge.infra.controllers.categoria.CategoriaController;
-import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.gateways.categorias.CategoriaRepository;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;

@@ -12,7 +12,8 @@ public enum StatusPedidoEnum {
     RECEBIDO(1L, "recebido"),
     EM_PREPARACAO(2L, "preparacao"),
     PRONTO(3L, "pronto"),
-    FINALIZADO(4L, "finalizado");
+    FINALIZADO(4L, "finalizado"),
+    CANCELADO(5L, "cancelado");
 
     private final Long id;
     private final String status;

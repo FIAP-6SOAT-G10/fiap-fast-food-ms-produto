@@ -6,7 +6,6 @@ import com.github.fge.jsonpatch.JsonPatch;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface IProdutoRepository {
     List<Produto> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco);

@@ -4,9 +4,7 @@ import br.com.fiap.techchallenge.application.usecases.produto.*;
 import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import br.com.fiap.techchallenge.domain.entities.produto.CategoriaEnum;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
-import br.com.fiap.techchallenge.infra.controllers.ProdutoController;
-import br.com.fiap.techchallenge.infra.controllers.ProdutoDTO;
-import br.com.fiap.techchallenge.infra.dto.CategoriaDTO;
+import br.com.fiap.techchallenge.infra.controllers.categoria.CategoriaDTO;
 import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.infra.gateways.ProdutoRepository;
@@ -24,7 +22,6 @@ import com.github.fge.jsonpatch.JsonPatchOperation;
 import com.github.fge.jsonpatch.ReplaceOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -35,12 +32,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @SpringBootTest
 class ProdutoControllerTest {
