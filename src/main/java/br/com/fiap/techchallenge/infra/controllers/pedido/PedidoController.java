@@ -7,6 +7,7 @@ import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
+import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pedido.Item;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
@@ -167,6 +168,25 @@ public class PedidoController {
         }
 
         return ResponseEntity.ok(pedido);
+    }
+
+    @Operation(summary = "Consulta Status de Pagamento do Pedido", description = "Esta operação deve ser utilizada para consultar o status de pagamento de um pedido individualmente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Not Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @GetMapping(path = "/{id}/pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StatusPagamentoDTO> consultarStatusPagamentoDoPedido(@PathVariable("id") Long id) {
+        log.info("Consulta status de pagamento do pedido.");
+        StatusPagamento statusPagamento = getPedidoUseCase.consultarStatusPagamentoDoPedido(id);
+        return ResponseEntity.status(HttpStatus.OK).body(StatusPagamentoDTO.builder().status(statusPagamento.getNome()).build());
     }
 
     @Operation(summary = "Atualizar Status do Pedido", description = "Esta operação deve ser utilizada para atualizar o status de um pedido individualmente", requestBody =
