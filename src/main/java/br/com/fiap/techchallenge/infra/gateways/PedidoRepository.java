@@ -166,6 +166,17 @@ public class PedidoRepository implements IPedidoRepository {
         }
     }
 
+    @Override
+    public StatusPagamento consultarStatusPagamentoDoPedido(Long id) {
+        log.info("Consultar status de pagamento do pedido.");
+        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.findById(id);
+        if (pedidoOptional.isEmpty()) {
+            throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
+        }
+        Pedido pedido = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
+        return pedido.getStatusPagamento();
+    }
+
     private void validarMudancaDePagamento(Pedido atual, Pedido novo) {
         log.info("Validando mudança de status de pagamento do pedido.");
         PagamentoPedidoEnum statusPagamentoAtual = PagamentoPedidoEnum.byId(atual.getStatusPagamento().getId());
