@@ -125,7 +125,7 @@ Para executar os testes unitários, basta executar o comando abaixo:
 Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu objetivo e possíveis códigos de retorno:
 
 ### Rotas de Categorias
-- `GET /categorias`: Retorna a lista de categorias de produtos cadastradas no sistema. Atualmente, temos as categorias LANCHE, ACOMPANHAMENTO, BEBIDA e SOBREMESA.
+- `GET /categorias`: Retorna a lista de categorias de produtos cadastradas no sistema.
 
 ### Rotas de Clientes
 - `POST /clientes`: Cria um novo cliente. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
@@ -142,12 +142,13 @@ Abaixo está descrito todas as rotas fornecidas da aplicação, bem como seu obj
 - `GET /produtos/categoria/{categoria}`: Retorna uma lista de produtos por categoria. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado, 400 se houver uma solicitação ruim, 404 se não for encontrado e 500 para erros internos do servidor.
 
 ### Rotas de Pedidos
-- `GET /pedidos/{id}`: Retorna um pedido específico. Retorna 200 se for bem-sucedido, 404 se não for encontrado e 500 para erros internos do servidor.
-- `GET /pedidos`: Retorna uma lista de todos os pedidos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
-- `POST /pedidos/{id}/checkout`: Realiza o checkout de um pedido. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
-- `PATCH /pedidos/{id}/status`: Atualiza o status de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
-- `PATCH /pedidos/{id}/pagamento`: Atualiza o status de pagamento de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `POST /pedidos`: Realiza o cadastro de um novo pedido. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
 - `GET /pedidos/status/{status}`: Retorna todos os pedidos em um determinado status. Os status disponíveis são: Recebido (recebido), Em Preparação (preparacao), Pronto (pronto) e Finalizado (finalizado). Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `POST /pedidos/{id}/checkout`: Realiza o checkout de um pedido. Retorna 201 se for bem-sucedido, 400 se houver uma solicitação ruim e 500 para erros internos do servidor.
+- `PATCH /pedidos/{id}/pagamento`: Atualiza o status de pagamento de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `PATCH /pedidos/{id}/status`: Atualiza o status de um pedido. Retorna 200 se for bem-sucedido, 400 se houver algum problema na solicitação e 500 para erros internos do servidor.
+- `GET /pedidos`: Retorna uma lista de todos os pedidos. Retorna 200 se for bem-sucedido, 204 se nenhum conteúdo for encontrado e 500 para erros internos do servidor.
+- `GET /pedidos/{id}`: Retorna um pedido específico. Retorna 200 se for bem-sucedido, 404 se não for encontrado e 500 para erros internos do servidor.
 
 <a id="ordem"></a>
 ## Ordem de Execução das API
@@ -156,7 +157,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 ### Realizar pedido para cliente _não identificado_
 <a name="recurso"></a>
 1. [Listar produtos por categoria](#recurso10)
-2. [Criar pedido](#recurso11)
+2. [Criar pedido](#createPedido)
 3. [Realizar checkout](#recurso13)
 4. [Atualizar status do pedido para 'Em preparação'](#recurso14)
 5. [Atualizar status do pedido para 'Pronto'](#recurso14)
@@ -165,7 +166,7 @@ Para o funcionamento correto das APIs, a ordem abaixo deverá ser seguida à dep
 ### Realizar pedido para _cliente identificado_
 1. [Cadastrar cliente](#recurso1)
 2. [Listar produtos por categoria](#recurso10)
-3. [Criar pedido](#recurso11)
+3. [Criar pedido](#createPedido)
 4. [Realizar checkout](#recurso13)
 5. [Atualizar status do pedido para 'Em preparação'](#recurso14)
 6. [Atualizar status do pedido para 'Pronto'](#recurso14)
@@ -223,7 +224,10 @@ POST http://localhost:8080/api/produtos
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
-    "categoria": "BEBIDA",
+    "categoria": {
+      "nome": "Bebida",
+      "descricao": "Coquinha Gelada"
+    },
     "preco": 19.9,
     "imagem": "CDN:imagem"
 }
@@ -255,7 +259,10 @@ PUT http://localhost:8080/api/produtos/:id
 {
     "nome": "Bebida Láctea de Morango",
     "descricao": "Bebida Láctea de Morango 500ml",
-    "categoria": "BEBIDA",
+    "categoria": {
+      "nome": "Acompanhamento",
+      "descricao": "Fritura"
+    },
     "preco": 19.9,
     "imagem": "CDN:imagem"
 }
@@ -266,6 +273,8 @@ PUT http://localhost:8080/api/produtos/:id
 ```sh
 DELETE http://localhost:8080/api/produtos/:id
 ```
+
+### Categoria
 
 <a id="recurso10"></a>
 #### Listar Produtos por Categoria
@@ -278,7 +287,80 @@ GET http://localhost:8080/api/produtos/categoria/:categoria
 - SOBREMESA
 ```
 
+<a id="findAllCategories"></a>
+#### Listar Todas Categorias
+```sh
+GET http://localhost:8080/api/categorias
+```
+
 ### Pedido
+
+<a id="createPedido"></a>
+#### Cadastrar Pedido
+```shell
+POST http://localhost:8080/api/pedidos
+{
+   "id":12345678900,
+   "cliente":{
+      "id":12,
+      "cpf":"12312312312",
+      "nome":"Joel",
+      "email":"joel@email.com"
+   },
+   "status":{
+     "id": 1,
+     "nome": "Em Preparo"
+   },
+   "valor":89.25,
+   "dataCriacao":"2024-05-02T00:00:00",
+   "dataFinalizacao":"2024-05-02T00:00:00",
+   "dataCancelamento":"2024-05-02T00:00:00",
+   "statusPagamento": {
+     "id": 1,
+     "nome": "Pago"
+   },
+   "produtos":[
+      {
+         "produto":{
+            "id":12345678900,
+            "nome":"Product Name",
+            "descricao":"Product Description",
+            "preco":49.99,
+            "imagem":"image_url"
+         },
+         "valorTotal":125.78,
+         "quantidade":2.0
+      }
+   ],
+   "items":{
+      "lanches":[
+         {
+            "id":46,
+            "quantidade":2
+         }
+      ],
+      "acompanhamento":[
+         {
+            "id":782,
+            "quantidade":5
+         }
+      ],
+      "bebida":[
+         {
+            "id":1,
+            "quantidade":1
+         }
+      ],
+      "sobremesa":[
+         {
+            "id":968,
+            "quantidade":2
+         }
+      ]
+   }
+}
+
+```
 
 <a id="recurso11"></a>
 #### Obter Pedido por Identificador
