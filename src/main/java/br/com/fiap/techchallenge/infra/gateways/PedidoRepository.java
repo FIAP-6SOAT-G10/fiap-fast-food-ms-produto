@@ -73,7 +73,8 @@ public class PedidoRepository implements IPedidoRepository {
         PedidoEntity pedidoEntity = pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedido));
         List<ProdutoPedidoEntity> produtoPedidos = produtoPedidoMapper.fromListDomainToListEntity(pedido.getProdutoPedidos());
         produtoPedidos.parallelStream().forEach(item -> item.setPedidoEntity(pedidoEntity));
-        produtoPedidoRepository.saveAll(produtoPedidos);
+        pedidoEntity.setProdutos(produtoPedidos);
+        produtoPedidoRepository.saveAllAndFlush(produtoPedidos);
         return pedidoMapper.fromEntityToDomain(pedidoEntity);
     }
 

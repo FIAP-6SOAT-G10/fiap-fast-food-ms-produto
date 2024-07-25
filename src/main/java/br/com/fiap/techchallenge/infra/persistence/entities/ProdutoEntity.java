@@ -4,17 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Setter
-@Getter
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "produto")
 @SequenceGenerator(name = "produto_seq" , sequenceName = "produto_id_seq" , allocationSize = 1)
 public class ProdutoEntity {
@@ -47,6 +41,8 @@ public class ProdutoEntity {
     @OneToMany(mappedBy = "produtoEntity")
     private List<ProdutoPedidoEntity> pedidos;
 
+    public ProdutoEntity() {}
+
     public ProdutoEntity(Long id, String nome, String descricao, CategoriaEntity categoriaEntity, BigDecimal preco, String imagem) {
         this.id = id;
         this.nome = nome;
@@ -54,5 +50,61 @@ public class ProdutoEntity {
         this.categoriaEntity = categoriaEntity;
         this.preco = preco;
         this.imagem = imagem;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public CategoriaEntity getCategoriaEntity() {
+        return categoriaEntity;
+    }
+
+    public void setCategoriaEntity(CategoriaEntity categoriaEntity) {
+        this.categoriaEntity = categoriaEntity;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public List<ProdutoPedidoEntity> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<ProdutoPedidoEntity> pedidos) {
+        this.pedidos = pedidos;
     }
 }

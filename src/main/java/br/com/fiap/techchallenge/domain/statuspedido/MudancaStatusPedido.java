@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.domain.statuspedido;//package br.com.fiap.techchallenge.naousar.domain.cors.statuspedido;
+package br.com.fiap.techchallenge.domain.statuspedido;
 
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedidoEnum;
 

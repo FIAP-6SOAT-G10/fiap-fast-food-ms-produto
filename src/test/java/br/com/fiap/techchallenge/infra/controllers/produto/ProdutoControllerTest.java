@@ -70,7 +70,7 @@ class ProdutoControllerTest {
 
     @Test
     void shouldListarProdutosPorCategoriaInformada() {
-        when(produtoEntityRepository.findAllByCategoriaEntityId(anyInt())).thenReturn(Optional.of(criarListaDeProdutosEntity()));
+        when(produtoEntityRepository.findAllByCategoriaEntityId(anyLong())).thenReturn(Optional.of(criarListaDeProdutosEntity()));
         when(produtoMapper.fromListEntityToListDomain(anyList())).thenReturn(criarListaDeProdutos());
 
         ProdutoController produtoController = new ProdutoController(listarProdutoUseCase, cadastrarProdutoUseCase, deletarProdutoUseCase, atualizarProdutoParcialUseCase, atualizarProdutoUseCase);
@@ -527,7 +527,7 @@ class ProdutoControllerTest {
 
     @Test
     void shouldAtualizarProdutoComSucesso() {
-        ProdutoEntity produtoEntity = ProdutoEntity.builder().build();
+        ProdutoEntity produtoEntity = new ProdutoEntity();
 
         when(produtoEntityRepository.findById(anyLong())).thenReturn(Optional.of(produtoEntity));
         when(produtoMapper.fromDomainToEntity(any())).thenReturn(produtoEntity);
@@ -660,13 +660,19 @@ class ProdutoControllerTest {
     }
 
     private ProdutoEntity criarProdutoRetorno() {
-        return ProdutoEntity.builder().id(1L).build();
+        ProdutoEntity produtoEntity = new ProdutoEntity();
+        produtoEntity.setId(1L);
+
+        return produtoEntity;
     }
 
     private List<ProdutoEntity> criarListaDeProdutosEntity() {
+        ProdutoEntity produtoEntity = new ProdutoEntity();
+        produtoEntity.setCategoriaEntity(CategoriaEntity.builder().id(1L).nome("lanche").build());
+
         return List.of(
-                ProdutoEntity.builder().categoriaEntity(CategoriaEntity.builder().id(1L).nome("lanche").build()).build(),
-                ProdutoEntity.builder().categoriaEntity(CategoriaEntity.builder().id(1L).nome("lanche").build()).build()
+                produtoEntity,
+                produtoEntity
         );
     }
 

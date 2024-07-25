@@ -49,7 +49,7 @@ public class PedidoControllerTest {
 
     @Test
     public void testCadastrarPedidoWithoutItems() throws BaseException {
-        PedidoDTO pedidoDTO = new PedidoDTO(1L, new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"), new StatusPedido(1L, "any()status"), BigDecimal.TEN, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, null, null);
+        PedidoDTO pedidoDTO = new PedidoDTO(1L, new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"), new StatusPedido(1L), BigDecimal.TEN, LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now(), null, null, null);
         pedidoDTO.setCliente(new ClienteDTO(1L, "42321973898", "silva da silva", "any()email"));
         ResponseEntity<Pedido> response = pedidoController.cadastrarPedido(pedidoDTO);
 
@@ -91,13 +91,14 @@ public class PedidoControllerTest {
     public void shouldUpdatePaymentStatusSuccessfully() throws Exception {
         JsonPatch validPatch = JsonPatch.fromJson(objectMapper.readTree("[{\"op\":\"replace\",\"path\":\"/statusPagamento\",\"value\":\"PAGO\"}]"));
         Pedido expectedPedido = new Pedido();
-        expectedPedido.setStatusPagamento(StatusPagamento.builder().nome("PAGO").build());
+        StatusPagamento statusPagamento = new StatusPagamento("pago");
+        expectedPedido.setStatusPagamento(statusPagamento);
         when(patchPedidoUseCase.atualizarPagamentoDoPedido(eq("1"), any(JsonPatch.class))).thenReturn(expectedPedido);
 
         ResponseEntity<Pedido> response = pedidoController.atualizarStatusDePagamento("1", validPatch);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(StatusPagamento.builder().nome("PAGO").build(), response.getBody().getStatusPagamento());
+        assertEquals(statusPagamento, response.getBody().getStatusPagamento());
     }
 
     @Test

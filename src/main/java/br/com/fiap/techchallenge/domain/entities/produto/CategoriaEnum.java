@@ -12,12 +12,12 @@ import java.util.function.Predicate;
 @Getter
 @AllArgsConstructor
 public enum CategoriaEnum {
-    LANCHE(1, "LANCHE"),
-    BEBIDA(2, "BEBIDA"),
-    ACOMPANHAMENTO(3, "ACOMPANHAMENTO"),
-    SOBREMESA(4, "SOBREMESA");
+    LANCHE(1L, "LANCHE"),
+    BEBIDA(2L, "BEBIDA"),
+    ACOMPANHAMENTO(3L, "ACOMPANHAMENTO"),
+    SOBREMESA(4L, "SOBREMESA");
 
-    private final Integer idCategoria;
+    private final Long idCategoria;
     private final String nome;
 
     @JsonCreator
