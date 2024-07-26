@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-application
+  labels:
+    app: my-deployment-application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-deployment-application
+  template:
+    metadata:
+      labels:
+        app: my-deployment-application
+    spec:
+      containers:
+        - name: tech-fiap-api-container
+          image: tech-fiap-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
