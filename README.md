@@ -48,6 +48,7 @@ Fizemos o mapeamento do fluxo de forma evolutiva, pensando a partir dos eventos 
 2. [DBeaver](https://dbeaver.io/download/)
 3. [Maven](https://maven.apache.org/)
 4. [Postman](https://www.postman.com/downloads/) (opcional, pois há Swagger em /api/api-docs ou /api/swagger-ui.html)
+5. [Ngrok](https://ngrok.com/download) (opcional, para testar o webhook)
 
 Antes de iniciar, certifique-se de que sua máquina atenda aos seguintes requisitos:<br/>
 
@@ -71,10 +72,62 @@ docker -v
 ``` 
 Se o Docker não estiver instalado, faça o download e siga as instruções de instalação do site oficial do Docker ou de outra fonte confiável.<br/><br/>
 
+
 **Clonando o projeto:**<br/>
 Clone o repositório do projeto em seu ambiente local.<br/>
 ```bash
 git clone https://github.com/FIAP-6SOAT-G10/tech-challenge.git
+```
+
+## Configuração e Execução do Ngrok
+
+### Instalação do Ngrok
+Baixe e instale o Ngrok a partir do site oficial.
+
+### Autenticação
+Após a instalação, autentique-se com seu token de autenticação:
+```sh
+ngrok authtoken <seu_token_de_autenticação>
+```
+
+Iniciar o Ngrok:  
+Execute o Ngrok para expor sua aplicação local na porta 8080:
+```sh 
+ngrok http 8080
+```
+
+### Atualizar a Variável _mercadopago.notification_url_:
+
+Copie a URL gerada pelo Ngrok (algo como https://<subdomínio>.ngrok.io) e atualize a variável mercadopago.notification_url no seu arquivo de configuração:
+```mercadopago.notification_url=https://<subdomínio>.ngrok.io/webhook/notifications ```
+
+### Funcionamento do Webhook de Notificações do Mercado Pago
+
+### Recebimento de Notificações:  
+
+O Mercado Pago envia notificações para a URL configurada ```(mercadopago.notification_url)``` sempre que há uma atualização no status de um pagamento.
+
+### Endpoint de Webhook:  
+O endpoint ```/webhook/notifications``` recebe essas notificações e processa as informações enviadas pelo Mercado Pago.
+
+### Processamento da Notificação:  
+
+O controlador WebhookController lida com as notificações recebidas. Ele verifica a ação (action) e, se for payment.updated, consulta o status do pagamento e atualiza o status do pedido no sistema.
+
+### Exemplo de Notificação:
+
+Uma notificação típica contém informações sobre o pagamento, como o ID do pagamento e a ação realizada (payment.updated).
+
+### Exemplo de Configuração do Webhook no application.properties:
+
+```mercadopago.notification_url=https://<subdomínio>.ngrok.io/webhook/notifications```
+
+### Exemplo de Uso do Ngrok
+
+Iniciar o Ngrok:
+
+```sh 
+ngrok http 8080
 ```
 
 <a id="execucao-local"></a>

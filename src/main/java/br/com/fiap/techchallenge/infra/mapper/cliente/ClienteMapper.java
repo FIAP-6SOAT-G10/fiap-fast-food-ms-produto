@@ -1,6 +1,9 @@
 package br.com.fiap.techchallenge.infra.mapper.cliente;
 
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
+import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
+import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
 
 import java.util.List;
@@ -24,6 +27,17 @@ public class ClienteMapper {
         cliente.setCpf(clienteEntity.getCpf());
         cliente.setNome(clienteEntity.getNome());
         cliente.setEmail(clienteEntity.getEmail());
+//        cliente.setPedidos(PedidoMapper);
+
+        return cliente;
+    }
+
+    public Cliente fromDTOToDomain(ClienteDTO clienteDTO) {
+        Cliente cliente = new Cliente();
+        cliente.setId(clienteDTO.getId());
+        cliente.setCpf(clienteDTO.getCpf());
+        cliente.setNome(clienteDTO.getNome());
+        cliente.setEmail(clienteDTO.getEmail());
 //        cliente.setPedidos(PedidoMapper);
 
         return cliente;

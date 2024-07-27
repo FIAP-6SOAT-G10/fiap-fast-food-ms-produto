@@ -3,3 +3,8 @@ spring:
     url: jdbc:postgresql://postgres_container:5432/postgres
   jpa:
     show-sql: false
+
+
+mercadopago:
+  access_token: ${MP_ACCESS_TOKEN:TEST-2194493215547460-072323-e7020fc0d11389fdae3dc86c6b9a1e4f-115466963}
+  notification_url: ${MP_NOTIFICATION_URL:https://webhook.site/820da4fd-08cc-446d-8f0d-d4b9f22738b9/pedidos/mercadopago/notifications}

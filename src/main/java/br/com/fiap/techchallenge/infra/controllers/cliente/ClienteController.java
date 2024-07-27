@@ -47,7 +47,7 @@ public class ClienteController {
     @CrossOrigin(origins = "*", maxAge = 3600)
     public ResponseEntity<Void> cadastrarCliente(@RequestBody ClienteDTO clienteRequest) {
         log.info("cadastrar um cliente");
-        Cliente cliente = cadastrarClienteUseCase.salvarCliente(new Cliente(clienteRequest.cpf(), clienteRequest.nome(), clienteRequest.email()));
+        Cliente cliente = cadastrarClienteUseCase.salvarCliente(new Cliente(clienteRequest.getCpf(), clienteRequest.getNome(), clienteRequest.getEmail()));
         if (cliente == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -125,7 +125,7 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> atualizarCliente(@PathVariable("id") String id, @RequestBody ClienteDTO clienteRequest
     ) {
         log.info("Atualizando cliente.");
-        Cliente cliente = atualizarClienteUseCase.atualizarClientes(id, new Cliente(clienteRequest.cpf(), clienteRequest.nome(), clienteRequest.email()));
+        Cliente cliente = atualizarClienteUseCase.atualizarClientes(id, new Cliente(clienteRequest.getCpf(), clienteRequest.getNome(), clienteRequest.getEmail()));
         if (cliente == null) {
             ResponseEntity.notFound().build();
         }

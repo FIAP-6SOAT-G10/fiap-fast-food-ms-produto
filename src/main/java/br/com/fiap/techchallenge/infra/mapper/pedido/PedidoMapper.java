@@ -6,6 +6,7 @@ import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.StatusPedido;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
+import br.com.fiap.techchallenge.infra.controllers.pedido.PedidoDTO;
 import br.com.fiap.techchallenge.infra.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.entities.*;
@@ -31,6 +32,18 @@ public class PedidoMapper {
         pedido.setDataCancelamento(pedidoEntity.getDataCancelamento());
         pedido.setStatus(status);
         pedido.setStatusPagamento(statusPagamento);
+        pedido.setProdutoPedidos(produtosPedidos);
+
+        return pedido;
+    }
+
+    public Pedido fromDTOToDomain(PedidoDTO pedidoDTO) {
+        Cliente cliente = new ClienteMapper().fromDTOToDomain(pedidoDTO.getCliente());
+        List<ProdutoPedido> produtosPedidos = pedidoDTO.getProdutos();
+
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setValor(pedidoDTO.getValor());
         pedido.setProdutoPedidos(produtosPedidos);
 
         return pedido;
