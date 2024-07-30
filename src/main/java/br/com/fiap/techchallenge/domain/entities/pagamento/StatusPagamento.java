@@ -15,6 +15,8 @@ public class StatusPagamento {
     @Schema(description = "Campo que informa o nome do status de pagamento", example = "Pago")
     private String nome;
 
+    public StatusPagamento() {}
+
     public StatusPagamento(Long id) {
         StatusPagamentoEnum statusPagamentoEnum = StatusPagamentoEnum.byId(id);
         this.id = statusPagamentoEnum.getId();
@@ -25,6 +27,11 @@ public class StatusPagamento {
         StatusPagamentoEnum statusPagamentoEnum = StatusPagamentoEnum.byStatus(nome);
         this.id = statusPagamentoEnum.getId();
         this.nome = statusPagamentoEnum.getStatus();
+    }
+
+    public StatusPagamento(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
     public Long getId() {

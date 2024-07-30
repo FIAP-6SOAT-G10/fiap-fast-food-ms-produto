@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.infra.persistence.entities;
 
-import br.com.fiap.techchallenge.infra.deserializers.PagamentoPedidoDeserializer;
-import br.com.fiap.techchallenge.infra.deserializers.StatusPedidoDeserializer;
+import br.com.fiap.techchallenge.infra.persistence.entities.deserializers.StatusPagamentoEntityDeserializer;
+import br.com.fiap.techchallenge.infra.persistence.entities.deserializers.StatusPedidoEntityDeserializer;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -29,7 +29,7 @@ public class PedidoEntity {
     private ClienteEntity cliente;
 
     @ManyToOne
-    @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
+    @JsonDeserialize(contentUsing = StatusPedidoEntityDeserializer.class)
     @JoinColumn(name = "id_status")
     private StatusPedidoEntity status;
 
@@ -46,12 +46,12 @@ public class PedidoEntity {
     private LocalDateTime dataCancelamento;
 
     @ManyToOne
-    @JsonDeserialize(contentUsing = PagamentoPedidoDeserializer.class)
+    @JsonDeserialize(contentUsing = StatusPagamentoEntityDeserializer.class)
     @JoinColumn(name = "id_status_pagamento")
     private StatusPagamentoEntity statusPagamento;
 
     @OneToMany(mappedBy = "pedidoEntity", fetch = FetchType.EAGER)
-    @JsonBackReference("produtos.pedido")
+    @JsonBackReference("produtos.pedidoEntity")
     private List<ProdutoPedidoEntity> produtos;
 
     @PrePersist

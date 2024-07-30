@@ -2,8 +2,11 @@ package br.com.fiap.techchallenge.domain.entities.pedido;
 
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
+import br.com.fiap.techchallenge.infra.deserializers.StatusPagamentoDeserializer;
+import br.com.fiap.techchallenge.infra.deserializers.StatusPedidoDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,11 +17,13 @@ import java.util.List;
 public class Pedido {
     private Long id;
     private Cliente cliente;
+    @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
     private StatusPedido status;
     private BigDecimal valor;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataFinalizacao;
     private LocalDateTime dataCancelamento;
+    @JsonDeserialize(contentUsing = StatusPagamentoDeserializer.class)
     private StatusPagamento statusPagamento;
     private List<ProdutoPedido> produtoPedidos;
     private Item items;
