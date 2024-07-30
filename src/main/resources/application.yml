@@ -4,8 +4,8 @@ spring:
   application:
     name: tech-challenge
   datasource:
-    username: tech
-    password: tech_passwd
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     properties:
       hibernate:

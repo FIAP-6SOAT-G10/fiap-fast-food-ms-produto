@@ -7,5 +7,5 @@ spec:
   selector:
     app: tech-fiap-application
   ports:
-    - port: 80
+    - port: 8080
       nodePort: 30000
