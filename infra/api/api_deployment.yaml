@@ -3,20 +3,23 @@ kind: Deployment
 metadata:
   name: deployment-application
   labels:
-    app: my-deployment-application
+    app: tech-fiap-application
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: my-deployment-application
+      app: tech-fiap-application
   template:
     metadata:
       labels:
-        app: my-deployment-application
+        app: tech-fiap-application
     spec:
       containers:
         - name: tech-fiap-api-container
-          image: tech-fiap-api:latest
+          image: gabriwl/tech-fiap:latest
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: cm-api
           ports:
             - containerPort: 80
