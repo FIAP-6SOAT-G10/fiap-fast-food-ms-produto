@@ -22,9 +22,7 @@ import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.ClienteEntity;
-import br.com.fiap.techchallenge.infra.persistence.entities.PedidoEntity;
-import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
+import br.com.fiap.techchallenge.infra.persistence.entities.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,7 +79,7 @@ public class PedidoRepository implements IPedidoRepository {
     @Override
     public Pedido atualizarStatusDoPedido(Long id, JsonPatch patch) {
         log.info("Atualizando status do pedido.");
-        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.findById(id);
+        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.loadPedidoById(id);
         if (pedidoOptional.isEmpty()) {
             throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
@@ -99,7 +97,7 @@ public class PedidoRepository implements IPedidoRepository {
             validarMudancaDeStatus(pedidoAtual, pedidoAtualizado);
             definirDataFinalizacaoPedido(pedidoAtualizado);
 
-            return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush( pedidoMapper.fromDomainToEntity(pedidoAtualizado)));
+            return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedidoAtualizado)));
         } catch (JsonPatchException | JsonProcessingException jsonException) {
             log.error("Erro ao atualizar o registro no banco de dados", jsonException);
             throw new PedidoException(ErrosEnum.PEDIDO_FALHA_DURANTE_ATUALIZACAO);
@@ -248,15 +246,15 @@ public class PedidoRepository implements IPedidoRepository {
 
         TimeUnit.SECONDS.sleep(5);
 
-        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.findById(id);
+        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.loadPedidoById(id);
         if (pedidoOptional.isEmpty()) {
             throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
 
-        Pedido pedido = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
-        pedido.setStatus(new StatusPedido(StatusPedidoEnum.RECEBIDO.getStatus()));
-        pedido.setStatusPagamento(new StatusPagamento(StatusPagamentoEnum.PAGO.getStatus()));
+        PedidoEntity pedidoEntity = pedidoOptional.get();
+        pedidoEntity.setStatus(new StatusPedidoEntity(StatusPedidoEnum.RECEBIDO.getStatus()));
+        pedidoEntity.setStatusPagamento(new StatusPagamentoEntity(StatusPagamentoEnum.PAGO.getStatus()));
 
-        return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush( pedidoMapper.fromDomainToEntity(pedido)));
+        return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush(pedidoEntity));
     }
 }

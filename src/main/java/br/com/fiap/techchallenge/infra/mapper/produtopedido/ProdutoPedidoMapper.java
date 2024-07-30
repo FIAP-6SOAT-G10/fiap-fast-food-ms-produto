@@ -10,12 +10,17 @@ import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ProdutoPedidoMapper {
 
     public ProdutoPedido fromEntityToDomain(ProdutoPedidoEntity produtoPedidoEntity) {
         ProdutoEntity produtoEntity = produtoPedidoEntity.getProdutoEntity();
+
+        if (produtoEntity == null) {
+            return null;
+        }
 
         CategoriaEntity categoriaEntity = produtoEntity.getCategoriaEntity();
         Categoria categoria = new Categoria();
@@ -60,11 +65,11 @@ public class ProdutoPedidoMapper {
     }
 
     public List<ProdutoPedido> fromListEntityToListDomain(List<ProdutoPedidoEntity> produtosPedido) {
-        return produtosPedido.stream().map(this::fromEntityToDomain).toList();
+        return produtosPedido.isEmpty() ? Collections.emptyList() : produtosPedido.stream().map(this::fromEntityToDomain).toList();
     }
 
     public List<ProdutoPedidoEntity> fromListDomainToListEntity(List<ProdutoPedido> produtosPedido) {
-        return produtosPedido.stream().map(this::fromDomainToEntity).toList();
+        return produtosPedido.isEmpty() ? Collections.emptyList() : produtosPedido.stream().map(this::fromDomainToEntity).toList();
     }
 
 }

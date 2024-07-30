@@ -13,18 +13,20 @@ public class ClienteMapper {
         clienteEntity.setCpf(cliente.getCpf());
         clienteEntity.setNome(cliente.getNome());
         clienteEntity.setEmail(cliente.getEmail());
-//        clienteEntity.setPedidos(PedidoMapper);
 
         return clienteEntity;
     }
 
     public Cliente fromEntityToDomain(ClienteEntity clienteEntity) {
+        if (clienteEntity == null) {
+            return null;
+        }
+
         Cliente cliente = new Cliente();
         cliente.setId(clienteEntity.getId());
         cliente.setCpf(clienteEntity.getCpf());
         cliente.setNome(clienteEntity.getNome());
         cliente.setEmail(clienteEntity.getEmail());
-//        cliente.setPedidos(PedidoMapper);
 
         return cliente;
     }

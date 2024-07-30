@@ -14,13 +14,16 @@ import java.util.List;
 
 public class PedidoMapper {
 
+    private final ClienteMapper clienteMapper = new ClienteMapper();
+    private final ProdutoPedidoMapper produtoPedidoMapper = new ProdutoPedidoMapper();
+
     public Pedido fromEntityToDomain(PedidoEntity pedidoEntity) {
-        Cliente cliente = new ClienteMapper().fromEntityToDomain(pedidoEntity.getCliente());
+        Cliente cliente = clienteMapper.fromEntityToDomain(pedidoEntity.getCliente());
 
         StatusPedido status = new StatusPedido(pedidoEntity.getStatus().getId());
         StatusPagamento statusPagamento = new StatusPagamento(pedidoEntity.getStatusPagamento().getId());
 
-        List<ProdutoPedido> produtosPedidos = new ProdutoPedidoMapper().fromListEntityToListDomain(pedidoEntity.getProdutos());
+        List<ProdutoPedido> produtosPedidos = produtoPedidoMapper.fromListEntityToListDomain(pedidoEntity.getProdutos());
 
         Pedido pedido = new Pedido();
         pedido.setId(pedidoEntity.getId());
@@ -37,8 +40,12 @@ public class PedidoMapper {
     }
 
     public PedidoEntity fromDomainToEntity(Pedido pedido) {
-        Cliente cliente = pedido.getCliente();
-        ClienteEntity clienteEntity = new ClienteEntity(cliente.getId(), cliente.getCpf(), cliente.getNome(), cliente.getEmail());
+        PedidoEntity pedidoEntity = new PedidoEntity();
+
+        if (pedido.getCliente() != null) {
+            Cliente cliente = pedido.getCliente();
+            pedidoEntity.setCliente(new ClienteEntity(cliente.getId(), cliente.getCpf(), cliente.getNome(), cliente.getEmail()));
+        }
 
         StatusPedido status = pedido.getStatus();
         StatusPedidoEntity statusPedidoEntity = new StatusPedidoEntity();
@@ -50,12 +57,11 @@ public class PedidoMapper {
         statusPagamentoEntity.setId(statusPagamento.getId());
         statusPagamentoEntity.setNome(statusPagamento.getNome());
 
-        PedidoEntity pedidoEntity = new PedidoEntity();
         pedidoEntity.setId(pedido.getId());
-        pedidoEntity.setCliente(clienteEntity);
         pedidoEntity.setStatus(statusPedidoEntity);
         pedidoEntity.setStatusPagamento(statusPagamentoEntity);
         pedidoEntity.setValor(pedido.getValor());
+        pedidoEntity.setProdutos(produtoPedidoMapper.fromListDomainToListEntity(pedido.getProdutoPedidos()));
 
         return pedidoEntity;
     }
