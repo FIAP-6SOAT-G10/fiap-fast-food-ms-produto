@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-application
+  labels:
+    app: tech-fiap-application
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tech-fiap-application
+  template:
+    metadata:
+      labels:
+        app: tech-fiap-application
+    spec:
+      containers:
+        - name: tech-fiap-api-container
+          image: gabriwl/tech-fiap:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret-api
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+               secretKeyRef:
+                  name: secret-api
+                  key: DB_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: cm-api
+          ports:
+            - containerPort: 8080
