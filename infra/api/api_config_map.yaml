@@ -4,5 +4,4 @@ metadata:
   name: cm-api
 data:
   DB_HOST: svc-postgres
-  DB_PORT: "5432"
   DB_NAME: postgres
