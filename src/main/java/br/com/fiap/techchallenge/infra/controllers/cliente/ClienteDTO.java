@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 public class ClienteDTO{
 
         @Schema(description = "O identificador do cliente.", example = "1")
-        Long id;
+        private Long id;
 
         @Schema(description = "O cpf do cliente que será criado.", example = "123.123.123-12")
-        String cpf;
+        private String cpf;
 
         @Schema(description = "O nome do cliente que será criado.", example = "João da Silva")
-        String nome;
+        private String nome;
 
         @Schema(description = "O e-mail do cliente que será criado.", example = "teste@teste.com.br")
-        String email;
-
+        private String email;
+        
 }
