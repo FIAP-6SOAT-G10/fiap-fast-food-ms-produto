@@ -21,14 +21,14 @@ spec:
           env:
             - name: DB_USERNAME
               valueFrom:
-                - secretKeyRef:
-                    name: secret-api
-                    key: DB_USERNAME
+                secretKeyRef:
+                  name: secret-api
+                  key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
-                - secretKeyRef:
-                    name: secret-api
-                    key: DB_PASSWORD
+               secretKeyRef:
+                  name: secret-api
+                  key: DB_PASSWORD
           envFrom:
             - configMapRef:
                 name: cm-api
