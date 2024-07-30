@@ -2,11 +2,13 @@ package br.com.fiap.techchallenge.application.usecases.pedido;
 
 import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
 import br.com.fiap.techchallenge.application.gateways.IProdutoRepository;
+import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
 import br.com.fiap.techchallenge.domain.entities.pedido.Item;
 import br.com.fiap.techchallenge.domain.entities.pedido.ItemPedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
+import br.com.fiap.techchallenge.application.usecases.pagamento.RealizarPagamentoUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +27,12 @@ public class PostPedidoUseCase  {
 
     private final IPedidoRepository pedidoRepository;
     private final IProdutoRepository produtoRepository;
+    private final RealizarPagamentoUseCase realizarPagamentoUseCase;
 
-    public PostPedidoUseCase(IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository) {
+    public PostPedidoUseCase(IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository, RealizarPagamentoUseCase realizarPagamentoUseCase) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
+        this.realizarPagamentoUseCase = realizarPagamentoUseCase;
     }
 
     public Pedido criarPedido(Pedido pedido) {
@@ -87,7 +91,8 @@ public class PostPedidoUseCase  {
         return produtos;
     }
 
-    public Pedido realizarCheckout(Long id) throws InterruptedException {
-        return pedidoRepository.realizarCheckout(id);
+    public PagamentoResponseDTO realizarCheckout(Long id) {
+        Pedido pedido = pedidoRepository.buscarPedidoPorId(id);
+        return realizarPagamentoUseCase.efetuarPagamento(pedido);
     }
 }

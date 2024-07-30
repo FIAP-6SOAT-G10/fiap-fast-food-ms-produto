@@ -7,12 +7,15 @@ import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PostPedidoUseCase;
 import br.com.fiap.techchallenge.domain.ErrorsResponse;
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
+import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pedido.Item;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
+import br.com.fiap.techchallenge.application.usecases.pagamento.RealizarPagamentoUseCase;
 import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
+import br.com.fiap.techchallenge.infra.controllers.pagamento.StatusPagamentoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
-import br.com.fiap.techchallenge.infra.mapper.cliente.ClienteMapper;
+import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,10 +62,11 @@ public class PedidoController {
             """;
 
     private final PostPedidoUseCase postPedidoUseCase;
+    private final RealizarPagamentoUseCase realizarPagamentoUseCase;
     private final GetPedidoUseCase getPedidoUseCase;
     private final PatchPedidoUseCase patchPedidoUseCase;
     private final AtualizarPedidoParcialUseCase atualizarPedidoParcialUseCase;
-    private final ClienteMapper clienteMapper;
+    private final PedidoMapper pedidoMapper;
 
     @Operation(summary = "Cadastrar Pedido", description = "Esta operação deve ser utilizada para cadastrar um novo pedido no sistema")
     @ApiResponses(value = {
@@ -87,7 +91,7 @@ public class PedidoController {
         if (clienteDTO == null) {
             pedido = new Pedido(new Item(pedidoDTO.getItems()));
         } else {
-            Cliente cliente = new Cliente(pedidoDTO.getCliente().cpf());
+            Cliente cliente = new Cliente(pedidoDTO.getCliente().getCpf());
             Item item = new Item(pedidoDTO.getItems());
             pedido = new Pedido(cliente, item);
         }
@@ -117,28 +121,6 @@ public class PedidoController {
                                                                @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                @RequestParam(name = "size", defaultValue = "25") Integer size) {
         return ResponseEntity.ok(getPedidoUseCase.listarPedidosPorStatus(status, page, size));
-    }
-
-    @Operation(summary = "Realizar checkout", description = "Esta operação consiste em realizar o checkout de um pedido")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created", content =
-                    {@Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))}),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content =
-                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
-                    {@Content(mediaType = "application/json", schema =
-                    @Schema(implementation = ErrorsResponse.class))})})
-    @PostMapping(path = "/{id}/checkout")
-    @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<Void> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
-        log.info("Realizando checkout.");
-        Pedido pedido = postPedidoUseCase.realizarCheckout(id);
-        if (pedido == null) {
-            log.error("Pedido não encontrado pra realizar checkout.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        log.info("Checkout realizado com sucesso.");
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Atualizar Status de Pagamento do Pedido", description = "Esta operação deve ser utilizada para atualizar o status de pagamento de um pedido individualmente", requestBody =
@@ -258,5 +240,27 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(pedido);
+    }
+
+    @Operation(summary = "Realizar checkout", description = "Esta operação consiste em realizar o checkout de um pedido")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @PostMapping(path = "/{id}/checkout")
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    public ResponseEntity<PagamentoResponseDTO> realizarCheckout(@PathVariable("id") Long id) throws InterruptedException {
+        log.info("Realizando checkout.");
+        PagamentoResponseDTO responseDTO = postPedidoUseCase.realizarCheckout(id);
+        if (responseDTO == null) {
+            log.error("Pedido não encontrado pra realizar checkout.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        log.info("Checkout realizado com sucesso.");
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 }
