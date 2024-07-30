@@ -11,8 +11,9 @@ import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pedido.Item;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
-import br.com.fiap.techchallenge.infra.controllers.WebhookUseCase;
+import br.com.fiap.techchallenge.application.usecases.pagamento.RealizarPagamentoUseCase;
 import br.com.fiap.techchallenge.infra.controllers.cliente.ClienteDTO;
+import br.com.fiap.techchallenge.infra.controllers.pagamento.StatusPagamentoDTO;
 import br.com.fiap.techchallenge.infra.exception.BaseException;
 import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -61,7 +62,7 @@ public class PedidoController {
             """;
 
     private final PostPedidoUseCase postPedidoUseCase;
-    private final WebhookUseCase webhookUseCase;
+    private final RealizarPagamentoUseCase realizarPagamentoUseCase;
     private final GetPedidoUseCase getPedidoUseCase;
     private final PatchPedidoUseCase patchPedidoUseCase;
     private final AtualizarPedidoParcialUseCase atualizarPedidoParcialUseCase;
@@ -259,7 +260,7 @@ public class PedidoController {
             log.error("Pedido não encontrado pra realizar checkout.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        log.info("Checkout criado com sucesso.");
+        log.info("Checkout realizado com sucesso.");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 }

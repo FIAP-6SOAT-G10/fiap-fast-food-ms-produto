@@ -1,8 +1,6 @@
 package br.com.fiap.techchallenge.infra.controllers.cliente;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,13 +27,4 @@ public class ClienteDTO{
         @Schema(description = "O e-mail do cliente que será criado.", example = "teste@teste.com.br")
         String email;
 
-        // Construtor privado que aceita apenas o CPF
-        private ClienteDTO(String cpf) {
-                this.cpf = cpf;
-        }
-
-        // Método estático para criar uma instância de ClienteDTO apenas com o CPF
-        public static ClienteDTO withCpf(String cpf) {
-                return new ClienteDTO(cpf);
-        }
 }

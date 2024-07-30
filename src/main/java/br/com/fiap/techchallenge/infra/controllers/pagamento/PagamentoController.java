@@ -1,7 +1,6 @@
-package br.com.fiap.techchallenge.infra.controllers.pedido;
+package br.com.fiap.techchallenge.infra.controllers.pagamento;
 
-
-import br.com.fiap.techchallenge.infra.controllers.WebhookUseCase;
+import br.com.fiap.techchallenge.application.usecases.pagamento.ConsultarPagamentoUseCase;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,14 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @Slf4j
 @RestController
 @Tag(name = "Webhook", description = "Conjunto de operações que podem ser realizadas no contexto do webhook.")
 @RequestMapping("/webhook")
 @RequiredArgsConstructor
-public class WebhookController {
+public class PagamentoController {
 
-    private final WebhookUseCase webhookUseCase;
+    private final ConsultarPagamentoUseCase consultarPagamentoUseCase;
 
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Evento de confirmação do pagamento aprovado ou pagamento recusado recebido com sucesso"),
@@ -25,10 +26,10 @@ public class WebhookController {
     })
     @PostMapping("/notifications")
     @ResponseStatus(HttpStatus.OK)
-    public void confirmarPagamento(@RequestBody EventoPagamentoInput eventoPagamentoInput) {
-        log.info("Recebendo notificação de pagamento id: {} ação: {}", eventoPagamentoInput.getData().getId(), eventoPagamentoInput.getAction());
-        if (eventoPagamentoInput.getAction() == "payment.updated") {
-            webhookUseCase.consultarPagamento(eventoPagamentoInput.getData().getId());
+    public void confirmarPagamento(@RequestBody EventoPagamentoDTO eventoPagamentoDTO) {
+        log.info("Recebendo notificação de pagamento id: {} ação: {}", eventoPagamentoDTO.getData().getId(), eventoPagamentoDTO.getAction());
+        if (Objects.equals(eventoPagamentoDTO.getAction(), "payment.updated")) {
+            consultarPagamentoUseCase.consultarPagamento(eventoPagamentoDTO.getData().getId());
         }
     }
 

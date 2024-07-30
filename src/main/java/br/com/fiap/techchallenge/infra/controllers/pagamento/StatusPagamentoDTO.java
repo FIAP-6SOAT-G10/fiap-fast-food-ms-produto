@@ -1,4 +1,4 @@
-package br.com.fiap.techchallenge.infra.controllers.pedido;
+package br.com.fiap.techchallenge.infra.controllers.pagamento;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -8,7 +8,7 @@ import br.com.fiap.techchallenge.domain.entities.pedido.ItemPedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
-import br.com.fiap.techchallenge.infra.controllers.WebhookUseCase;
+import br.com.fiap.techchallenge.application.usecases.pagamento.RealizarPagamentoUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +27,12 @@ public class PostPedidoUseCase  {
 
     private final IPedidoRepository pedidoRepository;
     private final IProdutoRepository produtoRepository;
-    private final WebhookUseCase webhookUseCase;
+    private final RealizarPagamentoUseCase realizarPagamentoUseCase;
 
-    public PostPedidoUseCase(IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository, WebhookUseCase webhookUseCase) {
+    public PostPedidoUseCase(IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository, RealizarPagamentoUseCase realizarPagamentoUseCase) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
-        this.webhookUseCase = webhookUseCase;
+        this.realizarPagamentoUseCase = realizarPagamentoUseCase;
     }
 
     public Pedido criarPedido(Pedido pedido) {
@@ -91,8 +91,8 @@ public class PostPedidoUseCase  {
         return produtos;
     }
 
-    public PagamentoResponseDTO realizarCheckout(Long id) throws InterruptedException {
+    public PagamentoResponseDTO realizarCheckout(Long id) {
         Pedido pedido = pedidoRepository.buscarPedidoPorId(id);
-        return webhookUseCase.efetuarPagamento(pedido);
+        return realizarPagamentoUseCase.efetuarPagamento(pedido);
     }
 }

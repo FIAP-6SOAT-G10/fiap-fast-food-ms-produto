@@ -1,6 +1,6 @@
-package br.com.fiap.techchallenge.infra.controllers.pedido;
+package br.com.fiap.techchallenge.infra.controllers.pagamento;
 
-public class EventoPagamentoInput {
+public class EventoPagamentoDTO {
 
     private Data data;
     private String action;
