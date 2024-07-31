@@ -13,20 +13,22 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 1. [Membros do Grupo](#membro)
    <a name="documentacoes"></a>
 2. [Documentação do Projeto com Event Storming](#documentacao)
+   <a name="arquitetura"></a>
+3. [Arquitetura do Projeto](#arquitetura)
    <a name="requisitos"></a>
-3. [Requisitos para Execução](#requisito)
+4. [Requisitos para Execução](#requisito)
    <a name="local"></a>
-4. [Execução do projeto localmente](#execucao-local)
+5. [Execução do projeto localmente](#execucao-local)
    <a name="docker"></a>
-5. [Execução do projeto pelo Docker](#execucao-docker)
+6. [Execução do projeto pelo Docker](#execucao-docker)
    <a name="rotas"></a>
-6. [Rotas da API](#rota)
+7. [Rotas da API](#rota)
    <a name="ordens"></a>
-7. [Ordem de Execução das API](#ordem)
+8. [Ordem de Execução das API](#ordem)
    <a name="recursos"></a>
-8. [Recursos](#recurso)
+9. [Recursos](#recurso)
    <a name="erros"></a>
-9. [Códigos de Erro](#erro)
+10. [Códigos de Erro](#erro)
 
 <a id="membro"></a>
 ## Membros do Grupo
@@ -35,6 +37,49 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 - [Gabriel Marcelino](https://github.com/GabsMarcelino)
 - [Rafael Moura](https://github.com/magneon)
 - [Thiago Getnerski](https://github.com/Getnerski)
+
+## Apresentação do Projeto
+[<img height="50" width="200" src="src/main/resources/img/images.png" title="Fiap Arquitetura UML"/>](https://www.youtube.com/watch?v=y4m8ueFRydw)
+
+---> [Link do video](https://www.youtube.com/watch?v=y4m8ueFRydw) <---
+
+
+
+
+<a id="arquitetura"></a>
+## Arquitetura do Projeto
+Abaixo é possível verificar nossa arquitetura em UML.
+* `infra/controllers`: Responsável por receber todas requisições externas para realizar alguma ação em uma das entidades.
+* `application/domain`: Responsável por centralizar todas nossa entidades que vão ser utilizadas no sistema.
+* `application/usecases`: Responsável por criar casos de uso que vão realizar alguma ação na entidade, seja criação/atualização/remoção.
+* `application/gateways`: Responsável pela nossa camada de abstração que será implementada em `infra/gateways`.
+* `infra/gateways`: Responsável pela implementação das nossas abstrações de `application/gateways`.
+* `infra/persistence`: Responsável epal persistências dos dados na entidades do banco de dados.
+
+<img height="400" src="src/main/resources/img/arquitetura-uml.png" title="Fiap Arquitetura UML" width="800"/>
+
+Agora que vimos como funciona nossa arquitetura em UML, migramos ela para Kubernetes:
+
+* `deployment-application`: Essa arquitetura fica responsável por nossa API.
+  * `Service (Load Balancer)`: É um tipo de serviço que distribui o tráfego de rede para os pods que executam sua aplicação
+  * `Deployment`: É um recurso que fornece a maneira mais comum de gerenciar a implantação e a escalabilidade de aplicações em containers.
+  * `ConfigMap`: É um recurso utilizado para armazenar dados de configuração em formato de pares chave-valor, nele vamos guardar nossas credenciais de URL para o banco de dados.
+  * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
+
+* `sts-postgres`: Essa arquitetura fica responsável por nosso banco de dados.
+  * `Service (ClusterIP)`: É um recurso que define uma forma lógica de agrupar um conjunto de pods e prover uma forma consistente de acessá-los.
+  * `StatefulSet`: É um recurso que gerencia a implantação e o dimensionamento de um conjunto de pods e fornece garantias sobre a ordem e a identidade desses pods.
+  * `Secret`: É um recurso utilizado para armazenar e gerenciar informações sensíveis, como senhas, tokens OAuth, etc.
+  * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
+
+<img height="455" src="src/main/resources/img/arquitetura-k8s.png" title="Fiap Arquitetura K8S" width="1195"/>
+
+#### Em Resumo
+
+A arquitetura do sistema descrita envolve duas principais componentes: a aplicação de API e o banco de dados PostgreSQL.
+
+* `Banco de dados`: Os serviços externos irão se comunicar com o nosso Service do tipo ClusterIP, que redirecionará as requisições para o nosso StatefulSet. O StatefulSet é responsável por gerenciar quatro réplicas, cada uma rodando uma instância do nosso banco de dados. O armazenamento persistente é gerenciado pelo PersistentVolume e pelo PersistentVolumeClaim, garantindo que os dados lidos e escritos estejam sempre disponíveis e consistentes. 
+* `Aplicação`: Quando uma requisição for feita ao nosso DNS, ela será direcionada ao nosso Service do tipo Load Balancer. Este, por sua vez, redirecionará a solicitação para o nosso Deployment, que gerencia quatro réplicas da nossa API, cada uma em um contêiner separado. Cada contêiner terá uma conexão direta com o ClusterIP do banco de dados, garantindo uma comunicação eficiente e segura entre a aplicação e o banco de dados.
 
 <a id="documentacao"></a>
 ## Documentação do Projeto com Event Storming
