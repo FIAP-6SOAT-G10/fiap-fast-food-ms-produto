@@ -288,7 +288,7 @@ POST http://localhost:8080/api/clientes
 <a id="recurso2"></a>
 #### Listar Clientes
 ```sh
-GET http://localhost:8080/api/clientes?page=0&size=10
+GET http://localhost:8080/api/clientes
 ```
 
 <a id="recurso3"></a>
@@ -334,7 +334,7 @@ POST http://localhost:8080/api/produtos
 <a id="recurso6"></a>
 #### Listar Produtos
 ```sh
-GET http://localhost:8080/api/produtos?pageIndex=0&pageSize=10&nome=string&descricao=string&preco=string
+GET http://localhost:8080/api/produtos?nome=string&descricao=string&preco=string
 ```
 
 <a id="recurso7"></a>
@@ -469,7 +469,7 @@ GET http://localhost:8080/api/pedidos/:id
 <a id="recurso12"></a>
 #### Listar Pedidos
 ```sh
-GET http://localhost:8080/api/pedidos?page=0&size=10
+GET http://localhost:8080/api/pedidos
 ```
 
 <a id="recurso13"></a>

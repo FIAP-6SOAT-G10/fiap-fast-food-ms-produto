@@ -71,13 +71,11 @@ public class ProdutoController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @CrossOrigin(origins = "*", maxAge = 3600)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProdutoDTO>> listarProdutos(@RequestParam Integer page,
-                                                           @RequestParam Integer size,
-                                                           @RequestParam(required = false) String nome,
+    public ResponseEntity<List<ProdutoDTO>> listarProdutos(@RequestParam(required = false) String nome,
                                                            @RequestParam(required = false) String descricao,
                                                            @RequestParam(required = false) BigDecimal preco
     ) {
-        List<Produto> produtos = listarProdutoUseCase.listarProdutos(page, size, nome, descricao, preco);
+        List<Produto> produtos = listarProdutoUseCase.listarProdutos(nome, descricao, preco);
         if (produtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

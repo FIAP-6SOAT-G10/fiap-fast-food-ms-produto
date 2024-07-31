@@ -30,8 +30,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
@@ -202,16 +200,15 @@ public class PedidoRepository implements IPedidoRepository {
     }
 
     @Override
-    public List<Pedido> listarPedidos(Integer page, Integer size) {
+    public List<Pedido> listarPedidos() {
         log.info("listarPedidos");
-        List<PedidoEntity> listPedidoEntity = removerPedidosFinalizadosCancelados(obterPedidosOrdenadosPeloStatus(page, size));
+        List<PedidoEntity> listPedidoEntity = removerPedidosFinalizadosCancelados(obterPedidosOrdenadosPeloStatus());
 
         return pedidoMapper.fromListEntityToListDTO(listPedidoEntity);
     }
 
-    private List<PedidoEntity> obterPedidosOrdenadosPeloStatus(Integer page, Integer size) {
-        Page<PedidoEntity> pagePedido = pedidoEntityRepository.findAll(PageRequest.of(page, size, Sort.by("status.id").descending()));
-        return new ArrayList<>(pagePedido.toList());
+    private List<PedidoEntity> obterPedidosOrdenadosPeloStatus() {
+        return pedidoEntityRepository.findAll(Sort.by("status.id").descending());
     }
 
     private List<PedidoEntity> removerPedidosFinalizadosCancelados(List<PedidoEntity> listaPedido) {
@@ -229,10 +226,10 @@ public class PedidoRepository implements IPedidoRepository {
     }
 
     @Override
-    public List<Pedido> listarPedidosPorStatus(String status, Integer page, Integer size) {
+    public List<Pedido> listarPedidosPorStatus(String status) {
         StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byStatus(status);
 
-        List<Pedido> pedidos = this.listarPedidos(page, size);
+        List<Pedido> pedidos = this.listarPedidos();
         if (pedidos == null || pedidos.isEmpty()) {
             return new ArrayList<>();
         }

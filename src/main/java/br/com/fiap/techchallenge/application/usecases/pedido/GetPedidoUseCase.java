@@ -19,12 +19,12 @@ public class GetPedidoUseCase {
         return pedidoRepository.buscarPedidoPorId(id);
     }
 
-    public List<Pedido> listarPedidos(Integer page, Integer size) {
-        return pedidoRepository.listarPedidos(page, size);
+    public List<Pedido> listarPedidos() {
+        return pedidoRepository.listarPedidos();
     }
 
-    public List<Pedido> listarPedidosPorStatus(String status, Integer page, Integer size) {
-        return pedidoRepository.listarPedidosPorStatus(status, page, size);
+    public List<Pedido> listarPedidosPorStatus(String status) {
+        return pedidoRepository.listarPedidosPorStatus(status);
     }
 
     public StatusPagamento consultarStatusPagamentoDoPedido(Long id) {

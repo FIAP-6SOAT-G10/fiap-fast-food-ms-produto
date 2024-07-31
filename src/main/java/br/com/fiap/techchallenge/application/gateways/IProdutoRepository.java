@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface IProdutoRepository {
-    List<Produto> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco);
+    List<Produto> listarProdutos(String nome, String descricao, BigDecimal preco);
 
     List<Produto> listarProdutosPorCategoria(CategoriaEnum categoriaEnum);
 

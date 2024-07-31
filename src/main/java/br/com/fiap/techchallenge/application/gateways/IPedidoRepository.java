@@ -18,9 +18,9 @@ public interface IPedidoRepository {
 
     Pedido buscarPedidoPorId(Long id);
 
-    List<Pedido> listarPedidos(Integer page, Integer size);
+    List<Pedido> listarPedidos();
 
-    List<Pedido> listarPedidosPorStatus(String status, Integer page, Integer size);
+    List<Pedido> listarPedidosPorStatus(String status);
 
     Pedido realizarCheckout(Long id) throws InterruptedException;
 

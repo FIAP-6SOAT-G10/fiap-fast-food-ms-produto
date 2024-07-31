@@ -59,9 +59,9 @@ public class PedidoControllerTest {
     @Test
     public void shouldReturnPedidoListWhenListarPedidosPorStatusIsCalled() {
         List<Pedido> expected = Collections.singletonList(new Pedido());
-        when(getPedidoUseCase.listarPedidosPorStatus(anyString(), anyInt(), anyInt())).thenReturn(expected);
+        when(getPedidoUseCase.listarPedidosPorStatus(anyString())).thenReturn(expected);
 
-        ResponseEntity<List<Pedido>> response = pedidoController.listarPedidosPorStatus("status", 0, 25);
+        ResponseEntity<List<Pedido>> response = pedidoController.listarPedidosPorStatus("status");
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expected, response.getBody());

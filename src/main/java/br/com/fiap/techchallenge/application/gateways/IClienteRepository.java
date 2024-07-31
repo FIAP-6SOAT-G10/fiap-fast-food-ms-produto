@@ -14,7 +14,7 @@ public interface IClienteRepository {
 
     Cliente salvarCliente(Cliente cliente);
 
-    List<Cliente> listarClientes(Integer page, Integer size, String email, String cpf);
+    List<Cliente> listarClientes(String email, String cpf);
 
     Optional<Cliente> findByCpf(String cpf);
 }

@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class ProdutoRepository implements IProdutoRepository {
     }
 
     @Override
-    public List<Produto> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco) {
+    public List<Produto> listarProdutos(String nome, String descricao, BigDecimal preco) {
         List<ProdutoEntity> listaProdutoEntity = new ArrayList<>();
         Predicate<ProdutoEntity> byNomeOrDescricaoOrPreco = produto -> {
             Boolean hasSameNome = nome == null || produto.getNome().equals(nome);
@@ -51,8 +50,7 @@ public class ProdutoRepository implements IProdutoRepository {
                 listaProdutoEntity.addAll(filteredProdutoEntity);
             });
         } else {
-            PageRequest pageable = PageRequest.of(page, size);
-            listaProdutoEntity.addAll(produtoEntityRepository.findAll(pageable).toList());
+            listaProdutoEntity.addAll(produtoEntityRepository.findAll());
         }
 
         return produtoMapper.fromListEntityToListDomain(listaProdutoEntity);

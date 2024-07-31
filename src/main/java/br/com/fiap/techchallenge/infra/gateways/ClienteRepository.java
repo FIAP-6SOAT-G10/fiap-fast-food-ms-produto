@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +70,7 @@ public class ClienteRepository implements IClienteRepository {
     }
 
     @Override
-    public List<Cliente> listarClientes(Integer page, Integer size, String email, String cpf) {
+    public List<Cliente> listarClientes(String email, String cpf) {
         List<ClienteEntity> listaClienteEntity = new ArrayList<>();
         Predicate<ClienteEntity> predicate = cliente -> {
             Boolean hasSameEmail = email == null || cliente.getEmail().equals(email);
@@ -85,8 +84,7 @@ public class ClienteRepository implements IClienteRepository {
                 listaClienteEntity.addAll(filteredClientesEntity);
             });
         } else {
-            PageRequest pageable = PageRequest.of(page, size);
-            listaClienteEntity.addAll(clienteEntityRepository.findAll(pageable).toList());
+            listaClienteEntity.addAll(clienteEntityRepository.findAll());
         }
 
         return clienteMapper.fromListEntityToListDomain(listaClienteEntity);

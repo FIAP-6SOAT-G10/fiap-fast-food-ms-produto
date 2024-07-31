@@ -117,10 +117,8 @@ public class PedidoController {
                     @Schema(implementation = ErrorsResponse.class))})})
     @GetMapping(path = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<List<Pedido>> listarPedidosPorStatus(@PathVariable("status") String status,
-                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                               @RequestParam(name = "size", defaultValue = "25") Integer size) {
-        return ResponseEntity.ok(getPedidoUseCase.listarPedidosPorStatus(status, page, size));
+    public ResponseEntity<List<Pedido>> listarPedidosPorStatus(@PathVariable("status") String status) {
+        return ResponseEntity.ok(getPedidoUseCase.listarPedidosPorStatus(status));
     }
 
     @Operation(summary = "Atualizar Status de Pagamento do Pedido", description = "Esta operação deve ser utilizada para atualizar o status de pagamento de um pedido individualmente", requestBody =
@@ -200,7 +198,7 @@ public class PedidoController {
         return ResponseEntity.ok(pedido);
     }
 
-    @Operation(summary = "Lista todos os pedidops", description = "Está operação consiste em retornar as informações de todos os pedidos")
+    @Operation(summary = "Lista todos os pedidos", description = "Está operação consiste em retornar as informações de todos os pedidos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))
@@ -211,9 +209,9 @@ public class PedidoController {
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<List<Pedido>> listarTodosPedidos(@RequestParam Integer page, @RequestParam Integer size) {
+    public ResponseEntity<List<Pedido>> listarTodosPedidos() {
         log.info("Buscando pedidos.");
-        List<Pedido> listaPedidos = getPedidoUseCase.listarPedidos(page, size);
+        List<Pedido> listaPedidos = getPedidoUseCase.listarPedidos();
         if (listaPedidos == null || listaPedidos.isEmpty()) {
             log.error("Pedidos não encontrados.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

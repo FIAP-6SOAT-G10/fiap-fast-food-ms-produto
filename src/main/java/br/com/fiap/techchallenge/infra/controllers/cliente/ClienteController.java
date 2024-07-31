@@ -65,12 +65,10 @@ public class ClienteController {
     })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*", maxAge = 3600)
-    public ResponseEntity<List<ClienteDTO>> listarTodosClientes(@RequestParam Integer page,
-                                                             @RequestParam Integer size,
-                                                             @RequestParam(required = false) String email,
+    public ResponseEntity<List<ClienteDTO>> listarTodosClientes(@RequestParam(required = false) String email,
                                                              @RequestParam(required = false) String cpf
     ) {
-        List<Cliente> clientes = listarClienteUseCase.listarClientes(page, size, email, cpf);
+        List<Cliente> clientes = listarClienteUseCase.listarClientes(email, cpf);
         if (clientes.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

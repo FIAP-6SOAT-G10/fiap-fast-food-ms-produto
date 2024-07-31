@@ -13,7 +13,7 @@ public class ListarClienteUseCase {
         this.clienteRepository = clienteRepository;
     }
 
-    public List<Cliente> listarClientes(Integer page, Integer size, String email, String cpf) {
-        return this.clienteRepository.listarClientes(page, size, email, cpf);
+    public List<Cliente> listarClientes(String email, String cpf) {
+        return this.clienteRepository.listarClientes(email, cpf);
     }
 }

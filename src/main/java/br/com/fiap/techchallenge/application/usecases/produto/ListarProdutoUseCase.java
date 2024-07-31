@@ -15,8 +15,8 @@ public class ListarProdutoUseCase {
         this.produtoRepository = produtoRepository;
     }
 
-    public List<Produto> listarProdutos(Integer page, Integer size, String nome, String descricao, BigDecimal preco) {
-        return this.produtoRepository.listarProdutos(page, size, nome, descricao, preco);
+    public List<Produto> listarProdutos(String nome, String descricao, BigDecimal preco) {
+        return this.produtoRepository.listarProdutos(nome, descricao, preco);
     }
 
     public List<Produto> listarProdutosPorCategoria(CategoriaEnum categoriaEnum) {
