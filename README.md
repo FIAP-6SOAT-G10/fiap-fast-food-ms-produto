@@ -38,8 +38,15 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 - [Rafael Moura](https://github.com/magneon)
 - [Thiago Getnerski](https://github.com/Getnerski)
 
-<a id="arquitetura"></a>
+## Apresentação do Projeto
+[<img height="50" width="200" src="src/main/resources/img/images.png" title="Fiap Arquitetura UML"/>](https://www.youtube.com/watch?v=y4m8ueFRydw)
 
+---> [Link do video](https://www.youtube.com/watch?v=y4m8ueFRydw) <---
+
+
+
+
+<a id="arquitetura"></a>
 ## Arquitetura do Projeto
 Abaixo é possível verificar nossa arquitetura em UML.
 * `infra/controllers`: Responsável por receber todas requisições externas para realizar alguma ação em uma das entidades.
