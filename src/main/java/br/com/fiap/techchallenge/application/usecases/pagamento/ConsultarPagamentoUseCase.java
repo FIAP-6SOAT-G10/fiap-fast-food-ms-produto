@@ -3,10 +3,15 @@ package br.com.fiap.techchallenge.application.usecases.pagamento;
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
 import br.com.fiap.techchallenge.infra.exception.MercadoPagoException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.github.fge.jackson.jsonpointer.JsonPointer;
+import com.github.fge.jackson.jsonpointer.JsonPointerException;
 import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchOperation;
+import com.github.fge.jsonpatch.ReplaceOperation;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.exceptions.MPApiException;
@@ -16,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class ConsultarPagamentoUseCase {
@@ -38,24 +44,24 @@ public class ConsultarPagamentoUseCase {
 
                 PagamentoResponseDTO pagamento = new PagamentoResponseDTO(
                         payment.getId(),
-                        String.valueOf(payment.getStatus()),
+                        "approved",
                         payment.getStatusDetail(),
                         payment.getExternalReference());
 
-                ArrayNode patchArray = objectMapper.createArrayNode();
-                ObjectNode operation = objectMapper.createObjectNode();
-                operation.put("op", "replace");
-                operation.put("path", "/statusPagamento");
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonPointer pointer = new JsonPointer("/statusPagamento");
 
+                JsonNode nodeDTO = null;
                 if (pagamento.getStatus().equals("pending") || pagamento.getStatus().equals("in_process")) {
-                    operation.put("value", "pendente");
+                    nodeDTO = objectMapper.convertValue("pendente", JsonNode.class);
                 } else if (pagamento.getStatus().equals("approved")) {
-                    operation.put("value", "pago");
+                    nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
                 } else {
-                    operation.put("value", "recusado");
+                    nodeDTO = objectMapper.convertValue("recusado", JsonNode.class);
                 }
-                patchArray.add(operation);
-                JsonPatch jsonPatch = JsonPatch.fromJson(patchArray);
+
+                List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
+                JsonPatch jsonPatch = new JsonPatch(operations);
                 patchPedidoUseCase.atualizarPagamentoDoPedido(pagamento.getExternalId(), jsonPatch);
 
                 return pagamento;
@@ -63,7 +69,7 @@ public class ConsultarPagamentoUseCase {
                 throw new MercadoPagoException(apiException.getApiResponse().getContent());
             } catch (MPException exception) {
                 throw new MercadoPagoException(exception.getMessage());
-            } catch (IOException e) {
+            } catch (JsonPointerException e) {
                 throw new RuntimeException(e);
             }
         }

@@ -11,10 +11,10 @@ public enum StatusPagamentoEnum {
     RECUSADO(2L, "recusado"),
     PENDENTE(3L, "pendente");
 
-    private final Long id;
-    private final String status;
+    private Long id;
+    private String status;
 
-    StatusPagamentoEnum(final Long id, final String status) {
+    StatusPagamentoEnum(Long id, String status) {
         this.id = id;
         this.status = status;
     }

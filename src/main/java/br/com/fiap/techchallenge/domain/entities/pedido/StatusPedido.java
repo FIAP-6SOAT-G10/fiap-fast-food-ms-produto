@@ -15,6 +15,8 @@ public class StatusPedido {
     @Schema(description = "Campo que informa o nome do status do pedido", example = "Em Preparo")
     private String nome;
 
+    public StatusPedido() {}
+
     public StatusPedido(Long id) {
         StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byId(id);
         this.id = statusPedidoEnum.getId();
@@ -25,6 +27,11 @@ public class StatusPedido {
         StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.byStatus(nome);
         this.id = statusPedidoEnum.getId();
         this.nome = statusPedidoEnum.getStatus();
+    }
+
+    public StatusPedido(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
     }
 
     public Long getId() {

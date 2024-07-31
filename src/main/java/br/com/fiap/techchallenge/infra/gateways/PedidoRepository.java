@@ -152,7 +152,8 @@ public class PedidoRepository implements IPedidoRepository {
             objectMapper.registerModule(new JavaTimeModule());
 
             Pedido pedidoAtual = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
-            JsonNode patched = patch.apply(objectMapper.convertValue(pedidoAtual, JsonNode.class));
+            JsonNode node = objectMapper.convertValue(pedidoAtual, JsonNode.class);
+            JsonNode patched = patch.apply(node);
 
             Pedido pedidoAtualizado = objectMapper.treeToValue(patched, Pedido.class);
 
