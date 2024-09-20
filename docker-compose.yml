@@ -20,7 +20,7 @@ services:
     container_name: fiap-fast-food
     build:
       context: .
-    image: fiap/fastfoodgrupo10
+    image: fiap_fast_food_app/fastfoodapp
     ports:
       - "8080:8080"
     networks:
