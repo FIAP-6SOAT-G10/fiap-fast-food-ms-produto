@@ -3,7 +3,11 @@ name: node_app
 on: # specify the build to trigger the automated ci/cd
   push:
     branches:
-      - "master"
+      - "main"
+
+  pull_request: 
+    branches: 
+      - main
 
 env:
   AWS_REGION: "us-east-1"
