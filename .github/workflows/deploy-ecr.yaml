@@ -54,6 +54,6 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ vars.AWS_ECR_URL }}
-          docker build -t fiap-fast-food .
-          docker tag fiap-fast-food:latest ${{ vars.AWS_ECR_URL }}/fiap-fast-food:latest
-          docker push ${{ vars.AWS_ECR_URL }}/fiap-fast-food:latest
+          docker build -t fiap_fast_food_ecr .
+          docker tag fiap_fast_food_ecr:latest ${{ vars.AWS_ECR_URL }}/fiap_fast_food_ecr:latest
+          docker push ${{ vars.AWS_ECR_URL }}/fiap_fast_food_ecr:latest
