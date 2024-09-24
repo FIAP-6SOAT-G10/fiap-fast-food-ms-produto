@@ -3,7 +3,8 @@ name: node_app
 on: # specify the build to trigger the automated ci/cd
   push:
     branches:
-      - "main"
+      - main
+      - gabrielmarcelino165/tcf-17-github-actions-aplicacao
 
   pull_request: 
     branches: 
