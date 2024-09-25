@@ -14,6 +14,13 @@ public class Item {
     private List<ItemPedido> bebida;
     private List<ItemPedido> sobremesa;
 
+    public Item(List<ItemPedido> lanches, List<ItemPedido> acompanhamento, List<ItemPedido> bebida, List<ItemPedido> sobremesa) {
+        this.lanches = lanches;
+        this.acompanhamento = acompanhamento;
+        this.bebida = bebida;
+        this.sobremesa = sobremesa;
+    }
+
     public Item(ItemDTO itemDTO) {
         verificarSePedidoEstaVazio(itemDTO);
         this.lanches = itemDTO.getLanches().stream().map(lanche -> new ItemPedido(lanche.getId(), lanche.getQuantidade())).collect(Collectors.toList());
