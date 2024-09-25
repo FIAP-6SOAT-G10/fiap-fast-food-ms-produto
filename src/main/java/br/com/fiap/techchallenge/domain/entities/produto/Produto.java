@@ -14,6 +14,14 @@ public class Produto {
     private String imagem;
     private List<ProdutoPedido> pedidos;
 
+    public Produto(String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.categoria = categoria;
+        this.preco = preco;
+        this.imagem = imagem;
+    }
+
     public Produto(Long id, String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
         if (nome == null || nome.isEmpty() || nome.isBlank()) {
             throw new IllegalArgumentException("Nome é um campo obrigatório no cadastro de novos produtos.");
