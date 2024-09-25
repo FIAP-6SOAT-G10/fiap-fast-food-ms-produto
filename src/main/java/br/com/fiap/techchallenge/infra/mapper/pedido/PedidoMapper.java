@@ -26,16 +26,8 @@ public class PedidoMapper {
 
         List<ProdutoPedido> produtosPedidos = produtoPedidoMapper.fromListEntityToListDomain(pedidoEntity.getProdutos());
 
-        Pedido pedido = new Pedido();
-        pedido.setId(pedidoEntity.getId());
-        pedido.setCliente(cliente);
-        pedido.setValor(pedidoEntity.getValor());
-        pedido.setDataCriacao(pedidoEntity.getDataCriacao());
-        pedido.setDataFinalizacao(pedidoEntity.getDataFinalizacao());
-        pedido.setDataCancelamento(pedidoEntity.getDataCancelamento());
-        pedido.setStatus(status);
-        pedido.setStatusPagamento(statusPagamento);
-        pedido.setProdutoPedidos(produtosPedidos);
+        Pedido pedido = new Pedido(pedidoEntity.getId(), cliente, status, pedidoEntity.getValor(), pedidoEntity.getDataCriacao(), pedidoEntity.getDataFinalizacao(), pedidoEntity.getDataCancelamento(), statusPagamento, produtosPedidos);
+
 
         return pedido;
     }

@@ -23,24 +23,10 @@ public class ProdutoPedidoMapper {
         }
 
         CategoriaEntity categoriaEntity = produtoEntity.getCategoriaEntity();
-        Categoria categoria = new Categoria();
-        categoria.setNome(categoriaEntity.getNome());
-        categoria.setDescricao(categoriaEntity.getDescricao());
+        Categoria categoria = new Categoria(categoriaEntity.getNome(), categoriaEntity.getDescricao());
+        Produto produto = new Produto(produtoEntity.getId(), produtoEntity.getNome(), produtoEntity.getDescricao(), categoria, produtoEntity.getPreco(), produtoEntity.getImagem());
 
-        Produto produto = new Produto();
-        produto.setId(produtoEntity.getId());
-        produto.setNome(produtoEntity.getNome());
-        produto.setPreco(produtoEntity.getPreco());
-        produto.setImagem(produtoEntity.getImagem());
-        produto.setDescricao(produtoEntity.getDescricao());
-        produto.setCategoria(categoria);
-
-        ProdutoPedido produtoPedido = new ProdutoPedido();
-        produtoPedido.setProduto(produto);
-        produtoPedido.setQuantidade(produtoPedidoEntity.getQuantidade());
-        produtoPedido.setValorTotal(produtoPedidoEntity.getValorTotal());
-
-        return produtoPedido;
+        return new ProdutoPedido(produto, produtoPedidoEntity.getValorTotal(), produtoPedidoEntity.getQuantidade());
     }
 
     public ProdutoPedidoEntity fromDomainToEntity(ProdutoPedido produtoPedido) {

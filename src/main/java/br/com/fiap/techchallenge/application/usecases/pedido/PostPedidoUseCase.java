@@ -40,8 +40,13 @@ public class PostPedidoUseCase  {
         List<ProdutoPedido> itens = totalizaItensDoPedido(pedido.getItems());
         BigDecimal subtotal = itens.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        pedido.setProdutoPedidos(itens);
-        pedido.setValor(subtotal);
+        /** REVISAR ESSA PARTE **/
+        pedido.getProdutoPedidos().addAll(itens);
+        pedido.getValor().add(subtotal);
+
+
+//        pedido.setProdutoPedidos(itens);
+//        pedido.setValor(subtotal);
 
        return pedidoRepository.criarPedido(pedido);
     }
@@ -76,10 +81,8 @@ public class PostPedidoUseCase  {
         long quantidade = itens.stream().map(ItemPedido::getQuantidade).reduce(0L, Long::sum);
         Produto produto = produtoRepository.findById(id);
 
-        ProdutoPedido produtoPedido = new ProdutoPedido();
-        produtoPedido.setProduto(produto);
-        produtoPedido.setQuantidade(BigInteger.valueOf(quantidade));
-        produtoPedido.setValorTotal(produto.getPreco().multiply(BigDecimal.valueOf(quantidade)));
+        ProdutoPedido produtoPedido = new ProdutoPedido(produto, produto.getPreco().multiply(BigDecimal.valueOf(quantidade)), BigInteger.valueOf(quantidade));
+
         return List.of(produtoPedido);
     }
 

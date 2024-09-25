@@ -25,6 +25,7 @@ public class AtualizarPedidoParcialUseCase {
         return this.pedidoRepository.atualizarPagamentoDoPedido(Long.getLong(id), patch);
     }
 
+    /** PASSAR PRA CONTROLLER **/
     private void validarDados(String id, JsonPatch patch) {
         Pattern pattern = Pattern.compile("[^\\d+]");
         if (pattern.matcher(id).find()) {

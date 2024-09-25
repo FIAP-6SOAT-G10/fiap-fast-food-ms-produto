@@ -3,14 +3,11 @@ package br.com.fiap.techchallenge.domain.entities.produto;
 import br.com.fiap.techchallenge.domain.ErrosEnum;
 import br.com.fiap.techchallenge.infra.exception.CategoriaException;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@Getter
-@AllArgsConstructor
+
 public enum CategoriaEnum {
     LANCHE(1L, "LANCHE"),
     BEBIDA(2L, "BEBIDA"),
@@ -19,6 +16,11 @@ public enum CategoriaEnum {
 
     private final Long idCategoria;
     private final String nome;
+
+    CategoriaEnum(Long idCategoria, String nome) {
+        this.idCategoria = idCategoria;
+        this.nome = nome;
+    }
 
     @JsonCreator
     public static CategoriaEnum fromName(String name) throws CategoriaException {
@@ -32,4 +34,11 @@ public enum CategoriaEnum {
         return categoria;
     }
 
+    public Long getIdCategoria() {
+        return idCategoria;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }

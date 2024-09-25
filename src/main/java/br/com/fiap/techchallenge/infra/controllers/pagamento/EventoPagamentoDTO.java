@@ -2,28 +2,31 @@ package br.com.fiap.techchallenge.infra.controllers.pagamento;
 
 public class EventoPagamentoDTO {
 
-    private Data data;
+    private DadosPagamentoDTO data;
     private String action;
     private String type;
 
-    public Data getData() { return data; }
-
-    public void setData(Data data) { this.data = data; }
-
-    public static class Data {
-        private Long id;
-
-        public Long getId() { return id; }
-
-        public void setId(Long id) { this.id = id; }
+    public DadosPagamentoDTO getData() {
+        return data;
     }
 
-    public String getAction() { return action; }
+    public void setData(DadosPagamentoDTO data) {
+        this.data = data;
+    }
 
-    public void setAction(String action) { this.action = action; }
+    public String getAction() {
+        return action;
+    }
 
-    public String getType() { return type; }
+    public void setAction(String action) {
+        this.action = action;
+    }
 
-    public void setType(String type) { this.type = type; }
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 }

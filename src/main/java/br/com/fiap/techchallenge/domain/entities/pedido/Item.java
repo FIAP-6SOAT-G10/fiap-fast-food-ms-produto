@@ -1,24 +1,12 @@
 package br.com.fiap.techchallenge.domain.entities.pedido;
 
 import br.com.fiap.techchallenge.infra.controllers.pedido.ItemDTO;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.fiap.techchallenge.domain.ErrosEnum.PEDIDO_VAZIO;
 
-@JsonPropertyOrder(
-        {
-            "lanches",
-            "acompanhamento",
-            "bebida",
-            "sobremesa"
-        })
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 
     private List<ItemPedido> lanches;
