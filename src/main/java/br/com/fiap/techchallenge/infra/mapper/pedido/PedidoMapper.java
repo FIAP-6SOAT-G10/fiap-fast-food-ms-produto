@@ -35,13 +35,7 @@ public class PedidoMapper {
     public Pedido fromDTOToDomain(PedidoDTO pedidoDTO) {
         Cliente cliente = new ClienteMapper().fromDTOToDomain(pedidoDTO.getCliente());
         List<ProdutoPedido> produtosPedidos = pedidoDTO.getProdutos();
-
-        Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
-        pedido.setValor(pedidoDTO.getValor());
-        pedido.setProdutoPedidos(produtosPedidos);
-
-        return pedido;
+        return new Pedido(cliente, pedidoDTO.getValor(), produtosPedidos);
     }
 
     public PedidoEntity fromDomainToEntity(Pedido pedido) {

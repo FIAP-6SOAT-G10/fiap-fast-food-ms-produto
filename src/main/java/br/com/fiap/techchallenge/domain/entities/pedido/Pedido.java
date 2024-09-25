@@ -50,6 +50,12 @@ public class Pedido {
         this.produtoPedidos = produtoPedidos;
     }
 
+    public Pedido(Cliente cliente , BigDecimal valor, List<ProdutoPedido> produtoPedidos) {
+        this.cliente = cliente;
+        this.valor = valor;
+        this.produtoPedidos = produtoPedidos;
+    }
+
     public Pedido(Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente é um campo obrigatório no cadastro de novos pedidos.");
