@@ -108,8 +108,16 @@ public class Pedido {
         return id;
     }
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Cliente getCliente() {
         return cliente;
+    }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
     }
 
     public StatusPedido getStatus() {
@@ -124,12 +132,20 @@ public class Pedido {
         return dataCriacao;
     }
 
+    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {
+        this.dataFinalizacao = dataFinalizacao;
+    }
+
     public LocalDateTime getDataFinalizacao() {
         return dataFinalizacao;
     }
 
     public LocalDateTime getDataCancelamento() {
         return dataCancelamento;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = statusPagamento;
     }
 
     public StatusPagamento getStatusPagamento() {

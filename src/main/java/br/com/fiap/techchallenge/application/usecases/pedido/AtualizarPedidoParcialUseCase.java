@@ -22,7 +22,8 @@ public class AtualizarPedidoParcialUseCase {
 
     public Pedido atualizarPagamentoDoPedido(String id, JsonPatch patch) {
         validarDados(id, patch);
-        return this.pedidoRepository.atualizarPagamentoDoPedido(Long.getLong(id), patch);
+//        return this.pedidoRepository.atualizarPagamentoDoPedido(Long.getLong(id), patch);
+        return null;
     }
 
     /** PASSAR PRA CONTROLLER **/

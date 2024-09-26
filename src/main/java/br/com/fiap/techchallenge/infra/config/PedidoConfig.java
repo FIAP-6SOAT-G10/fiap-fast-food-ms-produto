@@ -5,7 +5,6 @@ import br.com.fiap.techchallenge.application.usecases.pedido.AtualizarPedidoParc
 import br.com.fiap.techchallenge.application.usecases.pedido.GetPedidoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.infra.gateways.PedidoRepository;
-import br.com.fiap.techchallenge.infra.mapper.cliente.ClienteMapper;
 import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.mapper.produtopedido.ProdutoPedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
@@ -23,8 +22,8 @@ public class PedidoConfig {
     }
 
     @Bean
-    public IPedidoRepository criarPedidoProdutoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteMapper clienteMapper, ClienteEntityRepository clienteRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
-        return new PedidoRepository(pedidoEntityRepository, pedidoMapper, clienteMapper, clienteRepository, produtoPedidoRepository, produtoPedidoMapper);
+    public IPedidoRepository criarPedidoProdutoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteEntityRepository clienteRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
+        return new PedidoRepository(pedidoEntityRepository, pedidoMapper, clienteRepository, produtoPedidoRepository, produtoPedidoMapper);
     }
 
     @Bean
