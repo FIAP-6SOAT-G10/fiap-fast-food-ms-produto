@@ -1,7 +1,7 @@
 package br.com.fiap.techchallenge.application.usecases.pagamento;
 
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
-import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
+import br.com.fiap.techchallenge.domain.entities.pagamento.EventoPagemento;
 import br.com.fiap.techchallenge.domain.exceptions.IntegrationException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,25 +26,17 @@ public class ConsultarPagamentoUseCase {
         this.mercadoPagoAccessToken = mercadoPagoAccessToken;
     }
 
-    public PagamentoResponseDTO consultarPagamento(Long paymentId) {
+    public EventoPagemento consultarPagamento(EventoPagemento eventoPagemento) {
         try {
             MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
-            PaymentClient paymentClient = new PaymentClient();
-            Payment payment = paymentClient.get(paymentId);
-
-            PagamentoResponseDTO pagamento = new PagamentoResponseDTO(
-                    payment.getId(),
-                    "approved",
-                    payment.getStatusDetail(),
-                    payment.getExternalReference());
 
             ObjectMapper objectMapper = new ObjectMapper();
             JsonPointer pointer = new JsonPointer("/statusPagamento");
 
             JsonNode nodeDTO = null;
-            if (pagamento.getStatus().equals("pending") || pagamento.getStatus().equals("in_process")) {
+            if (eventoPagemento.getStatus().equals("pending") || eventoPagemento.getStatus().equals("in_process")) {
                 nodeDTO = objectMapper.convertValue("pendente", JsonNode.class);
-            } else if (pagamento.getStatus().equals("approved")) {
+            } else if (eventoPagemento.getStatus().equals("approved")) {
                 nodeDTO = objectMapper.convertValue("pago", JsonNode.class);
             } else {
                 nodeDTO = objectMapper.convertValue("recusado", JsonNode.class);
@@ -52,9 +44,9 @@ public class ConsultarPagamentoUseCase {
 
             List<JsonPatchOperation> operations = List.of(new ReplaceOperation(pointer, nodeDTO));
             JsonPatch jsonPatch = new JsonPatch(operations);
-            patchPedidoUseCase.atualizarPagamentoDoPedido(pagamento.getExternalId(), jsonPatch);
+            patchPedidoUseCase.atualizarPagamentoDoPedido(eventoPagemento.getId().toString(), jsonPatch);
 
-            return pagamento;
+            return eventoPagemento;
         } catch (Exception ex) {
             throw new IntegrationException(ex.getMessage());
         }

@@ -1,6 +1,8 @@
 package br.com.fiap.techchallenge.infra.controllers.pagamento;
 
 import br.com.fiap.techchallenge.application.usecases.pagamento.ConsultarPagamentoUseCase;
+import br.com.fiap.techchallenge.domain.entities.pagamento.EventoPagemento;
+import br.com.fiap.techchallenge.infra.mapper.pagamento.PagamentoMapper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +21,7 @@ import java.util.Objects;
 public class PagamentoController {
 
     private final ConsultarPagamentoUseCase consultarPagamentoUseCase;
+    private final PagamentoMapper pagamentoMapper;
 
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Evento de confirmação do pagamento aprovado ou pagamento recusado recebido com sucesso"),
@@ -28,8 +31,9 @@ public class PagamentoController {
     @ResponseStatus(HttpStatus.OK)
     public void confirmarPagamento(@RequestBody EventoPagamentoDTO eventoPagamentoDTO) {
         log.info("Recebendo notificação de pagamento id: {} ação: {}", eventoPagamentoDTO.getData().getId(), eventoPagamentoDTO.getAction());
+        EventoPagemento eventoPagemento = pagamentoMapper.fromDTOToDomain(eventoPagamentoDTO);
         if (Objects.equals(eventoPagamentoDTO.getAction(), "payment.updated")) {
-            consultarPagamentoUseCase.consultarPagamento(eventoPagamentoDTO.getData().getId());
+            consultarPagamentoUseCase.consultarPagamento(eventoPagemento);
         }
     }
 
