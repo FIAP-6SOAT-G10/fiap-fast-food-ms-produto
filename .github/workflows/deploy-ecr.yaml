@@ -62,11 +62,3 @@ jobs:
 
       - name: Update kubeconfig for EKS
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name fiap_fast_food_eks
-
-      - name: Trigger HPA Workflow
-        run: |
-          curl -X POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/FIAP-6SOAT-G10/fiap-fast-food-eks/dispatches \
-          -d '{"event_type":"trigger-hpa"}'
