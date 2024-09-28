@@ -12,7 +12,7 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 <a name="membros"></a>
 1. [Membros do Grupo](#membro)
    <a name="documentacoes"></a>
-2. [Documentação do Projeto com Event Storming](#documentacao)
+2. [Documentação do Projeto com Event Storming](#documentacao) 
    <a name="arquitetura"></a>
 3. [Arquitetura do Projeto](#arquitetura)
    <a name="requisitos"></a>
