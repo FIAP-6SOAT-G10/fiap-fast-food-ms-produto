@@ -261,4 +261,5 @@ public class PedidoController {
         log.info("Checkout realizado com sucesso.");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
+
 }

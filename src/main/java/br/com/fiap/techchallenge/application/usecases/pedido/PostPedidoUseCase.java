@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
-@Service
 public class PostPedidoUseCase  {
 
     private final IPedidoRepository pedidoRepository;
@@ -40,14 +39,8 @@ public class PostPedidoUseCase  {
         List<ProdutoPedido> itens = totalizaItensDoPedido(pedido.getItems());
         BigDecimal subtotal = itens.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        /** REVISAR ESSA PARTE **/
         pedido.getProdutoPedidos().addAll(itens);
         pedido.getValor().add(subtotal);
-
-
-//        pedido.setProdutoPedidos(itens);
-//        pedido.setValor(subtotal);
-
        return pedidoRepository.criarPedido(pedido);
     }
 
