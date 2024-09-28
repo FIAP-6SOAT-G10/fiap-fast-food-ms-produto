@@ -1,11 +1,8 @@
 package br.com.fiap.techchallenge.domain.entities.pagamento;
 
-import lombok.Getter;
-
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@Getter
 public enum StatusPagamentoEnum {
     PAGO(1L, "pago"),
     RECUSADO(2L, "recusado"),
@@ -27,5 +24,13 @@ public enum StatusPagamentoEnum {
     public static StatusPagamentoEnum byStatus(String status) {
         Predicate<StatusPagamentoEnum> byStatus = s -> s.status.equalsIgnoreCase(status);
         return Arrays.stream(values()).filter(byStatus).findAny().orElse(null);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

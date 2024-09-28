@@ -4,32 +4,26 @@ import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
 import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoResponseDTO;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.infra.exception.MercadoPagoException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.payment.PaymentClient;
 import com.mercadopago.client.payment.PaymentCreateRequest;
 import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.exceptions.MPApiException;
-import com.mercadopago.resources.payment.Payment;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.payment.Payment;
 
-@Service
 public class RealizarPagamentoUseCase {
 
     private final PatchPedidoUseCase patchPedidoUseCase;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${mercadopago.access_token}")
     private String mercadoPagoAccessToken;
 
-    @Value("${mercadopago.notification_url}")
     private String mercadoPagoNotificationUrl;
 
-    public RealizarPagamentoUseCase(PatchPedidoUseCase patchPedidoUseCase) {
+    public RealizarPagamentoUseCase(PatchPedidoUseCase patchPedidoUseCase, String mercadoPagoAccessToken, String mercadoPagoNotificationUrl) {
         this.patchPedidoUseCase = patchPedidoUseCase;
+        this.mercadoPagoAccessToken = mercadoPagoAccessToken;
+        this.mercadoPagoNotificationUrl = mercadoPagoNotificationUrl;
     }
 
     public PagamentoResponseDTO efetuarPagamento(Pedido pedido) {

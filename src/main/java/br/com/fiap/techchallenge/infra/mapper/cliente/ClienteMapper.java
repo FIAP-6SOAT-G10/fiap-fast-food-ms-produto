@@ -24,25 +24,11 @@ public class ClienteMapper {
         if (clienteEntity == null) {
             return null;
         }
-
-        Cliente cliente = new Cliente();
-        cliente.setId(clienteEntity.getId());
-        cliente.setCpf(clienteEntity.getCpf());
-        cliente.setNome(clienteEntity.getNome());
-        cliente.setEmail(clienteEntity.getEmail());
-
-        return cliente;
+        return new Cliente(clienteEntity.getId(), clienteEntity.getCpf(), clienteEntity.getNome(), clienteEntity.getEmail());
     }
 
     public Cliente fromDTOToDomain(ClienteDTO clienteDTO) {
-        Cliente cliente = new Cliente();
-        cliente.setId(clienteDTO.getId());
-        cliente.setCpf(clienteDTO.getCpf());
-        cliente.setNome(clienteDTO.getNome());
-        cliente.setEmail(clienteDTO.getEmail());
-//        cliente.setPedidos(PedidoMapper);
-
-        return cliente;
+        return new Cliente(clienteDTO.getId(), clienteDTO.getCpf(), clienteDTO.getNome(), clienteDTO.getEmail());
     }
 
     public List<Cliente> fromListEntityToListDomain(List<ClienteEntity> clientes) {

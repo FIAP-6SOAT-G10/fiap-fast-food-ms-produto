@@ -12,18 +12,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Pedido {
     private Long id;
     private Cliente cliente;
-    @JsonDeserialize(contentUsing = StatusPedidoDeserializer.class)
     private StatusPedido status;
     private BigDecimal valor;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataFinalizacao;
     private LocalDateTime dataCancelamento;
-    @JsonDeserialize(contentUsing = StatusPagamentoDeserializer.class)
     private StatusPagamento statusPagamento;
     private List<ProdutoPedido> produtoPedidos;
     private Item items;
@@ -46,6 +43,17 @@ public class Pedido {
     public Pedido(Long id, Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
         this(cliente, status, valor, dataCriacao, dataFinalizacao, dataCancelamento, statusPagamento, produtoPedidos, items);
         this.id = id;
+    }
+
+    public Pedido(BigDecimal valor, List<ProdutoPedido> produtoPedidos) {
+        this.valor = valor;
+        this.produtoPedidos = produtoPedidos;
+    }
+
+    public Pedido(Cliente cliente , BigDecimal valor, List<ProdutoPedido> produtoPedidos) {
+        this.cliente = cliente;
+        this.valor = valor;
+        this.produtoPedidos = produtoPedidos;
     }
 
     public Pedido(Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
@@ -100,79 +108,55 @@ public class Pedido {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setStatus(StatusPedido status) {
+        this.status = status;
     }
 
     public StatusPedido getStatus() {
         return status;
     }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
-
     public BigDecimal getValor() {
         return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
     }
 
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
+    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {
+        this.dataFinalizacao = dataFinalizacao;
     }
 
     public LocalDateTime getDataFinalizacao() {
         return dataFinalizacao;
     }
 
-    public void setDataFinalizacao(LocalDateTime dataFinalizacao) {
-        this.dataFinalizacao = dataFinalizacao;
-    }
-
     public LocalDateTime getDataCancelamento() {
         return dataCancelamento;
-    }
-
-    public void setDataCancelamento(LocalDateTime dataCancelamento) {
-        this.dataCancelamento = dataCancelamento;
-    }
-
-    public StatusPagamento getStatusPagamento() {
-        return statusPagamento;
     }
 
     public void setStatusPagamento(StatusPagamento statusPagamento) {
         this.statusPagamento = statusPagamento;
     }
 
+    public StatusPagamento getStatusPagamento() {
+        return statusPagamento;
+    }
+
     public List<ProdutoPedido> getProdutoPedidos() {
         return produtoPedidos;
     }
 
-    public void setProdutoPedidos(List<ProdutoPedido> produtoPedidos) {
-        this.produtoPedidos = produtoPedidos;
-    }
-
     public Item getItems() {
         return items;
-    }
-
-    public void setItems(Item items) {
-        this.items = items;
     }
 }

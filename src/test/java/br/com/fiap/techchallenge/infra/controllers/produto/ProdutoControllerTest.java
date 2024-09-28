@@ -677,14 +677,7 @@ class ProdutoControllerTest {
     }
 
     private List<Produto> criarListaDeProdutos() {
-        Produto produto = new Produto();
-        produto.setId(1L);
-        produto.setNome("Nome");
-        produto.setDescricao("Descricao");
-        produto.setCategoria(new Categoria("lanche", "lanches"));
-        produto.setPreco(BigDecimal.ZERO);
-        produto.setImagem("Imagem");
-
+        Produto produto = new Produto(1L, "Nome", "Descricao", new Categoria("lanche", "lanches"), BigDecimal.ZERO, "Imagem");
         return List.of(
                 produto,
                 produto

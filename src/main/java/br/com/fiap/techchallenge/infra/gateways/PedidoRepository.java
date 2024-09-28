@@ -2,12 +2,7 @@ package br.com.fiap.techchallenge.infra.gateways;
 
 import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
 import br.com.fiap.techchallenge.domain.ErrosEnum;
-import br.com.fiap.techchallenge.domain.cors.statuspagamento.IMudancaPagamentoPedido;
-import br.com.fiap.techchallenge.domain.cors.statuspagamento.MudancaPagamentoPedidoPago;
-import br.com.fiap.techchallenge.domain.cors.statuspagamento.MudancaPagamentoPedidoRecusado;
-import br.com.fiap.techchallenge.domain.cors.statuspedido.*;
 import br.com.fiap.techchallenge.domain.entities.cliente.Cliente;
-import br.com.fiap.techchallenge.domain.entities.pagamento.PagamentoPedidoEnum;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamento;
 import br.com.fiap.techchallenge.domain.entities.pagamento.StatusPagamentoEnum;
 import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
@@ -23,12 +18,6 @@ import br.com.fiap.techchallenge.infra.persistence.ClienteEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.PedidoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoPedidoRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 
@@ -44,15 +33,13 @@ public class PedidoRepository implements IPedidoRepository {
 
     private final PedidoEntityRepository pedidoEntityRepository;
     private final PedidoMapper pedidoMapper;
-    private final ClienteMapper clienteMapper;
     private final ClienteEntityRepository clienteEntityRepository;
     private final ProdutoPedidoRepository produtoPedidoRepository;
     private final ProdutoPedidoMapper produtoPedidoMapper;
 
-    public PedidoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteMapper clienteMapper, ClienteEntityRepository clienteEntityRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
+    public PedidoRepository(PedidoEntityRepository pedidoEntityRepository, PedidoMapper pedidoMapper, ClienteEntityRepository clienteEntityRepository, ProdutoPedidoRepository produtoPedidoRepository, ProdutoPedidoMapper produtoPedidoMapper) {
         this.pedidoEntityRepository = pedidoEntityRepository;
         this.pedidoMapper = pedidoMapper;
-        this.clienteMapper = clienteMapper;
         this.clienteEntityRepository = clienteEntityRepository;
         this.produtoPedidoRepository = produtoPedidoRepository;
         this.produtoPedidoMapper = produtoPedidoMapper;
@@ -75,59 +62,21 @@ public class PedidoRepository implements IPedidoRepository {
     }
 
     @Override
-    public Pedido atualizarStatusDoPedido(Long id, JsonPatch patch) {
+    public Pedido atualizarStatusDoPedido(Pedido pedidoAtualizado) {
         log.info("Atualizando status do pedido.");
-        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.loadPedidoById(id);
-        if (pedidoOptional.isEmpty()) {
-            throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
-        }
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-
-            Pedido pedidoAtual = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
-            JsonNode patched = patch.apply(objectMapper.convertValue(pedidoAtual, JsonNode.class));
-
-            Pedido pedidoAtualizado = objectMapper.treeToValue(patched, Pedido.class);
-            pedidoAtualizado.setCliente(pedidoAtual.getCliente());
-
-            validarMudancaDeStatus(pedidoAtual, pedidoAtualizado);
-            definirDataFinalizacaoPedido(pedidoAtualizado);
-
-            return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedidoAtualizado)));
-        } catch (JsonPatchException | JsonProcessingException jsonException) {
-            log.error("Erro ao atualizar o registro no banco de dados", jsonException);
-            throw new PedidoException(ErrosEnum.PEDIDO_FALHA_DURANTE_ATUALIZACAO);
-        }
+        definirDataFinalizacaoPedido(pedidoAtualizado);
+        return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedidoAtualizado)));
     }
 
     private Cliente buscarCliente(Pedido request) {
-        if(request.getCliente() == null || request.getCliente().getCpf().isBlank() || request.getCliente().getCpf().isEmpty()) {
+        if (request.getCliente() == null || request.getCliente().getCpf().isBlank() || request.getCliente().getCpf().isEmpty()) {
             return null;
         }
         Optional<ClienteEntity> clienteEntity = clienteEntityRepository.findByCpf(request.getCliente().getCpf());
-        if (clienteEntity.isEmpty()){
+        if (clienteEntity.isEmpty()) {
             throw new ClienteException(ErrosEnum.CLIENTE_CPF_NAO_EXISTE);
         }
-        Cliente cliente = new ClienteMapper().fromEntityToDomain(clienteEntity.get());
-        return cliente;
-    }
-
-    private void validarMudancaDeStatus(Pedido atual, Pedido novo) {
-        log.info("Validando mudança de status do pedido.");
-        StatusPedidoEnum statusAtual = StatusPedidoEnum.byId(atual.getStatus().getId());
-        StatusPedidoEnum statusNovo = StatusPedidoEnum.byId(novo.getStatus().getId());
-
-        IMudancaStatusPedido mudancaStatusPedido = new MudancaStatusPedidoRecebido(
-                new MudancaStatusPedidoEmPreparacao(
-                        new MudancaStatusPedidoPronto(
-                                new MudancaStatusPedidoFinalizado()
-                        )
-                )
-        );
-
-        mudancaStatusPedido.validarMudancaDeStatus(statusAtual, statusNovo);
+        return new ClienteMapper().fromEntityToDomain(clienteEntity.get());
     }
 
     private void definirDataFinalizacaoPedido(Pedido novo) {
@@ -138,30 +87,9 @@ public class PedidoRepository implements IPedidoRepository {
     }
 
     @Override
-    public Pedido atualizarPagamentoDoPedido(Long id, JsonPatch patch) {
+    public Pedido atualizarPagamentoDoPedido(Pedido pedido) {
         log.info("Atualizando status de pagamento do pedido.");
-        Optional<PedidoEntity> pedidoOptional = pedidoEntityRepository.findById(id);
-        if (pedidoOptional.isEmpty()) {
-            throw new PedidoException(ErrosEnum.PEDIDO_CODIGO_IDENTIFICADOR_INVALIDO);
-        }
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-
-            Pedido pedidoAtual = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
-            JsonNode node = objectMapper.convertValue(pedidoAtual, JsonNode.class);
-            JsonNode patched = patch.apply(node);
-
-            Pedido pedidoAtualizado = objectMapper.treeToValue(patched, Pedido.class);
-
-            validarMudancaDePagamento(pedidoAtual, pedidoAtualizado);
-
-            return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush( pedidoMapper.fromDomainToEntity(pedidoAtualizado)));
-        } catch (JsonPatchException | JsonProcessingException jsonException) {
-            log.error("Erro ao atualizar o registro no banco de dados", jsonException);
-            throw new PedidoException(ErrosEnum.PEDIDO_FALHA_DURANTE_ATUALIZACAO);
-        }
+        return pedidoMapper.fromEntityToDomain(pedidoEntityRepository.saveAndFlush(pedidoMapper.fromDomainToEntity(pedido)));
     }
 
     @Override
@@ -173,18 +101,6 @@ public class PedidoRepository implements IPedidoRepository {
         }
         Pedido pedido = pedidoMapper.fromEntityToDomain(pedidoOptional.get());
         return pedido.getStatusPagamento();
-    }
-
-    private void validarMudancaDePagamento(Pedido atual, Pedido novo) {
-        log.info("Validando mudança de status de pagamento do pedido.");
-        PagamentoPedidoEnum statusPagamentoAtual = PagamentoPedidoEnum.byId(atual.getStatusPagamento().getId());
-        PagamentoPedidoEnum statusPagamentoNovo = PagamentoPedidoEnum.byId(novo.getStatusPagamento().getId());
-
-        IMudancaPagamentoPedido mudancaPagamentoPedido = new MudancaPagamentoPedidoPago(
-                new MudancaPagamentoPedidoRecusado()
-        );
-
-        mudancaPagamentoPedido.validarMudancaDePagamento(statusPagamentoAtual, statusPagamentoNovo);
     }
 
     @Override

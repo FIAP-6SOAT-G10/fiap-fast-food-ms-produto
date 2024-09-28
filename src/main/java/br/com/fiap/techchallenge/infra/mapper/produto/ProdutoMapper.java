@@ -27,20 +27,8 @@ public class ProdutoMapper {
 
     public Produto fromEntityToDomain(ProdutoEntity produtoEntity) {
         CategoriaEntity categoriaEntity = produtoEntity.getCategoriaEntity();
-
-        Categoria categoria = new Categoria();
-        categoria.setNome(categoriaEntity.getNome());
-        categoria.setDescricao(categoriaEntity.getDescricao());
-
-        Produto produto = new Produto();
-        produto.setId(produtoEntity.getId());
-        produto.setNome(produtoEntity.getNome());
-        produto.setDescricao(produtoEntity.getDescricao());
-        produto.setCategoria(categoria);
-        produto.setPreco(produtoEntity.getPreco());
-        produto.setImagem(produtoEntity.getImagem());
-
-        return produto;
+        Categoria categoria = new Categoria(categoriaEntity.getNome(), categoriaEntity.getDescricao());
+        return new Produto(produtoEntity.getId(), produtoEntity.getNome(), produtoEntity.getDescricao(), categoria, produtoEntity.getPreco(), produtoEntity.getImagem());
     }
 
     public List<Produto> fromListEntityToListDomain(List<ProdutoEntity> produtos) {

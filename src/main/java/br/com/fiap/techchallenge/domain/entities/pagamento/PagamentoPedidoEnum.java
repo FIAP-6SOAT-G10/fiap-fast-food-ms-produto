@@ -2,12 +2,10 @@ package br.com.fiap.techchallenge.domain.entities.pagamento;
 
 import br.com.fiap.techchallenge.domain.ErrosEnum;
 import br.com.fiap.techchallenge.infra.exception.PedidoException;
-import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-@Getter
 public enum PagamentoPedidoEnum {
 
     PAGO(1L, "pago"),
@@ -30,5 +28,13 @@ public enum PagamentoPedidoEnum {
     public static PagamentoPedidoEnum byStatus(String status) {
         Predicate<PagamentoPedidoEnum> byStatus = s -> s.status.equalsIgnoreCase(status);
         return Arrays.stream(values()).filter(byStatus).findAny().orElseThrow(() -> new PedidoException(ErrosEnum.PEDIDO_PAGAMENTO_PAGAMENTO_NAO_ENCONTRADO));
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
