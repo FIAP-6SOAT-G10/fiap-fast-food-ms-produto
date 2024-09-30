@@ -1,8 +1,12 @@
 package br.com.fiap.techchallenge.infra.config;
 
+import br.com.fiap.techchallenge.application.gateways.IPedidoRepository;
+import br.com.fiap.techchallenge.application.gateways.IProdutoRepository;
 import br.com.fiap.techchallenge.application.usecases.pagamento.ConsultarPagamentoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pagamento.RealizarPagamentoUseCase;
 import br.com.fiap.techchallenge.application.usecases.pedido.PatchPedidoUseCase;
+import br.com.fiap.techchallenge.application.usecases.pedido.PostPedidoUseCase;
+import br.com.fiap.techchallenge.infra.mapper.pagamento.PagamentoMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +28,16 @@ public class PagamentoConfig {
     @Bean
     public RealizarPagamentoUseCase criarRealizarPagamentoUseCase(PatchPedidoUseCase patchPedidoUseCase) {
         return new RealizarPagamentoUseCase(patchPedidoUseCase, mercadoPagoAccessToken, mercadoPagoNotificationUrl);
+    }
+
+    @Bean
+    public PostPedidoUseCase criarPostPedidoUseCase(IPedidoRepository pedidoRepository, IProdutoRepository produtoRepository, RealizarPagamentoUseCase realizarPagamentUseCase) {
+        return new PostPedidoUseCase(pedidoRepository, produtoRepository, realizarPagamentUseCase);
+    }
+
+    @Bean
+    public PagamentoMapper criarPagamentoMapper() {
+        return new PagamentoMapper();
     }
 
 }
