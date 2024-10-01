@@ -28,7 +28,7 @@ public class ProdutoPedidoMapper {
         Categoria categoria = new Categoria(categoriaEntity.getNome(), categoriaEntity.getDescricao());
         Produto produto = new Produto(produtoEntity.getId(), produtoEntity.getNome(), produtoEntity.getDescricao(), categoria, produtoEntity.getPreco(), produtoEntity.getImagem());
 
-        return new ProdutoPedido(produto.getId(), produto, produtoPedidoEntity.getValorTotal(), produtoPedidoEntity.getQuantidade());
+        return new ProdutoPedido(produtoPedidoEntity.getId(), produto, produtoPedidoEntity.getValorTotal(), produtoPedidoEntity.getQuantidade());
     }
 
     public ProdutoPedidoEntity fromDomainToEntity(ProdutoPedido produtoPedido) {
@@ -45,6 +45,7 @@ public class ProdutoPedidoMapper {
         produtoEntity.setImagem(produto.getImagem());
 
         ProdutoPedidoEntity produtoPedidoEntity = new ProdutoPedidoEntity();
+        produtoPedidoEntity.setId(produtoPedido.getId());
         produtoPedidoEntity.setProdutoEntity(produtoEntity);
         produtoPedidoEntity.setQuantidade(produtoPedido.getQuantidade());
         produtoPedidoEntity.setValorTotal(produtoPedido.getValorTotal());
