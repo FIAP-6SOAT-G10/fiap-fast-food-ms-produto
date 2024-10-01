@@ -40,7 +40,7 @@ public class PostPedidoUseCase  {
         BigDecimal subtotal = itens.stream().map(ProdutoPedido::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         pedido.getProdutoPedidos().addAll(itens);
-        pedido.getValor().add(subtotal);
+        pedido.totalizar(subtotal);
        return pedidoRepository.criarPedido(pedido);
     }
 

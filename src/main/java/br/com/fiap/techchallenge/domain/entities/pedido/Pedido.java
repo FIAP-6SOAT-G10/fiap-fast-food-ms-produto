@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,8 +26,7 @@ public class Pedido {
     private List<ProdutoPedido> produtoPedidos;
     private Item items;
 
-    public Pedido() {
-    }
+    public Pedido() {}
 
     public Pedido(Cliente cliente, Item items) {
         this(items);
@@ -38,11 +38,8 @@ public class Pedido {
             throw new IllegalArgumentException("Items é um campo obrigatório no cadastro de novos pedidos.");
         }
         this.items = items;
-    }
-
-    public Pedido(Long id, Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
-        this(cliente, status, valor, dataCriacao, dataFinalizacao, dataCancelamento, statusPagamento, produtoPedidos, items);
-        this.id = id;
+        this.produtoPedidos = new ArrayList<>();
+        this.valor = BigDecimal.ZERO;
     }
 
     public Pedido(BigDecimal valor, List<ProdutoPedido> produtoPedidos) {
@@ -56,11 +53,12 @@ public class Pedido {
         this.produtoPedidos = produtoPedidos;
     }
 
-    public Pedido(Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
-        if (cliente == null) {
-            throw new IllegalArgumentException("Cliente é um campo obrigatório no cadastro de novos pedidos.");
-        }
+    public Pedido(Long id, Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
+        this(cliente, status, valor, dataCriacao, dataFinalizacao, dataCancelamento, statusPagamento, produtoPedidos, items);
+        this.id = id;
+    }
 
+    public Pedido(Cliente cliente, StatusPedido status, BigDecimal valor, LocalDateTime dataCriacao, LocalDateTime dataFinalizacao, LocalDateTime dataCancelamento, StatusPagamento statusPagamento, List<ProdutoPedido> produtoPedidos, Item items) {
         if (status == null) {
             throw new IllegalArgumentException("Status é um campo obrigatório no cadastro de novos pedidos.");
         }
@@ -71,14 +69,6 @@ public class Pedido {
 
         if (dataCriacao == null) {
             throw new IllegalArgumentException("Data de criação é um campo obrigatório no cadastro de novos pedidos.");
-        }
-
-        if (dataFinalizacao == null) {
-            throw new IllegalArgumentException("Data de finalização é um campo obrigatório no cadastro de novos pedidos.");
-        }
-
-        if (dataCancelamento == null) {
-            throw new IllegalArgumentException("Data de cancelamento é um campo obrigatório no cadastro de novos pedidos.");
         }
 
         if (statusPagamento == null) {
@@ -158,5 +148,9 @@ public class Pedido {
 
     public Item getItems() {
         return items;
+    }
+
+    public void totalizar(BigDecimal subtotal) {
+        this.valor = this.valor.add(subtotal);
     }
 }

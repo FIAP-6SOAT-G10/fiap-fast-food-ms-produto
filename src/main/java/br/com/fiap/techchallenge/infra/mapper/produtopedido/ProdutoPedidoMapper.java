@@ -1,11 +1,13 @@
 package br.com.fiap.techchallenge.infra.mapper.produtopedido;
 
 
+import br.com.fiap.techchallenge.domain.entities.pedido.Pedido;
 import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
 import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import br.com.fiap.techchallenge.domain.entities.produto.CategoriaEnum;
 import br.com.fiap.techchallenge.domain.entities.produto.Produto;
 import br.com.fiap.techchallenge.infra.mapper.categoria.CategoriaMapper;
+import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoPedidoEntity;
@@ -26,7 +28,7 @@ public class ProdutoPedidoMapper {
         Categoria categoria = new Categoria(categoriaEntity.getNome(), categoriaEntity.getDescricao());
         Produto produto = new Produto(produtoEntity.getId(), produtoEntity.getNome(), produtoEntity.getDescricao(), categoria, produtoEntity.getPreco(), produtoEntity.getImagem());
 
-        return new ProdutoPedido(produto, produtoPedidoEntity.getValorTotal(), produtoPedidoEntity.getQuantidade());
+        return new ProdutoPedido(produto.getId(), produto, produtoPedidoEntity.getValorTotal(), produtoPedidoEntity.getQuantidade());
     }
 
     public ProdutoPedidoEntity fromDomainToEntity(ProdutoPedido produtoPedido) {
