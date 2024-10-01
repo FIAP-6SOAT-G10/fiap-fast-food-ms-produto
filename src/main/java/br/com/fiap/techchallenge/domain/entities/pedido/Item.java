@@ -14,6 +14,8 @@ public class Item {
     private List<ItemPedido> bebida;
     private List<ItemPedido> sobremesa;
 
+    public Item() {}
+
     public Item(List<ItemPedido> lanches, List<ItemPedido> acompanhamento, List<ItemPedido> bebida, List<ItemPedido> sobremesa) {
         this.lanches = lanches;
         this.acompanhamento = acompanhamento;

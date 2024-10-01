@@ -14,6 +14,8 @@ public class Produto {
     private String imagem;
     private List<ProdutoPedido> pedidos;
 
+    public Produto() {}
+
     public Produto(String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
         this.nome = nome;
         this.descricao = descricao;

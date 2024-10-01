@@ -4,6 +4,8 @@ public class ItemPedido {
     private Long id;
     private Long quantidade;
 
+    public ItemPedido() {}
+
     public ItemPedido(Long id, Long quantidade) {
         this.id = id;
         this.quantidade = quantidade;

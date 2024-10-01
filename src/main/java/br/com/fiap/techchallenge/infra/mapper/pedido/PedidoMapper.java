@@ -21,14 +21,13 @@ public class PedidoMapper {
     private final ProdutoPedidoMapper produtoPedidoMapper = new ProdutoPedidoMapper();
 
     public Pedido fromEntityToDomain(PedidoEntity pedidoEntity) {
-
         Cliente cliente = clienteMapper.fromEntityToDomain(pedidoEntity.getCliente());
 
         StatusPedido status = new StatusPedido(pedidoEntity.getStatus().getId());
         StatusPagamento statusPagamento = new StatusPagamento(pedidoEntity.getStatusPagamento().getId());
 
         List<ProdutoPedido> produtosPedidos = produtoPedidoMapper.fromListEntityToListDomain(pedidoEntity.getProdutos());
-        Map<Long, List<ItemPedido>> mapItemPedido = buildMapItemPedido(produtosPedidos);
+        Map<Long, List<ItemPedido>> mapItemPedido = buildMapItemPedido(pedidoEntity, produtosPedidos);
         List<ItemPedido> lanches = mapItemPedido.get(CategoriaEnum.LANCHE.getIdCategoria());
         List<ItemPedido> bebida = mapItemPedido.get(CategoriaEnum.BEBIDA.getIdCategoria());
         List<ItemPedido> acompanhamento = mapItemPedido.get(CategoriaEnum.ACOMPANHAMENTO.getIdCategoria());
@@ -75,6 +74,7 @@ public class PedidoMapper {
         pedidoEntity.setStatus(statusPedidoEntity);
         pedidoEntity.setStatusPagamento(statusPagamentoEntity);
         pedidoEntity.setValor(pedido.getValor());
+        pedidoEntity.setDataCriacao(pedido.getDataCriacao());
         pedidoEntity.setProdutos(produtoPedidoMapper.fromListDomainToListEntity(pedido.getProdutoPedidos()));
 
         return pedidoEntity;
@@ -98,11 +98,11 @@ public class PedidoMapper {
         return pedidos.stream().map(this::fromDomainToEntity).toList();
     }
 
-    private static Map<Long, List<ItemPedido>> buildMapItemPedido(List<ProdutoPedido> produtosPedidos) {
+    private static Map<Long, List<ItemPedido>> buildMapItemPedido(PedidoEntity pedidoEntity, List<ProdutoPedido> produtosPedidos) {
         Map<Long, List<ItemPedido>> mapItemPedido = new HashMap<>();
-        produtosPedidos.stream().forEach(it -> {
+        produtosPedidos.forEach(it -> {
 
-            ItemPedido itemPedido = new ItemPedido(it.getPedido().getId(), it.getQuantidade().longValue());
+            ItemPedido itemPedido = new ItemPedido(pedidoEntity.getId(), it.getQuantidade().longValue());
             CategoriaEnum categoriaEnum = CategoriaEnum.fromName(it.getProduto().getCategoria().getNome());
 
             if(mapItemPedido.isEmpty()) {
