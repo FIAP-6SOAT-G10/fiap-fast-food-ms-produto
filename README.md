@@ -39,12 +39,16 @@ Para solucionar o problema, a lanchonete irá investir em um sistema de autoaten
 - [Thiago Getnerski](https://github.com/Getnerski)
 
 ## Apresentação do Projeto
-[<img height="50" width="200" src="src/main/resources/img/images.png" title="Fiap Arquitetura UML"/>](https://www.youtube.com/watch?v=y4m8ueFRydw)
+<img height="50" width="200" src="src/main/resources/img/images.png" title="Fiap Arquitetura UML"/>
 
----> [Link do video](https://www.youtube.com/watch?v=y4m8ueFRydw) <---
+### [Vídeo da Fase 2](https://www.youtube.com/watch?v=y4m8ueFRydw)
+### [Vídeo da Fase 3](https://www.youtube.com/watch?v=WleicW8Sx58)
 
+<a id="documentacao"></a>
+## Documentação do Projeto com Event Storming
+Fizemos o mapeamento do fluxo de forma evolutiva, pensando a partir dos eventos passados, incrementando com os pontos de atenção para na sequência adicionar os comandos, modelos de leitura, políticas e sistemas externos, conforme o que foi aprendido em aula.
 
-
+[Event Storming](https://miro.com/app/board/uXjVKVpAtxk=/?moveToWidget=3458764589554562116&cot=14)
 
 <a id="arquitetura"></a>
 ## Arquitetura do Projeto
@@ -61,31 +65,27 @@ Abaixo é possível verificar nossa arquitetura em UML.
 Agora que vimos como funciona nossa arquitetura em UML, migramos ela para Kubernetes:
 
 * `deployment-application`: Essa arquitetura fica responsável por nossa API.
-  * `Service (Load Balancer)`: É um tipo de serviço que distribui o tráfego de rede para os pods que executam sua aplicação
-  * `Deployment`: É um recurso que fornece a maneira mais comum de gerenciar a implantação e a escalabilidade de aplicações em containers.
-  * `ConfigMap`: É um recurso utilizado para armazenar dados de configuração em formato de pares chave-valor, nele vamos guardar nossas credenciais de URL para o banco de dados.
-  * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
+    * `Service (Load Balancer)`: É um tipo de serviço que distribui o tráfego de rede para os pods que executam sua aplicação
+    * `Deployment`: É um recurso que fornece a maneira mais comum de gerenciar a implantação e a escalabilidade de aplicações em containers.
+    * `ConfigMap`: É um recurso utilizado para armazenar dados de configuração em formato de pares chave-valor, nele vamos guardar nossas credenciais de URL para o banco de dados.
+    * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
 
 * `sts-postgres`: Essa arquitetura fica responsável por nosso banco de dados.
-  * `Service (ClusterIP)`: É um recurso que define uma forma lógica de agrupar um conjunto de pods e prover uma forma consistente de acessá-los.
-  * `StatefulSet`: É um recurso que gerencia a implantação e o dimensionamento de um conjunto de pods e fornece garantias sobre a ordem e a identidade desses pods.
-  * `Secret`: É um recurso utilizado para armazenar e gerenciar informações sensíveis, como senhas, tokens OAuth, etc.
-  * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
+    * `Service (ClusterIP)`: É um recurso que define uma forma lógica de agrupar um conjunto de pods e prover uma forma consistente de acessá-los.
+    * `StatefulSet`: É um recurso que gerencia a implantação e o dimensionamento de um conjunto de pods e fornece garantias sobre a ordem e a identidade desses pods.
+    * `Secret`: É um recurso utilizado para armazenar e gerenciar informações sensíveis, como senhas, tokens OAuth, etc.
+    * `Pods`: Cada pod encapsula um ou mais contêineres (containers).
 
 <img height="455" src="src/main/resources/img/arquitetura-k8s.png" title="Fiap Arquitetura K8S" width="1195"/>
 
 #### Em Resumo
-
 A arquitetura do sistema descrita envolve duas principais componentes: a aplicação de API e o banco de dados PostgreSQL.
 
-* `Banco de dados`: Os serviços externos irão se comunicar com o nosso Service do tipo ClusterIP, que redirecionará as requisições para o nosso StatefulSet. O StatefulSet é responsável por gerenciar quatro réplicas, cada uma rodando uma instância do nosso banco de dados. O armazenamento persistente é gerenciado pelo PersistentVolume e pelo PersistentVolumeClaim, garantindo que os dados lidos e escritos estejam sempre disponíveis e consistentes. 
+* `Banco de dados`: Os serviços externos irão se comunicar com o nosso Service do tipo ClusterIP, que redirecionará as requisições para o nosso StatefulSet. O StatefulSet é responsável por gerenciar quatro réplicas, cada uma rodando uma instância do nosso banco de dados. O armazenamento persistente é gerenciado pelo PersistentVolume e pelo PersistentVolumeClaim, garantindo que os dados lidos e escritos estejam sempre disponíveis e consistentes.
 * `Aplicação`: Quando uma requisição for feita ao nosso DNS, ela será direcionada ao nosso Service do tipo Load Balancer. Este, por sua vez, redirecionará a solicitação para o nosso Deployment, que gerencia quatro réplicas da nossa API, cada uma em um contêiner separado. Cada contêiner terá uma conexão direta com o ClusterIP do banco de dados, garantindo uma comunicação eficiente e segura entre a aplicação e o banco de dados.
 
-<a id="documentacao"></a>
-## Documentação do Projeto com Event Storming
-Fizemos o mapeamento do fluxo de forma evolutiva, pensando a partir dos eventos passados, incrementando com os pontos de atenção para na sequência adicionar os comandos, modelos de leitura, políticas e sistemas externos, conforme o que foi aprendido em aula.
-
-[Event Storming](https://miro.com/app/board/uXjVKVpAtxk=/?moveToWidget=3458764589554562116&cot=14)
+## Arquitetura da Infraestrutura na Nuvem
+<img height="500" src="src/main/resources/img/arquitetura-cloud.png" title="Fiap Arquitetura Cloud" width="1195"/>
 
 <a id="requisito"></a>
 ## Requisitos para Execução
