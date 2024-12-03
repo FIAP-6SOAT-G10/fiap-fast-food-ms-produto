@@ -2,6 +2,7 @@ package br.com.fiap.techchallenge.infra.controllers.categoria;
 
 import br.com.fiap.techchallenge.application.usecases.categoria.ListarCategoriasUseCase;
 import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
+import br.com.fiap.techchallenge.infra.controllers.categoria.dtos.CategoriaDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
