@@ -7,13 +7,16 @@ import br.com.fiap.techchallenge.domain.entities.produto.Produto;
 import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
+import br.com.fiap.techchallenge.infra.persistence.ProdutoDocumentRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
+import br.com.fiap.techchallenge.infra.persistence.document.ProdutoDocument;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,16 +24,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+
 public class ProdutoRepository implements IProdutoRepository {
 
     private final ProdutoEntityRepository produtoEntityRepository;
     private final CategoriaEntityRepository categoriaEntityRepository;
     private final ProdutoMapper produtoMapper;
+    private final ProdutoRedisRepository redisRepository;
 
-    public ProdutoRepository(ProdutoEntityRepository produtoEntityRepository, CategoriaEntityRepository categoriaEntityRepository, ProdutoMapper produtoMapper) {
+    public ProdutoRepository(ProdutoEntityRepository produtoEntityRepository, CategoriaEntityRepository categoriaEntityRepository, ProdutoMapper produtoMapper, ProdutoRedisRepository redisRepository) {
         this.produtoEntityRepository = produtoEntityRepository;
         this.categoriaEntityRepository = categoriaEntityRepository;
         this.produtoMapper = produtoMapper;
+        this.redisRepository = redisRepository;
     }
 
     @Override
@@ -50,10 +56,15 @@ public class ProdutoRepository implements IProdutoRepository {
                 listaProdutoEntity.addAll(filteredProdutoEntity);
             });
         } else {
-            listaProdutoEntity.addAll(produtoEntityRepository.findAll());
+            listaProdutoEntity.addAll(findAll());
         }
 
         return produtoMapper.fromListEntityToListDomain(listaProdutoEntity);
+    }
+
+    @Cacheable(cacheNames = "produto")
+    private List<ProdutoEntity> findAll() {
+        return produtoEntityRepository.findAll();
     }
 
     @Override
@@ -67,12 +78,21 @@ public class ProdutoRepository implements IProdutoRepository {
 
     @Override
     public Produto criarProduto(Produto produto) {
+
         Optional<CategoriaEntity> categoriaEntityOptional = categoriaEntityRepository.findByNome(produto.getCategoria().getNome());
         if (categoriaEntityOptional.isPresent()) {
-            ProdutoEntity produtoEntity = produtoMapper.fromDomainToEntity(produto);
 
+            Optional<ProdutoDocument> produtoExists = redisRepository.findById(produto.getId());
+            if(produtoExists.isPresent()) {
+                throw new ProdutoException(ErrosEnum.PRODUTO_JA_EXISTE);
+            }
+
+            ProdutoEntity produtoEntity = produtoMapper.fromDomainToEntity(produto);
             produtoEntity.setCategoriaEntity(categoriaEntityOptional.get());
             produtoEntity = produtoEntityRepository.saveAndFlush(produtoEntity);
+
+            /** AQUI ENVIA PRO CACHE **/
+            redisRepository.save(produtoMapper.fromEntityToCache(produtoEntity));
             return produtoMapper.fromEntityToDomain(produtoEntity);
         }
 

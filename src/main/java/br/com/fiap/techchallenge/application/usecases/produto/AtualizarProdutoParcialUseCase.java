@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 
 public class AtualizarProdutoParcialUseCase {
 
+    private static final String VALUE_PARAM = "value";
+    private static final String REGEX = "[^\\d+]";
+
     private final IProdutoRepository produtoRepository;
 
     public AtualizarProdutoParcialUseCase(IProdutoRepository produtoRepository) {
@@ -24,7 +27,7 @@ public class AtualizarProdutoParcialUseCase {
     }
 
     private void validarDados(String id, JsonPatch patch) {
-        Pattern pattern = Pattern.compile("[^\\d+]");
+        Pattern pattern = Pattern.compile(REGEX);
         if (pattern.matcher(id).find()) {
             throw new ProdutoException(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO);
         }
@@ -50,7 +53,7 @@ public class AtualizarProdutoParcialUseCase {
 
     private void verificarNome(JsonNode path, JsonNode parent) {
         if (path.asText().equalsIgnoreCase("/nome")) {
-            String nomeContent = parent.get("value").asText();
+            String nomeContent = parent.get(VALUE_PARAM).asText();
             if (nomeContent == null || nomeContent.isEmpty()) {
                 throw new ProdutoException(ErrosEnum.PRODUTO_NOME_OBRIGATORIO);
             }
@@ -59,7 +62,7 @@ public class AtualizarProdutoParcialUseCase {
 
     private void verificarDescricao(JsonNode path, JsonNode parent) {
         if (path.asText().equalsIgnoreCase("/descricao")) {
-            String descricaoContent = parent.get("value").asText();
+            String descricaoContent = parent.get(VALUE_PARAM).asText();
             if (descricaoContent == null || descricaoContent.isEmpty()) {
                 throw new ProdutoException(ErrosEnum.PRODUTO_DESCRICAO_OBRIGATORIO);
             }
@@ -68,7 +71,7 @@ public class AtualizarProdutoParcialUseCase {
 
     private void verificarCategoria(JsonNode path, JsonNode parent) {
         if (path.asText().equalsIgnoreCase("/categoria")) {
-            String categoriaContent = parent.get("value").asText();
+            String categoriaContent = parent.get(VALUE_PARAM).asText();
             if (categoriaContent == null || categoriaContent.isEmpty()) {
                 throw new ProdutoException(ErrosEnum.CATEGORIA_INVALIDA);
             }
@@ -77,7 +80,7 @@ public class AtualizarProdutoParcialUseCase {
 
     private void verificarPreco(JsonNode path, JsonNode parent) {
         if (path.asText().equalsIgnoreCase("/preco")) {
-            String precoContent = parent.get("value").asText();
+            String precoContent = parent.get(VALUE_PARAM).asText();
             if (precoContent == null || precoContent.isEmpty()) {
                 throw new ProdutoException(ErrosEnum.PRODUTO_PRECO_OBRIGATORIO);
             }
@@ -86,7 +89,7 @@ public class AtualizarProdutoParcialUseCase {
 
     private void verificarImagem(JsonNode path, JsonNode parent) {
         if (path.asText().equalsIgnoreCase("/imagem")) {
-            String imagemContent = parent.get("value").asText();
+            String imagemContent = parent.get(VALUE_PARAM).asText();
             if (imagemContent == null || imagemContent.isEmpty()) {
                 throw new ProdutoException(ErrosEnum.PRODUTO_IMAGEM_OBRIGATORIO);
             }

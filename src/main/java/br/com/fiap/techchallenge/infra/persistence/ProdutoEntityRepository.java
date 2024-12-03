@@ -15,4 +15,7 @@ public interface ProdutoEntityRepository extends JpaRepository<ProdutoEntity, Lo
 
     Optional<List<ProdutoEntity>> findByNomeOrDescricaoOrPreco(String nome, String descricao, BigDecimal preco);
 
+    Optional<ProdutoEntity> findByNome(String nome);
+
+
 }

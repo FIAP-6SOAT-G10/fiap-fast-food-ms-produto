@@ -16,6 +16,4 @@ public class ListarCategoriasUseCase {
     public List<Categoria> listarCategorias() {
         return this.categoriaRepository.listarCategorias();
     }
-
-
 }

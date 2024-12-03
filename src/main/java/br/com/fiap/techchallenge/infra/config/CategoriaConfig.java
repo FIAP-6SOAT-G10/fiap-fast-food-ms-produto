@@ -11,9 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class CategoriaConfig {
 
     @Bean
-    public ICategoriaRepository criarCategoriaRepository(
-            CategoriaEntityRepository categoriaEntityRepository
-    ) {
+    public ICategoriaRepository criarCategoriaRepository(CategoriaEntityRepository categoriaEntityRepository) {
         return new CategoriaRepository(categoriaEntityRepository);
     }
 

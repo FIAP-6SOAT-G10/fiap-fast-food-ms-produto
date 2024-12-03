@@ -27,6 +27,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -77,7 +78,7 @@ public class ProdutoController {
     ) {
         List<Produto> produtos = listarProdutoUseCase.listarProdutos(nome, descricao, preco);
         if (produtos.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(produtos.stream().map(p -> new ProdutoDTO(p.getId(), p.getNome(), p.getDescricao(), new CategoriaDTO(p.getCategoria().getNome(), p.getCategoria().getDescricao()), p.getPreco(), p.getImagem())).toList());
     }
@@ -109,7 +110,7 @@ public class ProdutoController {
 
         List<Produto> produtos = listarProdutoUseCase.listarProdutosPorCategoria(CategoriaEnum.fromName(categoria));
         if (produtos == null || produtos.isEmpty()) {
-            ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(produtos.stream().map(p -> new ProdutoDTO(p.getId(), p.getNome(), p.getDescricao(), new CategoriaDTO(p.getCategoria().getNome(), p.getCategoria().getDescricao()), p.getPreco(), p.getImagem())).toList());
     }
@@ -176,7 +177,6 @@ public class ProdutoController {
     public ResponseEntity<ProdutoDTO> atualizarDadosProduto(@PathVariable("id") String id, @RequestBody JsonPatch patch) {
         log.info("Atualizando dados de um produto.");
         Produto produto = atualizarProdutoParcialUseCase.atualizarDadosProduto(id, patch);
-
         return ResponseEntity.ok(new ProdutoDTO(produto.getId(), produto.getNome(), produto.getDescricao(), new CategoriaDTO(produto.getCategoria().getNome(), produto.getCategoria().getDescricao()), produto.getPreco(), produto.getImagem()));
     }
 
@@ -197,9 +197,37 @@ public class ProdutoController {
         log.info("Atualizando um produto.");
         Produto produto = atualizarProdutoUseCase.atualizarProduto(id, new Produto(produtoDTO.nome(), produtoDTO.descricao(), new Categoria(produtoDTO.categoria()), produtoDTO.preco(), produtoDTO.imagem()));
         if (produto == null) {
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Buscar Produto por id", description = "Esta operação deve ser usada para buscar um item cadastrado no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Not Found", content =
+                    {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content =
+                    {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorsResponse.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content =
+                    {@Content(mediaType = "application/json", schema =
+                    @Schema(implementation = ErrorsResponse.class))})})
+    @CrossOrigin(origins = "*", maxAge = 3600)
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<ProdutoDTO> listarProdutos(@PathVariable("id") Long id) {
+        Produto produto = listarProdutoUseCase.buscarProdutoPorId(id);
+        if (Objects.isNull(produto)) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ProdutoDTO(
+                        produto.getId(),
+                        produto.getNome(),
+                        produto.getDescricao(),
+                        new CategoriaDTO(produto.getCategoria().getNome(), produto.getCategoria().getDescricao()),
+                        produto.getPreco(),
+                        produto.getImagem()));
     }
 
 }

@@ -1,9 +1,6 @@
 package br.com.fiap.techchallenge.domain.entities.produto;
 
-import br.com.fiap.techchallenge.domain.entities.pedido.ProdutoPedido;
-
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Produto {
     private Long id;
@@ -12,19 +9,18 @@ public class Produto {
     private Categoria categoria;
     private BigDecimal preco;
     private String imagem;
-    private List<ProdutoPedido> pedidos;
+
 
     public Produto() {}
 
     public Produto(String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
+
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.preco = preco;
         this.imagem = imagem;
-    }
 
-    public Produto(Long id, String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
         if (nome == null || nome.isEmpty() || nome.isBlank()) {
             throw new IllegalArgumentException("Nome é um campo obrigatório no cadastro de novos produtos.");
         }
@@ -44,7 +40,9 @@ public class Produto {
         if (imagem == null) {
             throw new IllegalArgumentException("Imagem do produto é um campo obrigatório no cadastro de novos produtos");
         }
+    }
 
+    public Produto(Long id, String nome, String descricao, Categoria categoria, BigDecimal preco, String imagem) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -77,7 +75,5 @@ public class Produto {
         return imagem;
     }
 
-    public List<ProdutoPedido> getPedidos() {
-        return pedidos;
-    }
+
 }

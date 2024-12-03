@@ -1,69 +1,60 @@
 package br.com.fiap.techchallenge.infra.controllers.categoria;
 
 import br.com.fiap.techchallenge.application.usecases.categoria.ListarCategoriasUseCase;
-import br.com.fiap.techchallenge.infra.gateways.categorias.CategoriaRepository;
-import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
-import org.junit.jupiter.api.Assertions;
+import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CategoriaControllerTest {
 
-    ListarCategoriasUseCase categoriasUseCase;
     @Mock
-    CategoriaEntityRepository categoriaEntityRepository;
+    private ListarCategoriasUseCase categoriasUseCase;
+
+    @InjectMocks
+    private CategoriaController categoriaController;
+
+    private MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
-        CategoriaRepository categoriaRepository = new CategoriaRepository(categoriaEntityRepository);
-        categoriasUseCase = new ListarCategoriasUseCase(categoriaRepository);
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(categoriaController).build();
     }
 
     @Test
-    void itShouldReturnTodosCategorias() {
-        ArrayList<CategoriaEntity> categeorias = new ArrayList<>();
-        categeorias.add(new CategoriaEntity(1L));
-        when(categoriaEntityRepository.findAll()).thenReturn(categeorias);
-        CategoriaController controller = new CategoriaController(categoriasUseCase);
-        ResponseEntity<List<CategoriaDTO>> responseCategorias = controller.listarTodasCategorias();
-        if (!responseCategorias.hasBody()) {
-            Assertions.fail();
-        }
-        if (responseCategorias.getBody().isEmpty()) {
-            Assertions.fail();
-        }
-        Assertions.assertEquals(1, responseCategorias.getBody().size());
+    void testListarTodasCategorias_Success() throws Exception {
+        Categoria categoria1 = new Categoria("LANCHE", "Lanches");
+        Categoria categoria2 = new Categoria("BEBIDA", "Bebidas");
+        when(categoriasUseCase.listarCategorias()).thenReturn(Arrays.asList(categoria1, categoria2));
+        mockMvc.perform(get("/categorias")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$[0].nome").value("LANCHE"))
+                .andExpect(jsonPath("$[0].descricao").value("Lanches"))
+                .andExpect(jsonPath("$[1].nome").value("BEBIDA"))
+                .andExpect(jsonPath("$[1].descricao").value("Bebidas"));
     }
-
 
     @Test
-    void itShouldReturnCategoriaComValoresCorretos() {
-        ArrayList<CategoriaEntity> categeorias = new ArrayList<>();
-        Long id = 1L;
-        String nome = "Gabs";
-        String descricao = "Descricao";
-        categeorias.add(new CategoriaEntity(id, nome, descricao, null));
-        when(categoriaEntityRepository.findAll()).thenReturn(categeorias);
-        CategoriaController controller = new CategoriaController(categoriasUseCase);
-        ResponseEntity<List<CategoriaDTO>> responseCategorias = controller.listarTodasCategorias();
-        if (!responseCategorias.hasBody()) {
-            Assertions.fail();
-        }
-        if (responseCategorias.getBody().isEmpty()) {
-            Assertions.fail();
-        }
-        Assertions.assertEquals(nome, responseCategorias.getBody().get(0).getNome());
-        Assertions.assertEquals(descricao, responseCategorias.getBody().get(0).getDescricao());
+    void testListarTodasCategorias_NoContent() throws Exception {
+        when(categoriasUseCase.listarCategorias()).thenReturn(Collections.emptyList());
+        mockMvc.perform(get("/categorias")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
-
 }

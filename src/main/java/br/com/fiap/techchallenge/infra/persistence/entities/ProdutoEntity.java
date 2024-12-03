@@ -1,14 +1,15 @@
 package br.com.fiap.techchallenge.infra.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "produto")
 @SequenceGenerator(name = "produto_seq" , sequenceName = "produto_id_seq" , allocationSize = 1)
 public class ProdutoEntity {
@@ -30,16 +31,11 @@ public class ProdutoEntity {
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoriaEntity categoriaEntity;
 
-    @Column(name = "preco", nullable = false, precision = 3, scale = 2)
+    @Column(name = "preco", nullable = false, precision = 6, scale = 2)
     private BigDecimal preco;
 
     @Column(name = "imagem", nullable = false, length = 500)
     private String imagem;
-
-    @JsonIgnore
-    @JsonManagedReference("produtoEntity.pedidos")
-    @OneToMany(mappedBy = "produtoEntity")
-    private List<ProdutoPedidoEntity> pedidos;
 
     public ProdutoEntity() {}
 
@@ -52,59 +48,4 @@ public class ProdutoEntity {
         this.imagem = imagem;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public CategoriaEntity getCategoriaEntity() {
-        return categoriaEntity;
-    }
-
-    public void setCategoriaEntity(CategoriaEntity categoriaEntity) {
-        this.categoriaEntity = categoriaEntity;
-    }
-
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-
-    public String getImagem() {
-        return imagem;
-    }
-
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
-    }
-
-    public List<ProdutoPedidoEntity> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(List<ProdutoPedidoEntity> pedidos) {
-        this.pedidos = pedidos;
-    }
 }

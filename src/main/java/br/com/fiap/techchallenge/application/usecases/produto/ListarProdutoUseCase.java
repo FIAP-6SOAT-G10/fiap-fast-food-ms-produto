@@ -23,4 +23,7 @@ public class ListarProdutoUseCase {
         return this.produtoRepository.listarProdutosPorCategoria(categoriaEnum);
     }
 
+    public Produto buscarProdutoPorId(Long id) {
+        return this.produtoRepository.findById(id);
+    }
 }

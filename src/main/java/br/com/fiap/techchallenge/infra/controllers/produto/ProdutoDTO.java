@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(name = "Produto", description = "Objeto que representa um produto dentro do sistema")
 public record ProdutoDTO(
+
         @Schema(description = "O identificador do produto.", example = "1")
         Long id,
 

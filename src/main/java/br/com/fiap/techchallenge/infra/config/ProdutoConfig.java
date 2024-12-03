@@ -2,8 +2,7 @@ package br.com.fiap.techchallenge.infra.config;
 
 import br.com.fiap.techchallenge.application.gateways.IProdutoRepository;
 import br.com.fiap.techchallenge.application.usecases.produto.*;
-import br.com.fiap.techchallenge.infra.gateways.ProdutoRepository;
-import br.com.fiap.techchallenge.infra.mapper.pedido.PedidoMapper;
+import br.com.fiap.techchallenge.infra.gateways.produto.ProdutoRepository;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
