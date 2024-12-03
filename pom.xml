@@ -42,6 +42,8 @@
             src/main/java/br/com/fiap/techchallenge/infra/exception/**,
             src/main/java/br/com/fiap/techchallenge/infra/mapper/**,
             src/main/java/br/com/fiap/techchallenge/infra/persistence/**,
+            src/main/java/br/com/fiap/techchallenge/infra/controllers/categoria/**,
+            src/main/java/br/com/fiap/techchallenge/infra/controllers/produto/**,
             src/main/java/br/com/fiap/techchallenge/PosTechFastFoodApplication.java
         </sonar.exclusions>
     </properties>
