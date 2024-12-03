@@ -34,6 +34,7 @@
         <cucumber-java.version>7.20.1</cucumber-java.version>
         <junit-platform-suite.version>1.9.3</junit-platform-suite.version>
         <aspectj.version>1.9.20.1</aspectj.version>
+        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <sonar.exclusions>
             src/main/java/br/com/fiap/techchallenge/application/gateways/**,
             src/main/java/br/com/fiap/techchallenge/domain/**,
@@ -365,6 +366,41 @@
                 <activeProfile>prd</activeProfile>
                 <packaging>jar</packaging>
             </properties>
+        </profile>
+        <profile>
+            <id>cov</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <formats>
+                                        <format>XML</format>
+                                    </formats>
+                                    <excludes>
+                                        <exclude>**/PosTechFastFoodApplication.java</exclude>
+                                        <exclude>**/PosTechFastFoodApplicationTests.java</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
