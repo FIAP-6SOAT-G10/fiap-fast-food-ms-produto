@@ -139,7 +139,6 @@ public class ProdutoRepository implements IProdutoRepository {
     @CachePut(cacheNames = "produto", key = "#id")
     public Produto atualizarProduto(Long id, Produto produto) {
         ProdutoEntity novoProdutoEntity = produtoMapper.fromDomainToEntity(produto);
-
         try {
             Optional<ProdutoEntity> produtoOptional = produtoEntityRepository.findById(id);
             if (produtoOptional.isPresent()) {
@@ -154,7 +153,6 @@ public class ProdutoRepository implements IProdutoRepository {
             } else {
                 throw new ProdutoException(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO);
             }
-
         }catch (Exception e) {
             throw new ProdutoException(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO);
         }

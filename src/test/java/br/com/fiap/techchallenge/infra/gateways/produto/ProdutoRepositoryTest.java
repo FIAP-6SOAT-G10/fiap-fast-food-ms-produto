@@ -10,12 +10,14 @@ import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonpatch.JsonPatch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -25,7 +27,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
 class ProdutoRepositoryTest {
 
     @Mock
@@ -46,6 +47,7 @@ class ProdutoRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
         categoriaEntity = new CategoriaEntity();
         categoriaEntity.setId(1L);
         categoriaEntity.setNome(CategoriaEnum.LANCHE.name());
@@ -121,6 +123,59 @@ class ProdutoRepositoryTest {
 
         // Assert
         verify(produtoEntityRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void atualizarProdutoTest() {
+        // Arrange
+        ProdutoEntity updatedProdutoEntity = new ProdutoEntity();
+        updatedProdutoEntity.setNome("Updated Produto");
+        updatedProdutoEntity.setDescricao("Updated Descrição");
+        updatedProdutoEntity.setPreco(BigDecimal.valueOf(200));
+        updatedProdutoEntity.setCategoriaEntity(categoriaEntity);
+
+        when(produtoMapper.fromDomainToEntity(any(Produto.class))).thenReturn(produtoEntity);
+        when(produtoEntityRepository.findById(anyLong())).thenReturn(Optional.of(produtoEntity));
+        when(categoriaEntityRepository.findByNome(anyString())).thenReturn(Optional.of(categoriaEntity));
+        when(produtoEntityRepository.saveAndFlush(any(ProdutoEntity.class))).thenReturn(updatedProdutoEntity);
+
+        when(produtoMapper.fromEntityToDomain(updatedProdutoEntity)).thenReturn(produto);
+
+        // Act
+        Produto updatedProduto = produtoRepository.atualizarProduto(1L, produto);
+
+        // Assert
+        assertNotNull(updatedProduto);
+        assertEquals("Produto Teste", updatedProduto.getNome());
+        verify(produtoEntityRepository, times(1)).saveAndFlush(any(ProdutoEntity.class));
+    }
+
+    @Test
+    void atualizarDadosProdutoTest() throws JsonProcessingException {
+        // Arrange
+        ObjectMapper objectMapper = new ObjectMapper();
+        String patchJson = "[ {\"op\": \"replace\", \"path\": \"/nome\", \"value\": \"Produto 1\"} ]";
+        JsonPatch validPatch = objectMapper.readValue(patchJson, JsonPatch.class);
+
+        Produto produtoUpdate = new Produto("Updated Produto", "Updated Descrição", new Categoria("LANCHE", "Lanches"), BigDecimal.valueOf(200), "imagem.jpg");
+        ProdutoEntity updatedProdutoEntity = new ProdutoEntity();
+        updatedProdutoEntity.setNome("Updated Produto");
+        updatedProdutoEntity.setDescricao("Updated Descrição");
+        updatedProdutoEntity.setPreco(BigDecimal.valueOf(200));
+        updatedProdutoEntity.setCategoriaEntity(categoriaEntity);
+
+        when(produtoEntityRepository.findById(anyLong())).thenReturn(Optional.of(produtoEntity));
+        when(produtoEntityRepository.saveAndFlush(any(ProdutoEntity.class))).thenReturn(updatedProdutoEntity);
+        when(produtoMapper.fromEntityToDomain(any(ProdutoEntity.class))).thenReturn(produtoUpdate);
+
+        // Act
+        Produto updatedProduto = produtoRepository.atualizarDadosProduto(1L, validPatch);
+
+        // Assert
+        assertNotNull(updatedProduto);
+        assertEquals("Updated Produto", updatedProduto.getNome());
+        assertEquals(BigDecimal.valueOf(200), updatedProduto.getPreco());
+        verify(produtoEntityRepository, times(1)).saveAndFlush(any(ProdutoEntity.class));
     }
 
     @Test
