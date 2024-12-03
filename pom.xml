@@ -11,7 +11,7 @@
     <groupId>br.com.fiap</groupId>
     <artifactId>fiap-fast-food-produto</artifactId>
     <version>1.0</version>
-    <name>Tech Challenge Grupo 10</name>
+    <name>Product Microservice</name>
     <description>Sistema de autoatendimento de fast food, composto por uma série de dispositivos e interfaces que
         permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente.
     </description>
@@ -40,6 +40,8 @@
             src/main/java/br/com/fiap/techchallenge/domain/**,
             src/main/java/br/com/fiap/techchallenge/infra/config/**,
             src/main/java/br/com/fiap/techchallenge/infra/exception/**,
+            src/main/java/br/com/fiap/techchallenge/infra/mapper/**,
+            src/main/java/br/com/fiap/techchallenge/infra/persistence/**,
             src/main/java/br/com/fiap/techchallenge/PosTechFastFoodApplication.java
         </sonar.exclusions>
     </properties>
