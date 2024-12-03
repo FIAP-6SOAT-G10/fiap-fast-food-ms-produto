@@ -312,6 +312,19 @@
                             </excludes>
                         </configuration>
                     </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
@@ -346,7 +359,7 @@
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
                             <includes combine.self="override">
-                                <include>**/PaymentControllerBDD.java</include>
+                                <include>**/ProdutoControllerBDD.java</include>
                             </includes>
                             <excludes combine.self="override">
                             </excludes>
