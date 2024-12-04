@@ -6,14 +6,9 @@ import br.com.fiap.techchallenge.infra.exception.ProdutoException;
 import br.com.fiap.techchallenge.infra.mapper.produto.ProdutoMapper;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
-import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -24,10 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional

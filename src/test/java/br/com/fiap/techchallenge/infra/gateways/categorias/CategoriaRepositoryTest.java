@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CategoriaRepositoryTest {
+class CategoriaRepositoryTest {
 
     @Mock
     private CategoriaEntityRepository categoriaEntityRepository;
@@ -23,13 +23,13 @@ public class CategoriaRepositoryTest {
     private CategoriaRepository categoriaRepository;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         categoriaRepository = new CategoriaRepository(categoriaEntityRepository);
     }
 
     @Test
-    public void testListarCategorias() {
+    void testListarCategorias() {
         CategoriaEntity categoriaEntity1 = new CategoriaEntity(1L, "LANCHE", "Lanches", null);
         CategoriaEntity categoriaEntity2 = new CategoriaEntity(2L, "BEBIDA", "Bebidas", null);
         when(categoriaEntityRepository.findAll()).thenReturn(Arrays.asList(categoriaEntity1, categoriaEntity2));

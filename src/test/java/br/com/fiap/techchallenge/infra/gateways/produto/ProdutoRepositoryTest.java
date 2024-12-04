@@ -11,15 +11,12 @@ import br.com.fiap.techchallenge.infra.persistence.ProdutoEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import br.com.fiap.techchallenge.infra.persistence.entities.ProdutoEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
@@ -183,21 +180,21 @@ class ProdutoRepositoryTest {
 
     @Test
     void criarProdutoDeveraRetornarUmExcecaoDeQueOProdutoJaExiste() {
-        CategoriaEntity categoriaEntity = new CategoriaEntity();
-        categoriaEntity.setId(1L);
-        categoriaEntity.setNome(CategoriaEnum.LANCHE.name());
+        CategoriaEntity entity = new CategoriaEntity();
+        entity.setId(1L);
+        entity.setNome(CategoriaEnum.LANCHE.name());
 
         Produto produtoCriar = new Produto("Big Fiap", "Nova Descrição", new Categoria("LANCHE", "Lanches"), BigDecimal.valueOf(200), "imagem.jpg");
 
-        ProdutoEntity produtoEntity = new ProdutoEntity();
-        produtoEntity.setId(1L);
-        produtoEntity.setNome("Produto Teste");
-        produtoEntity.setDescricao("Descrição do produto");
-        produtoEntity.setPreco(BigDecimal.valueOf(100));
-        produtoEntity.setCategoriaEntity(categoriaEntity);
+        ProdutoEntity entidadeProduto = new ProdutoEntity();
+        entidadeProduto.setId(1L);
+        entidadeProduto.setNome("Produto Teste");
+        entidadeProduto.setDescricao("Descrição do produto");
+        entidadeProduto.setPreco(BigDecimal.valueOf(100));
+        entidadeProduto.setCategoriaEntity(entity);
 
-        when(categoriaEntityRepository.findByNome("LANCHE")).thenReturn(Optional.of(categoriaEntity));
-        when(produtoEntityRepository.findByNome("Big Fiap")).thenReturn(Optional.of(produtoEntity));
+        when(categoriaEntityRepository.findByNome("LANCHE")).thenReturn(Optional.of(entity));
+        when(produtoEntityRepository.findByNome("Big Fiap")).thenReturn(Optional.of(entidadeProduto));
 
         ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
             produtoRepository.criarProduto(produtoCriar);

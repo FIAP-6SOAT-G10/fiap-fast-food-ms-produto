@@ -1,7 +1,6 @@
 package br.com.fiap.techchallenge.infra.gateways.categorias;
 
 
-import br.com.fiap.techchallenge.domain.entities.produto.Categoria;
 import br.com.fiap.techchallenge.infra.persistence.CategoriaEntityRepository;
 import br.com.fiap.techchallenge.infra.persistence.entities.CategoriaEntity;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("integration-test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ExtendWith(SpringExtension.class)
-public class CategoriaRepositoryIT {
+class CategoriaRepositoryIT {
 
     @Autowired
     private CategoriaEntityRepository categoriaEntityRepository;
@@ -31,9 +30,8 @@ public class CategoriaRepositoryIT {
     private CategoriaRepository categoriaRepository;
 
     @Test
-    public void testListarCategorias() {
+    void testListarCategorias() {
         List<CategoriaEntity> allCategories = categoriaEntityRepository.findAll();
-        List<Categoria> categorias = categoriaRepository.listarCategorias();
         assertEquals(4, allCategories.size());
     }
 }
