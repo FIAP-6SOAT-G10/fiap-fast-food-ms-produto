@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -78,4 +79,39 @@ class AtualizarProdutoParcialUseCaseTest {
         assertEquals(ErrosEnum.PRODUTO_DESCRICAO_OBRIGATORIO, thrown.getError());
         verify(produtoRepository, times(0)).atualizarDadosProduto(anyLong(), any());
     }
+
+    @Test
+    void testAtualizarDadosProduto_Preco() throws Exception {
+        String patchJson = "[ {\"op\": \"replace\", \"path\": \"/preco\", \"value\": \"\"} ]";
+        JsonPatch emptyDescricaoPatch = new ObjectMapper().readValue(patchJson, JsonPatch.class);
+        ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
+            atualizarProdutoParcialUseCase.atualizarDadosProduto("123", emptyDescricaoPatch);
+        });
+        assertEquals(ErrosEnum.PRODUTO_PRECO_OBRIGATORIO, thrown.getError());
+        verify(produtoRepository, times(0)).atualizarDadosProduto(anyLong(), any());
+    }
+
+    @Test
+    void testAtualizarDadosProduto_Categoria() throws Exception {
+        String patchJson = "[ {\"op\": \"replace\", \"path\": \"/categoria\", \"value\": \"\"} ]";
+        JsonPatch emptyDescricaoPatch = new ObjectMapper().readValue(patchJson, JsonPatch.class);
+        ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
+            atualizarProdutoParcialUseCase.atualizarDadosProduto("123", emptyDescricaoPatch);
+        });
+        assertEquals(ErrosEnum.CATEGORIA_INVALIDA, thrown.getError());
+        verify(produtoRepository, times(0)).atualizarDadosProduto(anyLong(), any());
+    }
+
+    @Test
+    void testAtualizarDadosProduto_Imagem() throws Exception {
+        String patchJson = "[ {\"op\": \"replace\", \"path\": \"/imagem\", \"value\": \"\"} ]";
+        JsonPatch emptyDescricaoPatch = new ObjectMapper().readValue(patchJson, JsonPatch.class);
+        ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
+            atualizarProdutoParcialUseCase.atualizarDadosProduto("123", emptyDescricaoPatch);
+        });
+        assertEquals(ErrosEnum.PRODUTO_IMAGEM_OBRIGATORIO, thrown.getError());
+        verify(produtoRepository, times(0)).atualizarDadosProduto(anyLong(), any());
+    }
+
+
 }
