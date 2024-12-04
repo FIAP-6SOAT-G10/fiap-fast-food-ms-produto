@@ -242,4 +242,30 @@ class ProdutoRepositoryTest {
         verify(categoriaEntityRepository, times(1)).findByNome("LANCHE");
     }
 
+    @Test
+    void testaExcecaoAoAtualizatUmProdutoComIdentificadorInvalido(){
+
+        Produto produtoUpdate = new Produto("Big Fiap", "Nova Descrição", new Categoria("LANCHE", "Lanches"), BigDecimal.valueOf(200), "imagem.jpg");
+        when(produtoEntityRepository.findById(1l)).thenReturn(Optional.empty());
+        ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
+            produtoRepository.atualizarProduto(1l,produtoUpdate);
+        });
+
+        assertEquals(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO.getMessage(), thrown.getError().getMessage());
+        verify(produtoEntityRepository, times(1)).findById(1l);
+    }
+
+    @Test
+    void testaExcecaoAoAtualizatUmProdutoComProdutoInvalido(){
+
+        Produto produtoUpdate = new Produto("Big Fiap", "Nova Descrição", new Categoria("LANCHE", "Lanches"), BigDecimal.valueOf(200), "imagem.jpg");
+        when(produtoEntityRepository.findById(1l)).thenThrow(ProdutoException.class);
+        ProdutoException thrown = assertThrows(ProdutoException.class, () -> {
+            produtoRepository.atualizarProduto(1l,produtoUpdate);
+        });
+
+        assertEquals(ErrosEnum.PRODUTO_CODIGO_IDENTIFICADOR_INVALIDO.getMessage(), thrown.getError().getMessage());
+        verify(produtoEntityRepository, times(1)).findById(1l);
+    }
+
 }
