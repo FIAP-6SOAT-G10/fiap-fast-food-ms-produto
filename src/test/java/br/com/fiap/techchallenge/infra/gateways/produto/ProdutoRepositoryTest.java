@@ -268,4 +268,17 @@ class ProdutoRepositoryTest {
         verify(produtoEntityRepository, times(1)).findById(1l);
     }
 
+    @Test
+    void testaListarTodosOsProdutosComNomeDescricaoEPrecoNulos(){
+        Produto produtoCriar = new Produto("Big Fiap", "Nova Descrição", new Categoria("LANCHE", "Lanches"), BigDecimal.valueOf(200), "imagem.jpg");
+        List<ProdutoEntity> produtoEntityList = List.of(produtoEntity);
+        List<Produto> produtoDomain = List.of(produtoCriar);
+
+        when(produtoEntityRepository.findAll()).thenReturn(Collections.singletonList(produtoEntity));
+        when(produtoMapper.fromListEntityToListDomain(produtoEntityList)).thenReturn(produtoDomain);
+
+        produtoRepository.listarProdutos(null,null,null);
+        verify(produtoEntityRepository, times(1)).findAll();
+    }
+
 }
