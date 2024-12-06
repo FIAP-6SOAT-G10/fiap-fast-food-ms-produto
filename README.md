@@ -545,3 +545,10 @@ GET http://localhost:8080/api/pedidos/status/:status
 - `407`: Pedidos no status 'Pronto' só podem avançar para o status 'Finalizado'.
 - `408`: Pedidos no status 'Finalizado' não podem ser alterados.
 - `499`: Erro genérico ao atualizar o status do pedido.
+
+## Cobertura
+<img height="250" src="src/main/resources/img/cov_product_ms.png" title="Cobertura de Testes" width="1195"/>
+
+### [Link para a Evidência de Cobertura](https://sonarcloud.io/summary/overall?id=FIAP-6SOAT-G10_fiap-fast-food-ms-produto)
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=FIAP-6SOAT-G10_fiap-fast-food-ms-produto)](https://sonarcloud.io/summary/new_code?id=FIAP-6SOAT-G10_fiap-fast-food-ms-produto)
